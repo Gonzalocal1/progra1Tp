@@ -39,10 +39,9 @@ public class Princesa {
 	
 	
 	private void chequearPiso() {
-        if (this.y >= limitePiso) {
-            this.y = limitePiso; // Corrige desfasajes visuales
+        if (this.enElSuelo == true) {
+            //this.y = limitePiso; // Corrige desfasajes visuales
             this.velocidadY = 0;
-            this.enElSuelo = true;
             this.tiempoSaltando = 0;
         }
     }

@@ -14,14 +14,18 @@ public class Juego extends InterfaceJuego
 	// Variables y métodos propios de cada grupo
 	private Princesa princesa;
 	private Plataforma plataforma; 
+	private Plataforma plataforma2;
+	private Plataforma plataforma3;
 	private Enemigo[] enemigos;
 	
 	Juego()
 	{
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
-		princesa = new Princesa(entorno.ancho()/2,entorno.alto()-30,20,20, entorno);
+		princesa = new Princesa(entorno.ancho()/2,200,20,20, entorno);
 		plataforma = new Plataforma(entorno.ancho()/4,entorno.alto()-90,20,20,entorno);
+		plataforma2 = new Plataforma(entorno.ancho()/4-40,entorno.alto()-90,20,20,entorno);
+		plataforma3 = new Plataforma(entorno.ancho()/4+40,entorno.alto()-90,20,20,entorno);
 		enemigos = new Enemigo[10];
 		// Inicializar lo que haga falta para el juego
 
@@ -113,8 +117,12 @@ public class Juego extends InterfaceJuego
 	{
 		entorno.dibujarRectangulo(princesa.getX(),princesa.getY(),princesa.getAncho(),princesa.getAlto(),0, Color.RED);
 		plataforma.ColisionConPrincesa(princesa);
+		plataforma2.ColisionConPrincesa(princesa);
+		plataforma3.ColisionConPrincesa(princesa);
 		princesa.moverPrincesa();
 		plataforma.dibujo();
+		plataforma2.dibujo();
+		plataforma3.dibujo();
 		actualizarEnemigos();
 		mantenerEnemigos();
 		// Procesamiento de un instante de tiempo

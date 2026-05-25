@@ -53,6 +53,7 @@ public class Plataforma {
 	            if (princesa.getY() < this.y) { // Princesa está por encima del centro de la plataforma -> Cayó arriba
 	                princesa.setY(platArriba - (princesa.getAlto() / 2)); // Corregimos posición
 	                princesa.setVelocidadY(0);
+	                princesa.setEnElSuelo(true);
 	                
 	            } else { // Princesa está por debajo del centro de la plataforma -> Le pegó al techo
 	                princesa.setY(platAbajo + (princesa.getAlto() / 2));
@@ -68,6 +69,8 @@ public class Plataforma {
 	            }
 	            princesa.setVelocidadX(0); // Detiene el avance horizontal contra la pared
 	        }
+	    } else {
+	    	princesa.setEnElSuelo(false);
 	    }
 	}
 	/**
