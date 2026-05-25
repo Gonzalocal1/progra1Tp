@@ -75,7 +75,7 @@ public class Princesa {
 		moverIzquierda();
 		salto();
 		
-		if (saltando == true) {
+		if (saltando == true && this.y < entorno.alto() - (alto/2)) {
 			y += 3.5;
 		}
 	}
