@@ -30,7 +30,7 @@ public class Princesa {
 		this.alto = alto;
 		this.ancho = ancho;
 		this.entorno = entorno;
-		this.velocidadX = 7;
+		this.velocidadX = 0;
 		this.velocidadY = 0;
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
@@ -50,12 +50,14 @@ public class Princesa {
 	
 	private void moverIzquierda() {
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+			this.velocidadX = 7;
 			this.x -= this.velocidadX; 
 		}
 	}
 	
 	private void moverDerecha() {
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+			this.velocidadX = 7;
 			this.x += this.velocidadX; 
 		}
 	}
