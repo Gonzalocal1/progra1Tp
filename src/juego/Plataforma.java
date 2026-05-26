@@ -24,7 +24,7 @@ public class Plataforma {
 	}
 	
 	// Método que determina cuándo choca con la princesa y resuelve la colisión
-	public void ColisionConPrincesa(Princesa princesa) {
+	public boolean ColisionConPrincesa(Princesa princesa) {
 	    // 1. Calculamos los bordes de la plataforma (basado en el CENTRO)
 	    double platIzquierda = this.x - (this.ancho / 2);
 	    double platDerecha   = this.x + (this.ancho / 2);
@@ -69,10 +69,10 @@ public class Plataforma {
 	            }
 	            princesa.setVelocidadX(0); // Detiene el avance horizontal contra la pared
 	        }
-	    } else {
-	    	princesa.setEnElSuelo(false);
 	    }
+	    return hayInterseccion;
 	}
+	
 	/**
 	 * @return the x
 	 */

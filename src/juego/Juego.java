@@ -13,20 +13,20 @@ public class Juego extends InterfaceJuego
 	
 	// Variables y métodos propios de cada grupo
 	private Princesa princesa;
-	private Plataforma plataforma; 
-	private Plataforma plataforma2;
-	private Plataforma plataforma3;
 	private Enemigo[] enemigos;
+	private GestionadorPlataformas plataformas;
+
+	
 	
 	Juego()
 	{
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		princesa = new Princesa(entorno.ancho()/2,200,20,20, entorno);
-		plataforma = new Plataforma(entorno.ancho()/4,entorno.alto()-90,20,20,entorno);
-		plataforma2 = new Plataforma(entorno.ancho()/4-40,entorno.alto()-90,20,20,entorno);
-		plataforma3 = new Plataforma(entorno.ancho()/4+40,entorno.alto()-90,20,20,entorno);
+		plataformas = new GestionadorPlataformas();
+		plataformas.crearPlataformas(32, entorno);
 		enemigos = new Enemigo[10];
+		
 		// Inicializar lo que haga falta para el juego
 
 		// Inicia el juego!
@@ -107,6 +107,8 @@ public class Juego extends InterfaceJuego
 	    }
 	}
 
+	
+
 	/**
 	 * Durante el juego, el método tick() será ejecutado en cada instante y 
 	 * por lo tanto es el método más importante de esta clase. Aquí se debe 
@@ -116,13 +118,9 @@ public class Juego extends InterfaceJuego
 	public void tick()
 	{
 		entorno.dibujarRectangulo(princesa.getX(),princesa.getY(),princesa.getAncho(),princesa.getAlto(),0, Color.RED);
-		plataforma.ColisionConPrincesa(princesa);
-		plataforma2.ColisionConPrincesa(princesa);
-		plataforma3.ColisionConPrincesa(princesa);
+		plataformas.colisionesPlataformas(princesa);
 		princesa.moverPrincesa();
-		plataforma.dibujo();
-		plataforma2.dibujo();
-		plataforma3.dibujo();
+		plataformas.dibujarPlataformas();
 		actualizarEnemigos();
 		mantenerEnemigos();
 		// Procesamiento de un instante de tiempo
