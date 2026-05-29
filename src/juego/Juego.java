@@ -17,6 +17,8 @@ public class Juego extends InterfaceJuego
 	private GestionadorPlataformas plataformas;
 	private Proyectil proyectil;
 	private Castillo castillo;
+	private double camaraY = 0;
+	private double maxCamara = 4;
 
 	
 	
@@ -26,7 +28,7 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Proyecto para TP", 800, 600);
 		princesa = new Princesa(entorno.ancho()/2,200,20,20, entorno);
 		plataformas = new GestionadorPlataformas();
-		plataformas.crearPlataformas(32, entorno);
+		plataformas.crearPiso(300, entorno);
 		enemigos = new Enemigo[10];
 		this.proyectil = new Proyectil(600, entorno.alto() - 15);
 		castillo = new Castillo(700, 300, "castillo.jpg", this.entorno);
@@ -37,7 +39,23 @@ public class Juego extends InterfaceJuego
 		this.entorno.iniciar();
 	}
 
-		// ESTO CUENTA LOS ENEMIGOS VIVOS
+		
+	private void actualizarCamara(Princesa princesa) {
+		if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+			camaraY += 1;
+		} else {
+			camaraY = 0;
+		}
+		if (camaraY > maxCamara) {
+			camaraY = maxCamara;
+		}
+	}
+	
+	
+	
+	
+	
+	// ESTO CUENTA LOS ENEMIGOS VIVOS
 	private int contarEnemigos() {
 
 	    int cantidad = 0;
@@ -121,10 +139,11 @@ public class Juego extends InterfaceJuego
 	 */
 	public void tick()
 	{
+		actualizarCamara(princesa);
 		entorno.dibujarRectangulo(princesa.getX(),princesa.getY(),princesa.getAncho(),princesa.getAlto(),0, Color.RED);
 		plataformas.colisionesPlataformas(princesa);
 		princesa.moverPrincesa();
-		plataformas.dibujarPlataformas();
+		plataformas.dibujarPlataformas(camaraY);
 		// --- LÓGICA DEL PROYECTIL RE CORTADA ---
 		if (proyectil != null && !proyectil.disparo(princesa, entorno)) {
 			proyectil = null;

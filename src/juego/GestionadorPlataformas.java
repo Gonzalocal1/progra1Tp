@@ -6,24 +6,44 @@ public class GestionadorPlataformas {
 	// Clase destinada a gestionar creacion y metodos de la clase plataforma.
 	private Plataforma[] plataformas;
 	
-	public void crearPlataformas(int cantPlataformas, Entorno entorno) {
-		
+	public void crearPiso(int cantPlataformas, Entorno entorno) {
+		int separacion = 20;
+		int separacionPozo = 200;
+		int altura = entorno.alto();
+		int alto = 20;
+		int ancho= 20;
 		this.plataformas = new Plataforma[cantPlataformas];
 		
-		for(int i = 0; i < cantPlataformas; i++) {
-
+		int cantPozos = (int) (Math.random() * 8) + 3; // Creo un numero aleatorio de pozos de 2 a 6
+		
+		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
 	        if(plataformas[i] == null) {
-	        	plataformas[i] = new Plataforma(21*i,entorno.alto(),20,20,entorno);
+	        	plataformas[i] = new Plataforma(altura,alto,ancho,entorno);
 	        }
 	    }
+		
+		for(int i = 0; i < cantPozos;i++) {                 // defino Pozos al azar
+			int j = (int) (Math.random() * cantPlataformas-1) + 1;
+			plataformas[j].setEsPozo(true);
+		}
+		
+		for (int i = 1; i < cantPlataformas; i++) {         // asigna una separacion en funcion de si son pozos o no
+			double platX = plataformas[i-1].getX();
+			if (!plataformas[i].isEsPozo()) {
+				plataformas[i].setX(platX += separacion);
+			} else {
+				plataformas[i].setX(platX += separacionPozo);
+			}
+		}
 	}
 	
-	public void dibujarPlataformas() {
+	public void dibujarPlataformas(double camaraY) {
 		for(int i = 0; i < plataformas.length; i++) {
 
 	        if(plataformas[i] != null) {
 
-	            plataformas[i].dibujo();
+	            plataformas[i].dibujo(camaraY);
+	            plataformas[i].moverPlataforma(camaraY);
 
 	        }
 	    }

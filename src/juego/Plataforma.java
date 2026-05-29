@@ -10,17 +10,20 @@ public class Plataforma {
 	private double  ancho;
 	private Entorno entorno;
 	
-	public Plataforma(double x, double y, double alto, double ancho, Entorno entorno) {
-		this.x = x;
+	private boolean esPozo;
+	
+	public Plataforma(double y, double alto, double ancho, Entorno entorno) {
+		this.x = 0; //El gestionador luego se encarga de asignarles un x
 		this.y = y;
 		this.alto = alto;
 		this.ancho = ancho;
 		this.entorno = entorno;
+		this.esPozo = false;
 	}
 	
 	// Dibuja la plataforma 
-	public void dibujo() {
-		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.blue);
+	public void dibujo(double camaraY) {
+		entorno.dibujarRectangulo(x - camaraY, y, ancho, alto, 0, Color.blue);
 	}
 	
 	// Método que determina cuándo choca con la princesa y resuelve la colisión
@@ -71,6 +74,10 @@ public class Plataforma {
 	        }
 	    }
 	    return hayInterseccion;
+	}
+	
+	public void moverPlataforma(double camaraY) {
+		x -= camaraY;
 	}
 	
 	/**
@@ -127,6 +134,20 @@ public class Plataforma {
 	 */
 	public void setAncho(double ancho) {
 		this.ancho = ancho;
+	}
+
+	/**
+	 * @return el esPozo
+	 */
+	public boolean isEsPozo() {
+		return esPozo;
+	}
+
+	/**
+	 * @param esPozo el esPozo a establecer
+	 */
+	public void setEsPozo(boolean esPozo) {
+		this.esPozo = esPozo;
 	}
 	
 	

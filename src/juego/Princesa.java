@@ -9,6 +9,7 @@ public class Princesa {
     private double ancho;
     private double velocidadX;
     private double velocidadY;
+    private double limiteY;
     
     
     // Constantes del movimiento
@@ -34,7 +35,7 @@ public class Princesa {
 		this.velocidadY = 0;
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
-        this.limitePiso = entorno.alto() - (alto / 2); // piso default
+        this.limiteY = entorno.ancho()-200;
 	}
 	
 	
@@ -54,7 +55,7 @@ public class Princesa {
 	}
 	
 	private void moverDerecha() {
-		if (entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteY) {
 			this.velocidadX = 7;
 			this.x += this.velocidadX; 
 		}
