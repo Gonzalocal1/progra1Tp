@@ -66,6 +66,14 @@ public class GestionadorPlataformas {
         }
 	}
 	
+	public double getUltimaPlat() {
+		return plataformas[plataformas.length-1].getX();
+	}
 	
+	public void limpiarPlataformas( ) {
+		for (int i = 0;i < plataformas.length;i++) {
+			plataformas[i] = null;
+		}
+	}
 	
 }
