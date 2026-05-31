@@ -14,6 +14,7 @@ public class Niveles {
     private GestionadorEnemigos enemigos;
     private Jefe jefe;
     private JefeProyectil jefeProyectil;
+    private JefeProyectil jefeProyectil2;
     
     private double camaraX = 0;
 	private double maxCamara = 4;
@@ -42,7 +43,8 @@ public class Niveles {
         this.plataformas.limpiarPlataformas();
         this.castillo = null;
         this.jefe = new Jefe(entorno);
-        this.jefeProyectil = new JefeProyectil(entorno);
+        this.jefeProyectil = new JefeProyectil(0, entorno);
+        this.jefeProyectil2 = new JefeProyectil(1, entorno);
     }
     
     public void actualizarCamara(Princesa princesa) {
@@ -109,6 +111,8 @@ public class Niveles {
         jefe.moverJefe();
         jefeProyectil.moverProyectil();
         jefeProyectil.dibujarJefeProyectil();
+        jefeProyectil2.moverProyectil();
+        jefeProyectil2.dibujarJefeProyectil();
     }
 
     

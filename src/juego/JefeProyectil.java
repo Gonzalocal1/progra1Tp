@@ -10,16 +10,17 @@ public class JefeProyectil {
 	private double alto;
 	private double ancho;
 	private Entorno entorno;
-	private double grados = 0;
+	private double grados;
 	
 	
 	
-	public JefeProyectil(Entorno entorno) {
+	public JefeProyectil(double grados, Entorno entorno) {
 		this.entorno = entorno;
 		this.x = (entorno.ancho()/2);
 		this.y = entorno.alto()/2 - 70;
-		this.alto = 40;
-		this.ancho = 40;
+		this.alto = 10;
+		this.ancho = 10;
+		this.grados = grados;
 	}
 
 	public void moverProyectil() {
@@ -39,7 +40,7 @@ public class JefeProyectil {
 	}
 	
 	public void dibujarJefeProyectil() {
-		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
+		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
 	}
 	
 }
