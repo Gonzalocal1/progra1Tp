@@ -120,6 +120,8 @@ public class Proyectil {
         return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
     }
 
+    
+    
     // --- GETTERS Y SETTERS ---
 
     public boolean isDisparado() { 
@@ -156,5 +158,20 @@ public class Proyectil {
 
 	public void setAncho(double ancho) {
 		this.ancho = ancho;
+	}
+	public double getVx() {
+	    return this.vx;
+	}
+
+	public void setVx(double vx) {
+	    this.vx = vx;
+	}
+
+	public double getVy() {
+	    return this.vy;
+	}
+
+	public void setVy(double vy) {
+	    this.vy = vy;
 	}
 }

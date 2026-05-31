@@ -75,5 +75,29 @@ public class GestionadorPlataformas {
 			plataformas[i] = null;
 		}
 	}
-	
-}
+	public void crearPisoNivel2(int cantPlataformas, Entorno entorno) {
+	    int separacion = 20; // Distancia entre el centro de una plataforma y la siguiente
+	    int altura = entorno.alto(); // Posición en Y (el suelo)
+	    int alto = 20;
+	    int ancho = 20;
+	    this.plataformas = new Plataforma[cantPlataformas];
+	    
+	    // 1. Inicializamos la primera plataforma en el inicio de la pantalla (X = 0 o el margen que desees)
+	    if (cantPlataformas > 0) {
+	        plataformas[0] = new Plataforma(altura, alto, ancho, entorno);
+	        plataformas[0].setX(10); // Posición inicial X para la primera plataforma (mitad de su ancho)
+	        plataformas[0].setEsPozo(false); // Nos aseguramos de que no sea pozo
+	    }
+	    
+	    // 2. Inicializamos y posicionamos el resto de las plataformas de forma corrida
+	    for (int i = 1; i < cantPlataformas; i++) {
+	        plataformas[i] = new Plataforma(altura, alto, ancho, entorno);
+	        plataformas[i].setEsPozo(false); // Ninguna es pozo
+	        
+	        // Tomamos la X de la plataforma anterior y le sumamos la separación constante
+	        double platXAnterior = plataformas[i - 1].getX();
+	        plataformas[i].setX(platXAnterior + separacion);
+	    }
+	}
+	}
+

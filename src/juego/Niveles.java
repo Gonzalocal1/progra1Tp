@@ -5,7 +5,6 @@ import entorno.Entorno;
 
 public class Niveles {
 
-
     private Entorno entorno;
     private Princesa princesa;
     private Castillo castillo;
@@ -19,22 +18,22 @@ public class Niveles {
     private JefeProyectil jefeProyectil4;
     
     private double camaraX = 0;
-	private double maxCamara = 4;
+    private double maxCamara = 4;
     
-	private int nivel = 1; 
+    private int nivel = 1; 
     
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
     }
 
     public void inicializarNivel1() {
-    	princesa = new Princesa(entorno.ancho()/2,200,20,20, entorno);
-    	plataformas = new GestionadorPlataformas();
-		plataformas.crearPiso(50, entorno);
-		proyectil = new Proyectil(600, entorno.alto() - 15);
-		enemigos = new GestionadorEnemigos(entorno);
-		enemigos.inicializarEnemigos(10);
-		castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
+        princesa = new Princesa(entorno.ancho()/2, 200, 20, 20, entorno);
+        plataformas = new GestionadorPlataformas();
+        plataformas.crearPiso(50, entorno);
+        proyectil = new Proyectil(600, entorno.alto() - 15);
+        enemigos = new GestionadorEnemigos(entorno);
+        enemigos.inicializarEnemigos(10);
+        castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
     }
     
     private void inicializarNivel2() {
@@ -42,7 +41,12 @@ public class Niveles {
         this.princesa.setX(100);
         this.princesa.setY(480); 
         this.enemigos.limpiarEnemigos(); 
-        this.plataformas.limpiarPlataformas();
+        
+        this.plataformas = new GestionadorPlataformas();
+        this.plataformas.crearPisoNivel2(50, entorno); 
+        
+        // Inicializamos el primer proyectil en el suelo del nivel 2
+        this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
         this.jefeProyectil = new JefeProyectil(0, 40, entorno);
@@ -52,21 +56,17 @@ public class Niveles {
     }
     
     public void actualizarCamara(Princesa princesa) {
-		if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-			camaraX += 1;
-		} else {
-			camaraX = 0;
-		}
-		if (camaraX > maxCamara) {
-			camaraX = maxCamara;
-		}
-	}
+        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+            camaraX += 1;
+        } else {
+            camaraX = 0;
+        }
+        if (camaraX > maxCamara) {
+            camaraX = maxCamara;
+        }
+    }
     
     public void ejecutarNivel1() {
-    	
-        
-      
-        
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
         plataformas.colisionesPlataformas(princesa);
@@ -82,35 +82,41 @@ public class Niveles {
         castillo.dibujar(camaraX);
         castillo.moverCastillo(camaraX);
 
-        // Si pasa 2 segundos en el castillo, pasamos al nivel 2
         if (castillo.verificarVictoria(princesa)) {
             inicializarNivel2();
         }
     }
 
     public void ejecutarNivel2() {
+        // 1. Dibujar escenario y procesar físicas de la princesa
+        plataformas.dibujarPlataformas(0); 
+        plataformas.colisionesPlataformas(princesa); 
         
-        // 1. Suelo plano
-        double nivelSueloY = 550;
-        entorno.dibujarRectangulo(400, nivelSueloY, 800, 100, 0, Color.GRAY);
-        
-        // 2. Gravedad simple para el piso plano
-        double limitePiso = nivelSueloY - 50 - (princesa.getAlto() / 2);
-        if (princesa.getY() < limitePiso) {
-            princesa.setY(princesa.getY() + 4); 
-        } else {
-            princesa.setY(limitePiso); 
-        }
-        
-        // 3. Movimiento y render de la princesa
         princesa.moverPrincesa(); 
         princesa.dibujarPrincesa();
+        
+        // 2. Lógica del Proyectil (Se ejecuta DESPUÉS de mover a la princesa)
+        if (proyectil != null) {
+            if (!proyectil.disparo(princesa, entorno)) {
+                // Si se salió del mapa (ya sea porque fallaste o porque el jefe te lo devolvió)
+                // lo hacemos reaparecer en el centro del mapa para que puedas volver a agarrarlo.
+                proyectil = new Proyectil(400, entorno.alto() - 40);
+            }
+        } else {
+            // Seguro por si acaso queda en null
+            proyectil = new Proyectil(400, entorno.alto() - 40);
+        }
+        
+        // 3. ¡EL PARRY TRABAJANDO! (El jefe comprueba si el proyectil activo lo tocó)
+        if (jefe != null) {
+            jefe.pseudoParry(proyectil);
+        }
         
         // 4. Texto informativo
         entorno.cambiarFont("Arial", 26, Color.RED, entorno.NEGRITA);
         entorno.escribirTexto("¡NIVEL 2: JEFE FINAL!", 260, 80);
         
-        // 5. Movimiento y render del jefe
+        // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
         jefe.moverJefe();
         jefeProyectil.moverProyectil(jefe.getX(),jefe.getY());
@@ -131,7 +137,5 @@ public class Niveles {
         
     }
 
-    
-    
     public int getNivel() { return nivel; }
 }
