@@ -11,32 +11,52 @@ public class JefeProyectil {
 	private double ancho;
 	private Entorno entorno;
 	private double grados;
+	private double radio;
+	private double radioRadio;
+
 	
 	
 	
-	public JefeProyectil(double grados, Entorno entorno) {
+	public JefeProyectil(double grados,double radio, Entorno entorno) {
 		this.entorno = entorno;
 		this.x = (entorno.ancho()/2);
 		this.y = entorno.alto()/2 - 70;
 		this.alto = 10;
 		this.ancho = 10;
 		this.grados = grados;
+		this.radio = radio;
+		this.radioRadio = 3;
 	}
 
-	public void moverProyectil() {
+	private void calcularAngulo(double centroX, double centroY) {
+		double radianes = Math.toRadians(grados);
+
+		this.x = centroX + Math.cos(radianes) * radio;
+		this.y = centroY + Math.sin(radianes) * radio;
+	}
+	
+	public void moverProyectil(double centroX, double centroY) {
+		this.grados += 5;
+		
 		if (grados > 360) {
 			grados = 1;
 		}
 		
-		double radianes = Math.toRadians(grados);
-
-		double resultado = Math.sin(radianes*5);
-		double resultado2 = Math.cos(radianes*5);
+		calcularAngulo(centroX,centroY);
 		
-		x += resultado2 *6;
-		y += resultado *6;
-		
-		this.grados ++;
+	}
+	
+	public void animacionRadio(){
+		this.radio += radioRadio;
+		// Si se pasa de cierto límite a la derecha, invertimos la velocidad
+	    if (this.radio > 200) { 
+	        this.radioRadio = -3; // Empieza a ir a la izquierda
+	    }
+	    
+	    // Si se pasa de cierto límite a la izquierda, la volvemos a invertir
+	    if (this.radio < 40) { 
+	    	this.radioRadio = 3; // Empieza a ir a la derecha
+	    }
 	}
 	
 	public void dibujarJefeProyectil() {

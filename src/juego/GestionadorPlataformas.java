@@ -14,7 +14,7 @@ public class GestionadorPlataformas {
 		int ancho= 20;
 		this.plataformas = new Plataforma[cantPlataformas];
 		
-		int cantPozos = (int) (Math.random() * 8) + 3; // Creo un numero aleatorio de pozos de 2 a 6
+		int cantPozos = (int) (Math.random() * 8) + 3; // Creo un numero aleatorio de pozos de 3 a 10
 		
 		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
 	        if(plataformas[i] == null) {
