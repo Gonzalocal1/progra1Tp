@@ -12,7 +12,8 @@ public class Princesa {
     private double velocidadX;
     private double velocidadY;
     private double limiteY;
-    
+    private int vidas;
+    private int tiempoInvulnerable; //ESTO LO AGREGO XQ SI NO LOS MUCIELAGOS MATABAN DE UNA A LA PRINCESA
     
     // Constantes del movimiento
     private static final double FUERZA_SALTO = 6.0; // transforma cada velocidadY durante el salto tick
@@ -38,6 +39,8 @@ public class Princesa {
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
         this.limiteY = entorno.ancho()-200;
+        this.vidas = 3;
+        this.tiempoInvulnerable = 0;
 	}
 	
 	
@@ -130,5 +133,25 @@ public class Princesa {
     
     public double getLimitePiso() { return limitePiso; }
     public void setLimitePiso(double limitePiso) { this.limitePiso = limitePiso; }
+    
+    public int getVidas() {
+    	return this.vidas;
+    }
 
+    public void perderVida() {
+        if(this.tiempoInvulnerable == 0) {
+            this.vidas--;
+            this.tiempoInvulnerable = 60;
+        }
+    }
+    
+    public void actualizarInvulnerabilidad() {
+        if(this.tiempoInvulnerable > 0) {
+            this.tiempoInvulnerable--;
+        }
+    }
+    
+    public boolean estaMuerta() {
+    	return this.vidas <= 0;
+    }
 }
