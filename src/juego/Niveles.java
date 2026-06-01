@@ -25,9 +25,20 @@ public class Niveles {
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
     }
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+
+    	for(int i = 0; i < princesa.getVidas(); i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
 
     public void inicializarNivel1() {
-        princesa = new Princesa(entorno.ancho()/2, 200, 20, 20, entorno);
+        princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
         plataformas.crearPiso(50, entorno);
         proyectil = new Proyectil(600, entorno.alto() - 15);
@@ -67,23 +78,38 @@ public class Niveles {
     }
     
     public void ejecutarNivel1() {
+    	if(princesa == null) {
+
+    	    entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
+    	    entorno.escribirTexto("GAME OVER", 300, 300);
+    	    return;
+    	}
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
+        dibujarVidas();
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
+        princesa.actualizarInvulnerabilidad();
         plataformas.dibujarPlataformas(camaraX);
         
         if (proyectil != null && !proyectil.disparo(princesa, entorno)) {
             proyectil = null;
         }
         
-        enemigos.actualizarEnemigos();
+        enemigos.actualizarEnemigos(princesa);
+        if(princesa != null && princesa.estaMuerta()) {
+            princesa = null;
+        }
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);
         castillo.moverCastillo(camaraX);
 
         if (castillo.verificarVictoria(princesa)) {
             inicializarNivel2();
+            if(princesa != null && princesa.estaMuerta()) {
+
+            	princesa = null;
+            }
         }
     }
 
