@@ -54,7 +54,8 @@ public class Niveles {
         this.princesa.setY(480); 
         this.enemigos.limpiarEnemigos(); 
         
-        this.plataformas = new GestionadorPlataformas();
+        this.plataformas.limpiarPlataformas();
+        this.plataformas.limpiarIslas();
         this.plataformas.crearPisoNivel2(50, entorno); 
         
         // Inicializamos el primer proyectil en el suelo del nivel 2

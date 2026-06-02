@@ -63,13 +63,15 @@ public class GestionadorPlataformas {
 	            }
 	            
 	        }
+	    }
+		for(int i = 0; i < islas.length; i++) {
 	        if(islas[i] != null) {
 	            if(islas[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
 	            
 	        }
-	    }
+		}
 		//Si no hay colisiones la princesa comenzara a caer
 		if (contadorIntersecciones == 0) {
         	princesa.setEnElSuelo(false);
@@ -113,24 +115,36 @@ public class GestionadorPlataformas {
 	
 	public void crearIslas(int cantPlataformas, Entorno entorno) {
 		Random random = new Random();
+		int xActual = 0;
 		int separacion = 20;
-		int separacionIsla = 200;
-		int[] alturas = {700,750,500};
+		int separacionIsla = 100;
+		int[] alturasPosibles = {350, 400, 500, 550};
+		int alturaActual = alturasPosibles[random.nextInt(4)];               // toma un indice aleatorio de las posibles alturas
 		int alto = 20;
 		int ancho= 20;
 		this.islas = new Plataforma[cantPlataformas];
 		
 		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
-	        int alturaRandom = random.nextInt(0,3);          // toma un indice aleatorio de las posibles alturas
-			int altura = alturas[alturaRandom];
-			if(islas[i] == null) {
-	        	islas[i] = new Plataforma(altura,alto,ancho,entorno);
+			
+	        islas[i] = new Plataforma(alturaActual,alto,ancho,entorno);
+	        islas[i].setX(xActual);
+	        xActual += separacion;
+	        if(i % 15 == 0) {
+	        	alturaActual = alturasPosibles[random.nextInt(3)];
+	        	xActual += separacionIsla;
 	        }
+			
 	    }
-		for(int i = 0; i < cantPlataformas; i++) { 
-			islas[i].setX(i * separacion);
-		}
 	}
+	
+	
+	
+	
+
+	
+	
+	
+	
 	
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
