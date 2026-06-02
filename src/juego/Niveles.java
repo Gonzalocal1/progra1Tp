@@ -78,7 +78,7 @@ public class Niveles {
     }
     
     public void ejecutarNivel1() {
-    	if(princesa == null) {
+    	if(princesa.estaMuerta()) {
 
     	    entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
     	    entorno.escribirTexto("GAME OVER", 300, 300);
@@ -97,19 +97,14 @@ public class Niveles {
         }
         
         enemigos.actualizarEnemigos(princesa);
-        if(princesa != null && princesa.estaMuerta()) {
-            princesa = null;
-        }
+        
+        
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);
         castillo.moverCastillo(camaraX);
 
         if (castillo.verificarVictoria(princesa)) {
             inicializarNivel2();
-            if(princesa != null && princesa.estaMuerta()) {
-
-            	princesa = null;
-            }
         }
     }
 
