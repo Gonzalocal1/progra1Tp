@@ -74,4 +74,16 @@ public class Enemigo {
     public double getAlto() {
         return alto;
     }
+    //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
+    public boolean colisionaCon(Princesa princesa) {
+
+    	return
+    		this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
+    		&&
+    		this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
+    		&&
+    		this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
+    		&&
+    		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
+    }
 }

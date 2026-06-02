@@ -42,7 +42,7 @@ public class GestionadorEnemigos {
 	            else {
 	                x = entorno.ancho() + 30;
 	            }
-	            double y = 100 + Math.random() * 300;
+	            double y = 100 + Math.random() * 550;
 	            enemigos[i] = new Enemigo(x, y, izquierda, entorno);
 	            break;
 	        }
@@ -57,11 +57,19 @@ public class GestionadorEnemigos {
 	}
 
 	// CORRECCIÓN: 'public' para que Niveles.java lo pueda ejecutar
-	public void actualizarEnemigos() {
+	public void actualizarEnemigos(Princesa princesa) {
+
 	    for(int i = 0; i < enemigos.length; i++) {
+
 	        if(enemigos[i] != null) {
+
 	            enemigos[i].mover();
 	            enemigos[i].dibujar();
+
+	            if(enemigos[i].colisionaCon(princesa)) {
+	                princesa.perderVida();
+	            }
+
 	            if(enemigos[i].fueraDePantalla()) {
 	                enemigos[i] = null;
 	            }
