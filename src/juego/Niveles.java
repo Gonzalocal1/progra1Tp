@@ -41,6 +41,7 @@ public class Niveles {
         princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
         plataformas.crearPiso(50, entorno);
+        plataformas.crearIslas(50, entorno);
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
@@ -53,7 +54,8 @@ public class Niveles {
         this.princesa.setY(480); 
         this.enemigos.limpiarEnemigos(); 
         
-        this.plataformas = new GestionadorPlataformas();
+        this.plataformas.limpiarPlataformas();
+        this.plataformas.limpiarIslas();
         this.plataformas.crearPisoNivel2(50, entorno); 
         
         // Inicializamos el primer proyectil en el suelo del nivel 2
@@ -66,7 +68,7 @@ public class Niveles {
         this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
     }
     
-    public void actualizarCamara(Princesa princesa) {
+    private void actualizarCamara(Princesa princesa) {
         if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
             camaraX += 1;
         } else {
@@ -77,13 +79,7 @@ public class Niveles {
         }
     }
     
-    public void ejecutarNivel1() {
-    	if(princesa.estaMuerta()) {
-
-    	    entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
-    	    entorno.escribirTexto("GAME OVER", 300, 300);
-    	    return;
-    	}
+    private void ejecutarNivel1() {
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
         dibujarVidas();
@@ -91,6 +87,7 @@ public class Niveles {
         princesa.moverPrincesa();
         princesa.actualizarInvulnerabilidad();
         plataformas.dibujarPlataformas(camaraX);
+        plataformas.dibujarIslas(camaraX);
         
         if (proyectil != null && !proyectil.disparo(princesa, entorno)) {
             proyectil = null;
@@ -108,7 +105,7 @@ public class Niveles {
         }
     }
 
-    public void ejecutarNivel2() {
+    private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
         plataformas.colisionesPlataformas(princesa); 
@@ -157,6 +154,25 @@ public class Niveles {
         jefeProyectil4.animacionRadio();
         
     }
-
-    public int getNivel() { return nivel; }
+    
+    public void gameOver() {
+    	if (princesa.estaMuerta()) {
+    		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
+    	    entorno.escribirTexto("GAME OVER", 300, 300);
+    	    entorno.cambiarFont("Arial", 25, Color.ORANGE, entorno.NORMAL);
+    	    entorno.escribirTexto("volver a intentar?", 300, 400);
+    	    return;
+    	}
+    }
+    
+    public void actualizarNivel() {
+    	if (nivel == 1 && !princesa.estaMuerta()) {
+			ejecutarNivel1();
+		} else if (nivel == 2  && !princesa.estaMuerta()) {
+			ejecutarNivel2();
+		}
+    	if (princesa.estaMuerta()) {
+    		gameOver();
+    	}
+    }
 }
