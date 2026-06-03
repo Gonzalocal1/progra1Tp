@@ -115,7 +115,6 @@ public class Niveles {
         
         princesa.moverPrincesa(); 
         princesa.dibujarPrincesa();
-        
         // 2. Lógica del Proyectil (Se ejecuta DESPUÉS de mover a la princesa)
         if (proyectil != null) {
             if (!proyectil.disparo(princesa, entorno)) {
