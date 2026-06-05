@@ -41,11 +41,7 @@ public class Juego extends InterfaceJuego
 	 */
 	public void tick()
 	{
-		if (gestorNiveles.getNivel() == 1) {
-			gestorNiveles.ejecutarNivel1();
-		} else if (gestorNiveles.getNivel() == 2) {
-			gestorNiveles.ejecutarNivel2();
-		}
+		gestorNiveles.actualizarNivel();
 	}
 	
 
