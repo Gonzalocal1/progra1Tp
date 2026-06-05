@@ -1,14 +1,16 @@
 package juego;
 import java.util.Random;
-
 import entorno.Entorno;
+
+//Esta clase surgio por dos razones principales: no llenar el main con funciones de la clase plataforma.
+//Y para poder gestionar las colisiones de todas las plataformas simultaneamente.
+//Clase
 public class GestionadorPlataformas { 
-	//Esta clase surgio por dos razones principales: no llenar el main con funciones de la clase plataforma.
-	//Y para poder gestionar las colisiones de todas las plataformas simultaneamente.
-	// Clase destinada a gestionar creacion y metodos de la clase plataforma.
+
 	private Plataforma[] suelo;
 	private Plataforma[] islas;
-	
+//Metodos
+	//Metodo1
 	public void crearPiso(int cantPlataformas, Entorno entorno) {
 		Random random = new Random();
 		int separacion = 20;
@@ -40,7 +42,7 @@ public class GestionadorPlataformas {
 			}
 		}
 	}
-	
+	//Metodo2
 	public void dibujarPlataformas(double camaraX) {
 		for(int i = 0; i < suelo.length; i++) {
 
@@ -53,7 +55,7 @@ public class GestionadorPlataformas {
 	    }
 	}
 	
-	
+	//Metodo3
 	public void colisionesPlataformas(Princesa princesa) {
 		int contadorIntersecciones = 0;
 		for(int i = 0; i < suelo.length; i++) {
@@ -77,16 +79,18 @@ public class GestionadorPlataformas {
         	princesa.setEnElSuelo(false);
         }
 	}
-	
+	//Metodo4
 	public double getUltimaPlat() {
 		return suelo[suelo.length-1].getX();
 	}
 	
+	//Metodo5
 	public void limpiarPlataformas( ) {
 		for (int i = 0;i < suelo.length;i++) {
 			suelo[i] = null;
 		}
 	}
+	//Metodo6
 	public void crearPisoNivel2(int cantPlataformas, Entorno entorno) {
 	    int separacion = 20; // Distancia entre el centro de una plataforma y la siguiente
 	    int altura = entorno.alto(); // Posición en Y (el suelo)
@@ -112,7 +116,7 @@ public class GestionadorPlataformas {
 	    }
 	}
 	
-	
+	//Metodo7
 	public void crearIslas(int cantPlataformas, Entorno entorno) {
 		Random random = new Random();
 		int xActual = 0;
@@ -137,15 +141,7 @@ public class GestionadorPlataformas {
 	    }
 	}
 	
-	
-	
-	
-
-	
-	
-	
-	
-	
+	//Metodo8
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
 
@@ -157,7 +153,7 @@ public class GestionadorPlataformas {
 	        }
 	    }
 	}
-	
+	//Metodo9
 	public void limpiarIslas( ) {
 		for (int i = 0;i < islas.length;i++) {
 			islas[i] = null;

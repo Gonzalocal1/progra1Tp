@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import entorno.Entorno;
 
+//Creacion de la clase 
 public class JefeProyectil {
 	private double x;
 	private double y;
@@ -16,7 +17,7 @@ public class JefeProyectil {
 
 	
 	
-	
+//Creacion del constructor
 	public JefeProyectil(double grados,double radio, Entorno entorno) {
 		this.entorno = entorno;
 		this.x = (entorno.ancho()/2);
@@ -27,7 +28,10 @@ public class JefeProyectil {
 		this.radio = radio;
 		this.radioRadio = 3;
 	}
-
+	
+	
+//Métodos
+	//Metodo1
 	private void calcularAngulo(double centroX, double centroY) {
 		double radianes = Math.toRadians(grados);
 
@@ -35,6 +39,7 @@ public class JefeProyectil {
 		this.y = centroY + Math.sin(radianes) * radio;
 	}
 	
+	//Metodo2
 	public void moverProyectil(double centroX, double centroY) {
 		this.grados += 5;
 		
@@ -45,7 +50,7 @@ public class JefeProyectil {
 		calcularAngulo(centroX,centroY);
 		
 	}
-	
+	//Metodo3
 	public void animacionRadio(){
 		this.radio += radioRadio;
 		// Si se pasa de cierto límite a la derecha, invertimos la velocidad
@@ -58,7 +63,7 @@ public class JefeProyectil {
 	    	this.radioRadio = 3; // Empieza a ir a la derecha
 	    }
 	}
-	
+	//Metodo4
 	public void dibujarJefeProyectil() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
 	}

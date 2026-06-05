@@ -3,6 +3,8 @@ package juego;
 import java.awt.Color;
 import entorno.Entorno;
 
+
+//Clase
 public class Niveles {
 
     private Entorno entorno;
@@ -19,12 +21,17 @@ public class Niveles {
     
     private double camaraX = 0;
     private double maxCamara = 4;
+    private int nivel = 1;
     
-    private int nivel = 1; 
+    //Retorna clases de codigo de otros archivos para poder generar el nivel
     
+//Constructor
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
     }
+    
+//Metodos
+  //Metodo1
     private void dibujarVidas() {
 
     	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
@@ -37,6 +44,7 @@ public class Niveles {
     	}
     }
 
+  //Metodo2
     public void inicializarNivel1() {
         princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
@@ -48,6 +56,7 @@ public class Niveles {
         castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
     }
     
+  //Metodo3
     private void inicializarNivel2() {
         this.nivel = 2; 
         this.princesa.setX(100);
@@ -68,6 +77,7 @@ public class Niveles {
         this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
     }
     
+  //Metodo4
     private void actualizarCamara(Princesa princesa) {
         if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
             camaraX += 1;
@@ -79,6 +89,7 @@ public class Niveles {
         }
     }
     
+  //Metodo5
     private void ejecutarNivel1() {
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
@@ -105,6 +116,7 @@ public class Niveles {
         }
     }
 
+  //Metodo6
     private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
@@ -154,6 +166,8 @@ public class Niveles {
         
     }
     
+    
+  //Metodo7
     public void gameOver() {
     	if (princesa.estaMuerta()) {
     		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
@@ -163,7 +177,7 @@ public class Niveles {
     	    return;
     	}
     }
-    
+  //Metodo8
     public void actualizarNivel() {
     	if (nivel == 1 && !princesa.estaMuerta()) {
 			ejecutarNivel1();
