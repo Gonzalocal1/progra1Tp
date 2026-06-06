@@ -14,6 +14,8 @@ public class JefeProyectil {
 	private double grados;
 	private double radio;
 	private double radioRadio;
+	private double vx;
+    private double vy;
 
 	
 	
@@ -27,29 +29,45 @@ public class JefeProyectil {
 		this.grados = grados;
 		this.radio = radio;
 		this.radioRadio = 3;
-		this.velocidad = 12;
+		this.velocidad = 10;
 	}
 	
 
 	
-	public void moverDireccion(double vx, double vy) {
+	public void moverDireccionPrincesa() {
 		x += vx * velocidad;
 		y += vy * velocidad;
 	}
 	
 	
 
-	private void calcularAngulo(double centroX, double centroY) {
+	public void calcularAngulo(double centroX, double centroY) {
 		double radianes = Math.toRadians(grados);
 
 		this.x = centroX + Math.cos(radianes) * radio;
 		this.y = centroY + Math.sin(radianes) * radio;
 	}
 	
+	public void calcularAnguloPrincesa(Princesa princesa) {
+		double deltaX = princesa.getX() - this.x;
+        double deltaY = princesa.getY() - this.y;
+        double distancia = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Control de seguridad para evitar división por cero
+        if (distancia == 0) {
+            distancia = 1;
+            deltaX = 1;
+        }
+
+        // Descomposición vectorial de la velocidad
+        this.vx = (deltaX / distancia) ;
+        this.vy = (deltaY / distancia) ;
+	}
 	
 	
-	public void girarProyectil(double centroX, double centroY) {
-		this.grados += 5;
+	
+	public void girarProyectil(double centroX, double centroY, double velodidadGiro) {
+		this.grados += velodidadGiro;
 		
 		if (grados > 360) {
 			grados = 1;
@@ -59,18 +77,23 @@ public class JefeProyectil {
 		
 	}
 	
+	
 	public void animacionRadio(){
 		this.radio += radioRadio;
-		// Si se pasa de cierto límite a la derecha, invertimos la velocidad
-	    if (this.radio > 200) { 
+		// Si se pasa de cierto límite, invertimos la velocidad
+	    if (this.radio > 250) { 
 	        this.radioRadio = -3; // Empieza a ir a la izquierda
 	    }
 	    
-	    // Si se pasa de cierto límite a la izquierda, la volvemos a invertir
+	    // Si se pasa de cierto límite hacia el centro, la volvemos a invertir
 	    if (this.radio < 40) { 
 	    	this.radioRadio = 3; // Empieza a ir a la derecha
 	    }
 	}
+	
+	public boolean seSalioDelMapa(Entorno entorno) {
+        return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
+    }
 	
 	public void dibujarJefeProyectil() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
@@ -87,4 +110,6 @@ public class JefeProyectil {
     		&&
     		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
     }
+    
+
 }

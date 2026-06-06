@@ -1,6 +1,7 @@
 package juego;
 
 import java.awt.Color;
+import java.util.Random;
 
 import entorno.Entorno;
 
@@ -11,15 +12,15 @@ public class Jefe {
 	private double ancho;
 	private Entorno entorno;
 	private double velocidad = 3;
-	private double vxBala;
-    private double vyBala;
+	
 	private int vidas;
 	private int timerAtaqueMaximo;
 	private int timerAtaque;
-	JefeProyectil[] jf;
-	Princesa princesa;
+	JefeProyectil[] jf; // contenedor de balas
+	Princesa princesa;  // para calcular hacia donde disparar la balas
+	private int altura; // para saber hacia que valor y se va a mover el jefe
 	
-	private int ataque;
+	private int ataque; // para saber que ataque esta efectuando el jefe
 	
 	
 	public Jefe(Entorno entorno) {
@@ -34,63 +35,51 @@ public class Jefe {
 		this.timerAtaqueMaximo = 0;
 	}
 	
-	private void cacularAnguloPrincesa() {
-		double deltaX = princesa.getX() - this.x;
-        double deltaY = princesa.getY() - this.y;
-        double distancia = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // Control de seguridad para evitar división por cero
-        if (distancia == 0) {
-            distancia = 1;
-            deltaX = 1;
-        }
-
-        // Descomposición vectorial de la velocidad
-        this.vxBala = (deltaX / distancia) ;
-        this.vyBala = (deltaY / distancia) ;
-	}
 	
 	public void iniciarAtaque1(Princesa princesa) {
 		this.princesa = princesa;
-		this.timerAtaqueMaximo = 1000;
-		jf = new JefeProyectil[4];
+		this.timerAtaqueMaximo = 1500;
+		jf = new JefeProyectil[6];
 		int grados = 0;
 		for (int i = 0; i < jf.length; i++) {
 			jf[i] = new JefeProyectil(grados, 40, entorno);
-			grados += 30;
+			grados += 60;
 		}
 	}
 	
 	private void iniciarAtaque2() {
-		jf = new JefeProyectil[4];
-		this.timerAtaqueMaximo = 150;
-		int grados = 0;
-		for (int i = 0; i < jf.length; i++) {
-			jf[i] = new JefeProyectil(grados, 40, entorno);
-			jf[i].girarProyectil(x, y);
-			grados += 30;
-		}
-		
-		timerAtaque += 1;
+		this.ataque = 2;
+		int[] posiblesAlturasJefe = {200,400,155};
+		Random r = new Random();
+		altura = posiblesAlturasJefe[r.nextInt(0,posiblesAlturasJefe.length)];
+		//jf = new JefeProyectil[4];
+		//int grados = 0;
+		//for (int i = 0; i < jf.length; i++) {
+		//	jf[i] = new JefeProyectil(grados, 40, entorno);
+		//	jf[i].girarProyectil(x, y);
+		//	grados += 60;
+		//}
 	}
 	
 	private void actualizarAtaque1() {
 		if (jf == null) return;
 		for (int i = 0; i < jf.length; i++) {
-			jf[i].animacionRadio();
-			jf[i].girarProyectil(x, y);
-			jf[i].dibujarJefeProyectil();
+			if (jf[i] != null) {
+				jf[i].animacionRadio();
+				jf[i].girarProyectil(x, y, 3);
+				jf[i].dibujarJefeProyectil();
 			
 			
-			if(jf[i].colisionaCon(princesa)) {
-                princesa.perderVida();
-            }
+				if(jf[i].colisionaCon(princesa)) {
+					princesa.perderVida();
+					jf[i] = null;
+				}
 			
-			
+			}
 			timerAtaque += 1;
 			if (timerAtaque > timerAtaqueMaximo) {
 				iniciarAtaque2();
-				this.ataque = 2;
 				this.timerAtaque = 0;
 			}
 		}
@@ -99,26 +88,44 @@ public class Jefe {
 	
 	private void actualizarAtaque2() {
 		if (jf == null) return;
+		int contadorBalas = 0;
+		
+		moverJefeA(entorno.ancho()/2,altura);
+		
 		for (int i = 0; i < jf.length; i++) {
-			cacularAnguloPrincesa();
-			jf[i].moverDireccion(vxBala, vyBala);
-			jf[i].dibujarJefeProyectil();
+			if (jf[i] != null) {
+				contadorBalas ++;
+				timerAtaqueMaximo = i * 15 + 5;
+				
+				if (timerAtaque == timerAtaqueMaximo) {
+					jf[i].calcularAnguloPrincesa(princesa);
+				}
+				
+				if (timerAtaque > timerAtaqueMaximo) {
+					jf[i].moverDireccionPrincesa();
+				} else {
+					jf[i].girarProyectil(x, y, -1);
+				}
+				
+				jf[i].dibujarJefeProyectil();
 			
 			
-			if(jf[i].colisionaCon(princesa)) {
-                princesa.perderVida();
-            }
-			
-			
-			timerAtaque += 1;
-			if (timerAtaque > timerAtaqueMaximo) {
-				iniciarAtaque1(princesa);
-				this.ataque = 1;
-				this.timerAtaque = 0;
+				if(jf[i].colisionaCon(princesa)) {
+					princesa.perderVida();
+					jf[i] = null;
+				}
+				if(jf[i] != null && jf[i].seSalioDelMapa(entorno)) {
+					jf[i] = null;
+				}
 			}
 		}
+		timerAtaque ++;
 		dibujarJefe();
-		moverJefeDerechaIzq();
+		if (contadorBalas == 0) {
+			iniciarAtaque1(princesa);
+			this.ataque = 1;
+			this.timerAtaque = 0;
+		}
 	}
 	
 	public void actualizarAtaques(Princesa princesa) {
@@ -144,6 +151,24 @@ public class Jefe {
 	    if (this.x < 200) { 
 	        velocidad = 2; // Empieza a ir a la derecha
 	    }
+	}
+	
+	private void moverJefeA(double x, double y) {
+		if (this.x < x) {
+			this.x += 2;
+		}
+		
+		if (this.x > x) {
+			this.x -= 2;
+		}
+		
+		if (this.y < y) {
+			this.y += 2;
+		}
+
+		if (this.y > y) {
+			this.y -= 2;
+		}
 	}
 	
 	public void dibujarJefe() {
