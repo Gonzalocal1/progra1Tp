@@ -10,6 +10,7 @@ public class JefeProyectil {
 	private double alto;
 	private double ancho;
 	private Entorno entorno;
+	private double velocidad;
 	private double grados;
 	private double radio;
 	private double radioRadio;
@@ -26,7 +27,17 @@ public class JefeProyectil {
 		this.grados = grados;
 		this.radio = radio;
 		this.radioRadio = 3;
+		this.velocidad = 12;
 	}
+	
+
+	
+	public void moverDireccion(double vx, double vy) {
+		x += vx * velocidad;
+		y += vy * velocidad;
+	}
+	
+	
 
 	private void calcularAngulo(double centroX, double centroY) {
 		double radianes = Math.toRadians(grados);
@@ -35,7 +46,9 @@ public class JefeProyectil {
 		this.y = centroY + Math.sin(radianes) * radio;
 	}
 	
-	public void moverProyectil(double centroX, double centroY) {
+	
+	
+	public void girarProyectil(double centroX, double centroY) {
 		this.grados += 5;
 		
 		if (grados > 360) {
@@ -63,4 +76,15 @@ public class JefeProyectil {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
 	}
 	
+    public boolean colisionaCon(Princesa princesa) {
+
+    	return
+    		this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
+    		&&
+    		this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
+    		&&
+    		this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
+    		&&
+    		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
+    }
 }

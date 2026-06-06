@@ -107,6 +107,7 @@ public class Princesa {
 	
 	public void dibujarPrincesa() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
+		dibujarVidas();
 	}
 
 	// --- GETTERS Y SETTERS ---
@@ -153,5 +154,17 @@ public class Princesa {
     
     public boolean estaMuerta() {
     	return this.vidas <= 0;
+    }
+    
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+
+    	for(int i = 0; i < this.vidas; i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
     }
 }
