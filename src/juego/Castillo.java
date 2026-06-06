@@ -5,6 +5,7 @@ import java.awt.Color;
 import entorno.Entorno;
 import entorno.Herramientas;
 
+//Clase
 public class Castillo {
 
     private double x;
@@ -16,23 +17,28 @@ public class Castillo {
     private int tickInicialContacto = -1; 
     private final int TICKS_NECESARIOS = 120; // 2 segundos aprox.
 
+    
+//Constructor
     public Castillo(double x, double y, String rutaImagen, Entorno entorno) {
         this.x = x;
         this.y = y;
         this.entorno = entorno; 
         this.imagen = Herramientas.cargarImagen(rutaImagen); 
     }
-
+//Metodos
+    //Metodo1
     public void dibujar(double camaraX) {
         if (this.imagen != null) {
             this.entorno.dibujarImagen(this.imagen, this.x - camaraX, this.y, 0, 0.1);
         }
     }
     
+  //Metodo2
     public void moverCastillo(double camaraX) {
     	this.x -= camaraX;
     }
     
+  //Metodo3
     public boolean verificarVictoria(Princesa princesa) {
         // Colisión simple por proximidad de coordenadas entre la princesa y el castillo
         boolean estaEncima = Math.abs(this.x - princesa.getX()) < 50 && Math.abs(this.y - princesa.getY()) < 60;
@@ -62,6 +68,7 @@ public class Castillo {
         return false;
     }
     
+//Getters y Setters para usar el código en otros archivos
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
     public double getY() { return y; }
