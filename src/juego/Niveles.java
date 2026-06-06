@@ -12,10 +12,6 @@ public class Niveles {
     private Proyectil proyectil;
     private GestionadorEnemigos enemigos;
     private Jefe jefe;
-    private JefeProyectil jefeProyectil;
-    private JefeProyectil jefeProyectil2;
-    private JefeProyectil jefeProyectil3;
-    private JefeProyectil jefeProyectil4;
     
     private double camaraX = 0;
     private double maxCamara = 4;
@@ -25,23 +21,13 @@ public class Niveles {
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
     }
-    private void dibujarVidas() {
 
-    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
-
-    	entorno.escribirTexto("VIDAS", 20, 30);
-
-    	for(int i = 0; i < princesa.getVidas(); i++) {
-
-    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
-    	}
-    }
 
     public void inicializarNivel1() {
         princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(50, entorno);
-        plataformas.crearIslas(50, entorno);
+        plataformas.crearPiso(150, entorno);
+        plataformas.crearIslas(150, entorno);
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
@@ -62,10 +48,7 @@ public class Niveles {
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
-        this.jefeProyectil = new JefeProyectil(0, 40, entorno);
-        this.jefeProyectil2 = new JefeProyectil(90, 40, entorno);
-        this.jefeProyectil3 = new JefeProyectil(180, 40, entorno);
-        this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
+        jefe.iniciarAtaque1(princesa);
     }
     
     private void actualizarCamara(Princesa princesa) {
@@ -82,7 +65,6 @@ public class Niveles {
     private void ejecutarNivel1() {
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
-        dibujarVidas();
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
         princesa.actualizarInvulnerabilidad();
@@ -112,6 +94,7 @@ public class Niveles {
         
         princesa.moverPrincesa(); 
         princesa.dibujarPrincesa();
+        princesa.actualizarInvulnerabilidad();
         
         // 2. Lógica del Proyectil (Se ejecuta DESPUÉS de mover a la princesa)
         if (proyectil != null) {
@@ -136,23 +119,7 @@ public class Niveles {
         
         // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
-        jefe.moverJefe();
-        jefeProyectil.moverProyectil(jefe.getX(),jefe.getY());
-        jefeProyectil.dibujarJefeProyectil();
-        jefeProyectil.animacionRadio();
-        
-        jefeProyectil2.moverProyectil(jefe.getX(),jefe.getY());
-        jefeProyectil2.dibujarJefeProyectil();
-        jefeProyectil2.animacionRadio();
-        
-        jefeProyectil3.moverProyectil(jefe.getX(),jefe.getY());
-        jefeProyectil3.dibujarJefeProyectil();
-        jefeProyectil3.animacionRadio();
-        
-        jefeProyectil4.moverProyectil(jefe.getX(),jefe.getY());
-        jefeProyectil4.dibujarJefeProyectil();
-        jefeProyectil4.animacionRadio();
-        
+        jefe.actualizarAtaques(princesa);
     }
     
     public void gameOver() {
