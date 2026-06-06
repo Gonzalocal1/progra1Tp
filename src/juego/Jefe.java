@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import entorno.Entorno;
 
+//Creacion de la clase
 public class Jefe {
 	private double x;
 	private double y;
@@ -13,7 +14,7 @@ public class Jefe {
 	private double velocidad = 3;
 	
 	
-	
+//Constructor
 	public Jefe(Entorno entorno) {
 		this.entorno = entorno;
 		this.x = entorno.ancho()/2;
@@ -21,7 +22,8 @@ public class Jefe {
 		this.alto = 40;
 		this.ancho = 40;
 	}
-
+//Metodos
+	//Metodo1
 	public void moverJefe() {
 	    // Sumamos la velocidad a la posición X
 	    this.x += velocidad;
@@ -36,11 +38,12 @@ public class Jefe {
 	        velocidad = 3; // Empieza a ir a la derecha
 	    }
 	}
-	
+	//Metodo2
 	public void dibujarJefe() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
 	}
-
+	
+	//Metodo3
 	public void pseudoParry(Proyectil proyectil) {
         // Solo intentamos el parry si el proyectil fue disparado y está activo
         if (proyectil != null && proyectil.isDisparado()) {
@@ -68,16 +71,10 @@ public class Jefe {
     }
     
 	
-	/**
-	 * @return el x
-	 */
+	//Getters y setters porque son privadas las variables y se tiene que usar el codigo en otros archivos
 	public double getX() {
 		return x;
 	}
-
-	/**
-	 * @return el y
-	 */
 	public double getY() {
 		return y;
 	}
