@@ -147,7 +147,7 @@ public class Niveles {
         
         // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
-        jefe.moverJefe();
+        jefe.actualizarAtaques(princesa);
         jefeProyectil.moverProyectil(jefe.getX(),jefe.getY());
         jefeProyectil.dibujarJefeProyectil();
         jefeProyectil.animacionRadio();

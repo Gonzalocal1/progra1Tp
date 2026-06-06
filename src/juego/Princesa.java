@@ -12,7 +12,7 @@ public class Princesa {
     private double ancho;
     private double velocidadX;
     private double velocidadY;
-    private double limiteY;
+    private double limiteX;
     private int vidas;
     private int tiempoInvulnerable; //ESTO LO AGREGO XQ SI NO LOS MUCIELAGOS MATABAN DE UNA A LA PRINCESA
     
@@ -39,8 +39,8 @@ public class Princesa {
 		this.velocidadY = 0;
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
-        this.limiteY = entorno.ancho()-200;
-        this.vidas = 3;
+        this.limiteX = entorno.ancho()-200;
+        this.vidas = 10;
         this.tiempoInvulnerable = 0;
 	}
 	
@@ -62,7 +62,7 @@ public class Princesa {
 	}
 	//Metodo3
 	private void moverDerecha() {
-		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteY) {
+		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteX) {
 			this.velocidadX = 7;
 			this.x += this.velocidadX; 
 		}
@@ -108,6 +108,7 @@ public class Princesa {
 	//Metodo7
 	public void dibujarPrincesa() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
+		dibujarVidas();
 	}
 
 	//Metodo8
@@ -117,17 +118,7 @@ public class Princesa {
             this.tiempoInvulnerable = 60;
         }
     }
-	//Metodo9
-    public void actualizarInvulnerabilidad() {
-        if(this.tiempoInvulnerable > 0) {
-            this.tiempoInvulnerable--;
-        }
-    }
-  //Metodo10
-    public boolean estaMuerta() {
-    	return this.vidas <= 0;
-    }
-    
+	
     
     
 	//Getters y Setters
@@ -160,4 +151,26 @@ public class Princesa {
     }
 
     
+
+    public void actualizarInvulnerabilidad() {
+        if(this.tiempoInvulnerable > 0) {
+            this.tiempoInvulnerable--;
+        }
+    }
+    
+    public boolean estaMuerta() {
+    	return this.vidas <= 0;
+    }
+    
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+
+    	for(int i = 0; i < this.vidas; i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
 }
