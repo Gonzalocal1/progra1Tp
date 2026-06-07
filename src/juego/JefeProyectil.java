@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import entorno.Entorno;
 
+//Creacion de la clase 
 public class JefeProyectil {
 	private double x;
 	private double y;
@@ -19,7 +20,7 @@ public class JefeProyectil {
 
 	
 	
-	
+//Creacion del constructor
 	public JefeProyectil(double grados,double radio, Entorno entorno) {
 		this.entorno = entorno;
 		this.x = (entorno.ancho()/2);
@@ -34,6 +35,10 @@ public class JefeProyectil {
 	
 
 	
+//Métodos
+	//Metodo1
+
+	
 	public void moverDireccionPrincesa() {
 		x += vx * velocidad;
 		y += vy * velocidad;
@@ -42,12 +47,18 @@ public class JefeProyectil {
 	
 
 	public void calcularAngulo(double centroX, double centroY) {
+
 		double radianes = Math.toRadians(grados);
 
 		this.x = centroX + Math.cos(radianes) * radio;
 		this.y = centroY + Math.sin(radianes) * radio;
 	}
 	
+
+	//Metodo2
+	public void moverProyectil(double centroX, double centroY) {
+		this.grados += 5;
+	}
 	public void calcularAnguloPrincesa(Princesa princesa) {
 		double deltaX = princesa.getX() - this.x;
         double deltaY = princesa.getY() - this.y;
@@ -68,6 +79,7 @@ public class JefeProyectil {
 	
 	public void girarProyectil(double centroX, double centroY, double velodidadGiro) {
 		this.grados += velodidadGiro;
+
 		
 		if (grados > 360) {
 			grados = 1;
@@ -76,8 +88,10 @@ public class JefeProyectil {
 		calcularAngulo(centroX,centroY);
 		
 	}
+
+	//Metodo3
 	
-	
+
 	public void animacionRadio(){
 		this.radio += radioRadio;
 		// Si se pasa de cierto límite, invertimos la velocidad
@@ -90,11 +104,15 @@ public class JefeProyectil {
 	    	this.radioRadio = 3; // Empieza a alejarse del centro
 	    }
 	}
+
+	//Metodo4
+
 	
 	public boolean seSalioDelMapa(Entorno entorno) {
         return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
     }
 	
+
 	public void dibujarJefeProyectil() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.ORANGE);
 	}

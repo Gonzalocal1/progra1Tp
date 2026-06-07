@@ -5,6 +5,7 @@ import java.util.Random;
 
 import entorno.Entorno;
 
+//Creacion de la clase
 public class Jefe {
 	private double x;
 	private double y;
@@ -23,7 +24,7 @@ public class Jefe {
 	private int ataque; // para saber que ataque esta efectuando el jefe
 	private int tiempoInvulnerable;
 	
-	
+//Constructor
 	public Jefe(Entorno entorno) {
 		this.entorno = entorno;
 		this.x = entorno.ancho()/2;
@@ -133,7 +134,11 @@ public class Jefe {
 		}
 	}
 
+//Metodos
+	//Metodo1
+
 	private void moverJefeDerechaIzq() {
+
 	    // Sumamos la velocidad a la posición X
 	    this.x += velocidad;
 
@@ -147,6 +152,9 @@ public class Jefe {
 	        velocidad = 2; // Empieza a ir a la derecha
 	    }
 	}
+
+	//Metodo2
+
 	
 	private void moverJefeA(double x, double y) {
 		if (this.x < x) {
@@ -166,6 +174,7 @@ public class Jefe {
 		}
 	}
 	
+
 	public void dibujarJefe() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
 		dibujarVidas();
@@ -221,16 +230,10 @@ public class Jefe {
 	}
 	
 	
-	/**
-	 * @return el x
-	 */
+	//Getters y setters porque son privadas las variables y se tiene que usar el codigo en otros archivos
 	public double getX() {
 		return x;
 	}
-
-	/**
-	 * @return el y
-	 */
 	public double getY() {
 		return y;
 	}

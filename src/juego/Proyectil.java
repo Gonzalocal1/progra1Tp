@@ -3,6 +3,7 @@ package juego;
 import java.awt.Color;
 import entorno.Entorno;
 
+//Clase
 public class Proyectil {
     private double x;
     private double y;
@@ -17,7 +18,7 @@ public class Proyectil {
     private boolean disparado;
     private boolean equipado; // Evita el bug de quedarse flotando en el aire
 
-    // Constructor para cuando el proyectil aparece en el mapa
+//Constructor
     public Proyectil(double x, double y) {
         this.ancho = 30; 
         this.alto = 15;
@@ -30,7 +31,8 @@ public class Proyectil {
         this.y = y;
     }
 
-    // Dibuja el proyectil en la pantalla rotando según hacia dónde vuela
+//Metodos
+  //Metodo1
     public void dibujar(Entorno entorno) {
         double angulo = 0;
         if (disparado) {
@@ -38,8 +40,7 @@ public class Proyectil {
         }
         entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, angulo, Color.RED);
     }
-    
-    // Actualiza la posición del proyectil
+  //Metodo2
     public void actualizar(Princesa princesa) {
         if (!disparado) {
             // SI NO SE DISPARÓ: Sigue fielmente a la princesa
@@ -51,7 +52,7 @@ public class Proyectil {
             this.y += this.vy;
         }
     }
-
+  //Metodo3
     // Calcula el vector de velocidad apuntando directamente al mouse (360 grados)
     public void disparar(int mouseX, int mouseY) {
         if (!this.disparado) {
@@ -74,11 +75,7 @@ public class Proyectil {
             this.vy = (deltaY / distancia) * this.velocidad;
         }
     }
-
-    /**
-     * Controla todo el ciclo de vida del proyectil.
-     * @return true si el proyectil sigue vivo, false si debe destruirse.
-     */
+  //Metodo4
     public boolean disparo(Princesa princesa, Entorno entorno) {
         // 1. Dibujarse en la pantalla
         this.dibujar(entorno);
@@ -114,15 +111,14 @@ public class Proyectil {
         }
         return true; 
     }
-    
-    // Verifica si el proyectil se salió de los límites visibles del entorno
+  //Metodo5
     public boolean seSalioDelMapa(Entorno entorno) {
         return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
     }
 
     
     
-    // --- GETTERS Y SETTERS ---
+//Getters y Setters
 
     public boolean isDisparado() { 
         return disparado; 

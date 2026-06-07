@@ -2,24 +2,23 @@ package juego;
 
 import entorno.Entorno;
 
+//Clase
 public class GestionadorEnemigos {
 	private Enemigo[] enemigos;
 	private Entorno entorno;
 	
-	
-	
-	
+	//Constructor
 	public GestionadorEnemigos(Entorno entorno) {
 		this.enemigos = null;
 		this.entorno = entorno;
 	}
 	
-	
+	//Metodo1
 	public void inicializarEnemigos(int numero) {
 		enemigos = new Enemigo[numero];
 	}
 
-	// ESTO CUENTA LOS ENEMIGOS VIVOS
+	//Metodo2
 	private int contarEnemigos() {
 	    int cantidad = 0;
 	    for(int i = 0; i < enemigos.length; i++) {
@@ -30,7 +29,7 @@ public class GestionadorEnemigos {
 	    return cantidad;
 	}
 
-	// ESTO ES PARA CREAR UN ENEMIGO
+	//Metodo3
 	public void crearEnemigo() {
 	    for(int i = 0; i < enemigos.length; i++) {
 	        if(enemigos[i] == null) {
@@ -48,15 +47,14 @@ public class GestionadorEnemigos {
 	        }
 	    }
 	}
-
-	// CORRECCIÓN: 'public' para que Niveles.java lo pueda ejecutar
+	//Metodo4
 	public void mantenerEnemigos() {
 	    while(contarEnemigos() < 3) {
 	        crearEnemigo();
 	    }
 	}
 
-	// CORRECCIÓN: 'public' para que Niveles.java lo pueda ejecutar
+	//Metodo5
 	public void actualizarEnemigos(Princesa princesa) {
 
 	    for(int i = 0; i < enemigos.length; i++) {
@@ -77,7 +75,7 @@ public class GestionadorEnemigos {
 	    }
 	}
 
-	// CORRECCIÓN: Método necesario para borrar los enemigos al cambiar de nivel
+	//Metodo6
 	public void limpiarEnemigos() {
 		for (int i = 0; i < enemigos.length; i++) {
 			enemigos[i] = null;
