@@ -16,7 +16,7 @@ public class Niveles {
     private JefeProyectil jefeProyectil2;
     private JefeProyectil jefeProyectil3;
     private JefeProyectil jefeProyectil4;
-    
+	private GestionadorDeItems items;
     private double camaraX = 0;
     private double maxCamara = 4;
     
@@ -45,6 +45,7 @@ public class Niveles {
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
         castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
+        items = new GestionadorDeItems(entorno);
     }
     
     private void inicializarNivel2() {
@@ -79,7 +80,6 @@ public class Niveles {
     
     public void ejecutarNivel1() {
     	if(princesa == null) {
-
     	    entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
     	    entorno.escribirTexto("GAME OVER", 300, 300);
     	    return;
@@ -90,16 +90,21 @@ public class Niveles {
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
         princesa.actualizarInvulnerabilidad();
+        items.actualizarItems(princesa, camaraX);
         plataformas.dibujarPlataformas(camaraX);
         
         if (proyectil != null && !proyectil.disparo(princesa, entorno)) {
             proyectil = null;
         }
         
-        enemigos.actualizarEnemigos(princesa);
+        if(enemigos.actualizarEnemigos(princesa, proyectil,items)) {
+            proyectil = null;
+        }
+
         if(princesa != null && princesa.estaMuerta()) {
             princesa = null;
         }
+        
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);
         castillo.moverCastillo(camaraX);

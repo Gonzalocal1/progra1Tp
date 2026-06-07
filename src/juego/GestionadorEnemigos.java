@@ -7,8 +7,6 @@ public class GestionadorEnemigos {
 	private Entorno entorno;
 	
 	
-	
-	
 	public GestionadorEnemigos(Entorno entorno) {
 		this.enemigos = null;
 		this.entorno = entorno;
@@ -42,22 +40,20 @@ public class GestionadorEnemigos {
 	            else {
 	                x = entorno.ancho() + 30;
 	            }
-	            double y = 100 + Math.random() * 550;
+	            double y = 100 + Math.random() * 400;
 	            enemigos[i] = new Enemigo(x, y, izquierda, entorno);
 	            break;
 	        }
 	    }
 	}
 
-	// CORRECCIÓN: 'public' para que Niveles.java lo pueda ejecutar
 	public void mantenerEnemigos() {
 	    while(contarEnemigos() < 3) {
 	        crearEnemigo();
 	    }
 	}
 
-	// CORRECCIÓN: 'public' para que Niveles.java lo pueda ejecutar
-	public void actualizarEnemigos(Princesa princesa) {
+	public boolean actualizarEnemigos(Princesa princesa, Proyectil proyectil,GestionadorDeItems items) {
 
 	    for(int i = 0; i < enemigos.length; i++) {
 
@@ -65,6 +61,12 @@ public class GestionadorEnemigos {
 
 	            enemigos[i].mover();
 	            enemigos[i].dibujar();
+	            
+	            if(enemigos[i].colisionaCon(proyectil)) {
+	                items.crearVida(enemigos[i].getX(),enemigos[i].getY());
+	                enemigos[i] = null;
+	                return true;
+	            }
 
 	            if(enemigos[i].colisionaCon(princesa)) {
 	                princesa.perderVida();
@@ -75,6 +77,7 @@ public class GestionadorEnemigos {
 	            }
 	        }
 	    }
+	    return false;
 	}
 
 	// CORRECCIÓN: Método necesario para borrar los enemigos al cambiar de nivel

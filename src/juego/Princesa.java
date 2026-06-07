@@ -137,6 +137,12 @@ public class Princesa {
     public int getVidas() {
     	return this.vidas;
     }
+    
+    public void ganarVida() {
+        if(this.vidas < 5) {
+            this.vidas++;
+        }
+    }
 
     public void perderVida() {
         if(this.tiempoInvulnerable == 0) {

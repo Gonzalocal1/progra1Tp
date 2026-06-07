@@ -57,7 +57,18 @@ public class Enemigo {
         return this.x < -this.ancho
                 || this.x > entorno.ancho() + this.ancho;
     }
-
+    
+    //ESTO COMPRUEBA SI COLISIONA EL PROYECTIL CON EL ENEMIGO
+    public boolean colisionaCon(Proyectil proyectil) {
+    	
+        if(proyectil == null) {
+            return false;
+        }
+        return this.x - this.ancho/2 < proyectil.getX() + proyectil.getAncho()/2 &&
+               this.x + this.ancho/2 > proyectil.getX() - proyectil.getAncho()/2 &&
+               this.y - this.alto/2 < proyectil.getY() + proyectil.getAlto()/2 &&
+               this.y + this.alto/2 > proyectil.getY() - proyectil.getAlto()/2;
+    }
 
     public double getX() {
         return x;
@@ -77,13 +88,16 @@ public class Enemigo {
     //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
     public boolean colisionaCon(Princesa princesa) {
 
-    	return
-    		this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
-    		&&
-    		this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
-    		&&
-    		this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
-    		&&
-    		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
+        if(princesa == null) {
+            return false;
+        }
+        return
+            this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
+            &&
+            this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
+            &&
+            this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
+            &&
+            this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
     }
 }
