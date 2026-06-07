@@ -13,7 +13,8 @@ public class Princesa {
     private double ancho;
     private double velocidadX;
     private double velocidadY;
-    private double limiteX;
+    private double limiteDerecha;
+    private double limiteIzquierda;
     private int vidas;
     private int tiempoInvulnerable; //ESTO LO AGREGO XQ SI NO LOS MUCIELAGOS MATABAN DE UNA A LA PRINCESA
     
@@ -46,7 +47,8 @@ public class Princesa {
 		this.velocidadY = 0;
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
-        this.limiteX = entorno.ancho()-200;
+        this.limiteDerecha = entorno.ancho()-200;
+        this.limiteIzquierda = 50;
         this.vidas = 10;
         this.tiempoInvulnerable = 0;
         this.frameActual = 0;
@@ -93,14 +95,14 @@ public class Princesa {
 	
 	
 	private void moverIzquierda() {
-		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && x > limiteIzquierda) {
 			this.velocidadX = 7;
 			this.x -= this.velocidadX; 
 		}
 	}
 	
 	private void moverDerecha() {
-		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteX) {
+		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteDerecha) {
 			this.velocidadX = 7;
 			this.x += this.velocidadX; 
 		}

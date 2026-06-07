@@ -16,6 +16,7 @@ public class Niveles {
     private GestionadorEnemigos enemigos;
     private Jefe jefe;
     private Image fondolvl1;
+
     
     private double camaraX = 0;
     private double maxCamara = 4;
@@ -25,6 +26,7 @@ public class Niveles {
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
         fondolvl1 = Herramientas.cargarImagen("fondo1.jpg");
+
     }
 
 
@@ -126,9 +128,9 @@ public class Niveles {
             proyectil = new Proyectil(400, entorno.alto() - 40);
         }
         
-        // 3. ¡EL PARRY TRABAJANDO! (El jefe comprueba si el proyectil activo lo tocó)
-        if (jefe != null) {
-            jefe.detectarColisionProyectil(proyectil);
+        // 3 (El jefe comprueba si el proyectil activo lo tocó)
+        if (jefe.detectarColisionProyectil(proyectil)) {
+            proyectil = null;
         }
         
         // 4. Texto informativo
@@ -138,7 +140,6 @@ public class Niveles {
         // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
         jefe.actualizarAtaques(princesa);
-        jefe.actualizarInvulnerabilidad();
     }
     
     public void gameOver() {

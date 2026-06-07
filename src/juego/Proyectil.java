@@ -42,7 +42,7 @@ public class Proyectil {
     // Actualiza la posición del proyectil
     public void actualizar(Princesa princesa) {
         if (!disparado) {
-            // SI NO SE DISPARÓ: Sigue fielmente a la princesa
+            // SI NO SE DISPARÓ: Sigue a la princesa
             this.x = princesa.getX();
             this.y = princesa.getY() - (princesa.getAlto() / 2);
         } else {
