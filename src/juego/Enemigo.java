@@ -1,35 +1,37 @@
 package juego;
 
 import java.awt.Color;
-
 import entorno.Entorno;
+import java.awt.Image;
+import entorno.Herramientas;
 
 //Clase
 public class Enemigo {
 
     private double x;
     private double y;
-
     private double ancho;
     private double alto;
-
     private double velocidadX;
-
     private Entorno entorno;
-
+    private Image[] sprites;
+    private int frameActual;
+    private int timerAnimacion;
     
 //Constructor
     public Enemigo(double x, double y, boolean vieneDeIzquierda, Entorno entorno) {
-
         this.x = x;
         this.y = y;
-
+        this.sprites = new Image[2];
+        this.sprites[0] =
+            Herramientas.cargarImagen("enemigo0.png");
+        this.sprites[1] =
+            Herramientas.cargarImagen("enemigo1.png");
+        this.frameActual = 0;
+        this.timerAnimacion = 0;
         this.ancho = 30;
         this.alto = 30;
-
         this.entorno = entorno;
-
-        
         if(vieneDeIzquierda) {
             this.velocidadX = 3;
         }
@@ -39,26 +41,32 @@ public class Enemigo {
     }
 
 //Metodos
+    
   //Metodo1
     public void mover() {
         this.x += this.velocidadX;
     }
 
   //Metodo2
-    public void dibujar() {
-
-        entorno.dibujarRectangulo(
-                this.x,
-                this.y,
-                this.ancho,
-                this.alto,
-                0,
-                Color.BLUE);
+    
+    public void actualizarAnimacion() {
+        timerAnimacion++;
+        if(timerAnimacion >= 15) {
+            frameActual++;
+            timerAnimacion = 0;
+            if(frameActual >= sprites.length) {
+                frameActual = 0;
+            }
+        }
     }
-
-  //Metodo3
+//Metodo3
+    
+    public void dibujar() {
+        entorno.dibujarImagen(sprites[frameActual],this.x,this.y,0,0.55);
+    }
+  //Metodo4
+    
     public boolean fueraDePantalla() {
-
         return this.x < -this.ancho
                 || this.x > entorno.ancho() + this.ancho;
     }
@@ -66,7 +74,6 @@ public class Enemigo {
     
     //ESTO COMPRUEBA SI COLISIONA EL PROYECTIL CON EL ENEMIGO
     public boolean colisionaCon(Proyectil proyectil) {
-    	
         if(proyectil == null) {
             return false;
         }
