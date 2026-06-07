@@ -159,5 +159,8 @@ public class GestionadorPlataformas {
 			islas[i] = null;
 		}
 	}
+	public void colisionesItems(GestionadorDeItems items) {
+
+	}
 	}
 

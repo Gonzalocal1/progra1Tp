@@ -50,7 +50,7 @@ public class Princesa {
         this.tiempoSaltando = 0;
         this.limiteDerecha = entorno.ancho()-200;
         this.limiteIzquierda = 50;
-        this.vidas = 10;
+        this.vidas = 3;
         this.tiempoInvulnerable = 0;
         this.frameActual = 0;
         this.timerAnimacion = 0;
@@ -83,7 +83,6 @@ public class Princesa {
         
         // Llamamos a tu método pasándole la imagen, la posición y el ángulo
         entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
-        dibujarVidas();
     }
 
 	
@@ -187,6 +186,12 @@ public class Princesa {
     public int getVidas() {
     	return this.vidas;
     }
+    
+    public void ganarVida() {
+        if(this.vidas < 5) {
+            this.vidas++;
+        }
+    }
 
     
 
@@ -199,16 +204,5 @@ public class Princesa {
     public boolean estaMuerta() {
     	return this.vidas <= 0;
     }
-    
-    private void dibujarVidas() {
 
-    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
-
-    	entorno.escribirTexto("VIDAS", 20, 30);
-
-    	for(int i = 0; i < this.vidas; i++) {
-
-    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
-    	}
-    }
 }

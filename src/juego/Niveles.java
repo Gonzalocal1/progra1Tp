@@ -18,8 +18,7 @@ public class Niveles {
     private GestionadorEnemigos enemigos;
     private Jefe jefe;
     private Image fondolvl1;
-
-    
+    private GestionadorDeItems items;
     private double camaraX = 0;
     private double maxCamara = 4;
     private int nivel = 1;
@@ -57,6 +56,7 @@ public class Niveles {
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
         castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
+        items = new GestionadorDeItems(entorno);
     }
     
     public void inicializarNivel1(Princesa princesa) {
@@ -83,10 +83,6 @@ public class Niveles {
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
-        this.jefeProyectil = new JefeProyectil(0, 40, entorno);
-        this.jefeProyectil2 = new JefeProyectil(90, 40, entorno);
-        this.jefeProyectil3 = new JefeProyectil(180, 40, entorno);
-        this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
     }
     
   //Metodo4
@@ -106,10 +102,12 @@ public class Niveles {
     	entorno.dibujarImagen(fondolvl1, entorno.ancho()/2, entorno.alto()/2, 0);
         actualizarCamara(princesa);
         princesa.dibujarPrincesa(entorno);
+        dibujarVidas();
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
         princesa.actualizarInvulnerabilidad();
         princesa.actualizarAnimacion();
+        items.actualizarItems(princesa, camaraX);
         plataformas.dibujarPlataformas(camaraX);
         plataformas.dibujarIslas(camaraX);
         
@@ -117,8 +115,9 @@ public class Niveles {
             proyectil = null;
         }
         
-        enemigos.actualizarEnemigos(princesa);
-        
+        if(enemigos.actualizarEnemigos(princesa, proyectil, items)) {
+            proyectil = null;
+        }
         
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);

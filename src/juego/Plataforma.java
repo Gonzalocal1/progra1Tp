@@ -84,6 +84,18 @@ public class Plataforma {
 		x -= camaraY;
 	}
 	
+	public boolean colisionaConVida(VidaExtra vida) {
+	    double platIzq = this.x - this.ancho / 2;
+	    double platDer = this.x + this.ancho / 2;
+	    double platArriba = this.y - this.alto / 2;
+	    double vidaIzq = vida.getX() - 10;
+	    double vidaDer = vida.getX() + 10;
+	    double vidaAbajo = vida.getY() + 10;
+	    return vidaDer > platIzq
+	        && vidaIzq < platDer
+	        && vidaAbajo >= platArriba
+	        && vidaAbajo <= platArriba + 10;
+	}
 	
 //Getters y Setters para usar el codigo en otros archivos
 	public double getX() {
