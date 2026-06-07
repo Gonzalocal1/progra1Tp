@@ -152,7 +152,7 @@ public class Princesa {
 	public void perderVida() {
         if(this.tiempoInvulnerable == 0) {
             this.vidas--;
-            this.tiempoInvulnerable = 60;
+            this.tiempoInvulnerable = 10;
         }
     }
 	

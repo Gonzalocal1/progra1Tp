@@ -31,7 +31,7 @@ public class Jefe {
 		this.y = entorno.alto()/2;
 		this.alto = 40;
 		this.ancho = 40;
-		this.vidas = 10;
+		this.vidas = 14;
 		this.timerAtaque = 0;
 		this.ataque = 1;
 		this.timerAtaqueMaximo = 0;

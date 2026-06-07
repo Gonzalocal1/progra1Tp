@@ -83,6 +83,7 @@ public class Niveles {
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
+        this.jefe.iniciarAtaque1(princesa);
     }
     
   //Metodo4
