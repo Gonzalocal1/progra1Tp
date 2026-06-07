@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import entorno.Entorno;
 
+//Clase
 public class Enemigo {
 
     private double x;
@@ -16,6 +17,8 @@ public class Enemigo {
 
     private Entorno entorno;
 
+    
+//Constructor
     public Enemigo(double x, double y, boolean vieneDeIzquierda, Entorno entorno) {
 
         this.x = x;
@@ -26,7 +29,7 @@ public class Enemigo {
 
         this.entorno = entorno;
 
-        // ESTO DEFINE DE DONDE VIENE
+        
         if(vieneDeIzquierda) {
             this.velocidadX = 3;
         }
@@ -35,11 +38,13 @@ public class Enemigo {
         }
     }
 
-    // MOVIMIENTO
+//Metodos
+  //Metodo1
     public void mover() {
         this.x += this.velocidadX;
     }
 
+  //Metodo2
     public void dibujar() {
 
         entorno.dibujarRectangulo(
@@ -51,14 +56,26 @@ public class Enemigo {
                 Color.BLUE);
     }
 
-    // DETECTA QUE EL ENEMIGO SALIO DE LA PANTALLA
+  //Metodo3
     public boolean fueraDePantalla() {
 
         return this.x < -this.ancho
                 || this.x > entorno.ancho() + this.ancho;
     }
+  //Metodo4
+    public boolean colisionaCon(Princesa princesa) {
 
+    	return
+    		this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
+    		&&
+    		this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
+    		&&
+    		this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
+    		&&
+    		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
+    }
 
+//Getters y Setters para que se usen en otros archivos el codigo
     public double getX() {
         return x;
     }
@@ -73,17 +90,5 @@ public class Enemigo {
 
     public double getAlto() {
         return alto;
-    }
-    //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
-    public boolean colisionaCon(Princesa princesa) {
-
-    	return
-    		this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
-    		&&
-    		this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
-    		&&
-    		this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
-    		&&
-    		this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
     }
 }

@@ -6,6 +6,7 @@ import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
 
+//Clase
 public class Princesa {
 	private double x;
     private double y;
@@ -36,7 +37,7 @@ public class Princesa {
     private int frameActual;
     private int timerAnimacion;
 
-	
+//Constructor
 	public Princesa(int x, int y, int alto, int ancho, Entorno entorno) {
 		this.x = x;
 		this.y = y;
@@ -93,14 +94,14 @@ public class Princesa {
         }
     }
 	
-	
+	//Metodo2
 	private void moverIzquierda() {
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && x > limiteIzquierda) {
 			this.velocidadX = 7;
 			this.x -= this.velocidadX; 
 		}
 	}
-	
+	//Metodo3
 	private void moverDerecha() {
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteDerecha) {
 			this.velocidadX = 7;
@@ -108,8 +109,7 @@ public class Princesa {
 		}
 	}
 	
-	
-	
+	//Metodo4
 	private void salto() {
 		// Inicio del salto: está en el suelo y presiona arriba
         if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && enElSuelo) {
@@ -128,7 +128,7 @@ public class Princesa {
             tiempoSaltando = MAX_TIEMPO_SALTO; // Forza a que empiece a caer
         }
 	}
-
+	//Metodo5
 	private void gravedad() {
 		if (enElSuelo == false) {
             this.velocidadY += GRAVEDAD; // La gravedad aumenta la velocidad de caída
@@ -138,7 +138,7 @@ public class Princesa {
         }
         this.y += this.velocidadY; // Aplica el movimiento final en Y
 	}
-
+	//Metodo6
 	public void moverPrincesa() {
 		chequearPiso();
 		moverDerecha();
@@ -149,7 +149,17 @@ public class Princesa {
 	
 	
 
-	// --- GETTERS Y SETTERS ---
+	//Metodo8
+	public void perderVida() {
+        if(this.tiempoInvulnerable == 0) {
+            this.vidas--;
+            this.tiempoInvulnerable = 60;
+        }
+    }
+	
+    
+    
+	//Getters y Setters
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
 
@@ -178,13 +188,8 @@ public class Princesa {
     	return this.vidas;
     }
 
-    public void perderVida() {
-        if(this.tiempoInvulnerable == 0) {
-            this.vidas--;
-            this.tiempoInvulnerable = 60;
-        }
-    }
     
+
     public void actualizarInvulnerabilidad() {
         if(this.tiempoInvulnerable > 0) {
             this.tiempoInvulnerable--;

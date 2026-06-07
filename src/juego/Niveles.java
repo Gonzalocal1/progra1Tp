@@ -6,6 +6,8 @@ import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
 
+
+//Clase
 public class Niveles {
 
     private Entorno entorno;
@@ -20,21 +22,37 @@ public class Niveles {
     
     private double camaraX = 0;
     private double maxCamara = 4;
+    private int nivel = 1;
     
-    private int nivel = 1; 
+    //Retorna clases de codigo de otros archivos para poder generar el nivel
     
+//Constructor
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
         fondolvl1 = Herramientas.cargarImagen("fondo1.jpg");
 
     }
+    
+//Metodos
+  //Metodo1
+    private void dibujarVidas() {
 
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
 
+    	entorno.escribirTexto("VIDAS", 20, 30);
+
+    	for(int i = 0; i < princesa.getVidas(); i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
+
+  //Metodo2
     public void inicializarNivel1() {
         princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(150, entorno);
-        plataformas.crearIslas(150, entorno);
+        plataformas.crearPiso(50, entorno);
+        plataformas.crearIslas(50, entorno);
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
@@ -65,9 +83,13 @@ public class Niveles {
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
-        jefe.iniciarAtaque1(princesa);
+        this.jefeProyectil = new JefeProyectil(0, 40, entorno);
+        this.jefeProyectil2 = new JefeProyectil(90, 40, entorno);
+        this.jefeProyectil3 = new JefeProyectil(180, 40, entorno);
+        this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
     }
     
+  //Metodo4
     private void actualizarCamara(Princesa princesa) {
         if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
             camaraX += 1;
@@ -79,6 +101,7 @@ public class Niveles {
         }
     }
     
+  //Metodo5
     private void ejecutarNivel1() {
     	entorno.dibujarImagen(fondolvl1, entorno.ancho()/2, entorno.alto()/2, 0);
         actualizarCamara(princesa);
@@ -106,6 +129,7 @@ public class Niveles {
         }
     }
 
+  //Metodo6
     private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
@@ -142,6 +166,8 @@ public class Niveles {
         jefe.actualizarAtaques(princesa);
     }
     
+    
+  //Metodo7
     public void gameOver() {
     	if (princesa.estaMuerta()) {
     		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
@@ -151,7 +177,7 @@ public class Niveles {
     	    return;
     	}
     }
-    
+  //Metodo8
     public void actualizarNivel() {
     	if (nivel == 1 && !princesa.estaMuerta()) {
 			ejecutarNivel1();
