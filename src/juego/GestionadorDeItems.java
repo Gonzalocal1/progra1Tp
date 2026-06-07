@@ -21,7 +21,7 @@ public class GestionadorDeItems {
         for(int i = 0; i < vidas.length; i++) {
             if(vidas[i] != null) {
             	vidas[i].actualizar(entorno);
-                vidas[i].dibujar(entorno, camaraX);
+                vidas[i].dibujar(entorno);
                 if(vidas[i].colisionaCon(princesa)) {
                     princesa.ganarVida();
                     vidas[i] = null;

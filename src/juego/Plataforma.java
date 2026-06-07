@@ -3,6 +3,7 @@ package juego;
 import java.awt.Color;
 import entorno.Entorno;
 
+//Clase
 public class Plataforma {
 	private double x;
 	private double  y;
@@ -12,6 +13,7 @@ public class Plataforma {
 	
 	private boolean esPozo;
 	
+//Constructor
 	public Plataforma(double y, double alto, double ancho, Entorno entorno) {
 		this.x = 0; //El gestionador luego se encarga de asignarles un x
 		this.y = y;
@@ -21,12 +23,13 @@ public class Plataforma {
 		this.esPozo = false;
 	}
 	
-	// Dibuja la plataforma 
+//Metodos
+	//Metodo1 
 	public void dibujo(double camaraX) {
 		entorno.dibujarRectangulo(x - camaraX, y, ancho, alto, 0, Color.blue);
 	}
 	
-	// Método que determina cuándo choca con la princesa y resuelve la colisión
+	//Metodo2
 	public boolean ColisionConPrincesa(Princesa princesa) {
 	    // 1. Calculamos los bordes de la plataforma (basado en el CENTRO)
 	    double platIzquierda = this.x - (this.ancho / 2);
@@ -76,79 +79,53 @@ public class Plataforma {
 	    return hayInterseccion;
 	}
 	
+	//Metodo3
 	public void moverPlataforma(double camaraY) {
 		x -= camaraY;
 	}
 	
-	/**
-	 * @return the x
-	 */
+	public boolean colisionaConVida(VidaExtra vida) {
+	    double platIzq = this.x - this.ancho / 2;
+	    double platDer = this.x + this.ancho / 2;
+	    double platArriba = this.y - this.alto / 2;
+	    double vidaIzq = vida.getX() - 10;
+	    double vidaDer = vida.getX() + 10;
+	    double vidaAbajo = vida.getY() + 10;
+	    return vidaDer > platIzq
+	        && vidaIzq < platDer
+	        && vidaAbajo >= platArriba
+	        && vidaAbajo <= platArriba + 10;
+	}
+	
+//Getters y Setters para usar el codigo en otros archivos
 	public double getX() {
 		return x;
 	}
-
-	/**
-	 * @param x the x to set
-	 */
 	public void setX(double x) {
 		this.x = x;
 	}
-
-	/**
-	 * @return the y
-	 */
 	public double getY() {
 		return y;
 	}
-
-	/**
-	 * @param y the y to set
-	 */
 	public void setY(double y) {
 		this.y = y;
 	}
-
-	/**
-	 * @return the alto
-	 */
 	public double getAlto() {
 		return alto;
 	}
-
-	/**
-	 * @param alto the alto to set
-	 */
 	public void setAlto(double alto) {
 		this.alto = alto;
 	}
-
-	/**
-	 * @return the ancho
-	 */
 	public double getAncho() {
 		return ancho;
 	}
-
-	/**
-	 * @param ancho the ancho to set
-	 */
 	public void setAncho(double ancho) {
 		this.ancho = ancho;
 	}
-
-	/**
-	 * @return el esPozo
-	 */
 	public boolean isEsPozo() {
 		return esPozo;
 	}
-
-	/**
-	 * @param esPozo el esPozo a establecer
-	 */
 	public void setEsPozo(boolean esPozo) {
 		this.esPozo = esPozo;
 	}
-	
-	
 }

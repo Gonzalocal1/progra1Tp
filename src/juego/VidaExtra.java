@@ -19,8 +19,8 @@ public class VidaExtra {
         this.velocidadY = 0;
         this.enSuelo = false;
     }
-    public void dibujar(Entorno entorno,double camaraX) {
-        entorno.dibujarRectangulo( this.x - camaraX,this.y,this.ancho,this.alto,0,Color.GREEN);
+    public void dibujar(Entorno entorno) {
+        entorno.dibujarRectangulo( this.x,this.y,this.ancho,this.alto,0,Color.GREEN);
     }
     
     public void aplicarGravedad() {
@@ -40,6 +40,12 @@ public class VidaExtra {
 	            velocidadY = 0;
 	            enSuelo = true;
 	        }
+    }
+   
+    public void detenerEn(double yPlataforma) {
+    	this.y = yPlataforma - this.alto/2;
+    	this.velocidadY = 0;
+        this.enSuelo = true;
     }
     
     public void actualizar(Entorno entorno) {
