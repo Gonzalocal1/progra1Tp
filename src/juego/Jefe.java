@@ -22,6 +22,7 @@ public class Jefe {
 	private int altura; // para saber hacia que valor y se va a mover el jefe
 	
 	private int ataque; // para saber que ataque esta efectuando el jefe
+	private int tiempoInvulnerable;
 	
 //Constructor
 	public Jefe(Entorno entorno) {
@@ -34,11 +35,13 @@ public class Jefe {
 		this.timerAtaque = 0;
 		this.ataque = 1;
 		this.timerAtaqueMaximo = 0;
+		this.tiempoInvulnerable = 0;
 	}
 	
 
 	
 	public void iniciarAtaque1(Princesa princesa) {
+		this.ataque = 1;
 		this.princesa = princesa;
 		this.timerAtaqueMaximo = 1500;
 		jf = new JefeProyectil[6];
@@ -54,13 +57,6 @@ public class Jefe {
 		int[] posiblesAlturasJefe = {200,400,155};
 		Random r = new Random();
 		altura = posiblesAlturasJefe[r.nextInt(0,posiblesAlturasJefe.length)];
-		//jf = new JefeProyectil[4];
-		//int grados = 0;
-		//for (int i = 0; i < jf.length; i++) {
-		//	jf[i] = new JefeProyectil(grados, 40, entorno);
-		//	jf[i].girarProyectil(x, y);
-		//	grados += 60;
-		//}
 	}
 	
 	private void actualizarAtaque1() {
@@ -124,7 +120,6 @@ public class Jefe {
 		dibujarJefe();
 		if (contadorBalas == 0) {
 			iniciarAtaque1(princesa);
-			this.ataque = 1;
 			this.timerAtaque = 0;
 		}
 	}
@@ -182,10 +177,10 @@ public class Jefe {
 
 	public void dibujarJefe() {
 		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
+		dibujarVidas();
 	}
-	
-	//Metodo3
-	public void pseudoParry(Proyectil proyectil) {
+
+	public void detectarColisionProyectil(Proyectil proyectil) {
         // Solo intentamos el parry si el proyectil fue disparado y está activo
         if (proyectil != null && proyectil.isDisparado()) {
 
@@ -197,20 +192,43 @@ public class Jefe {
 
             if (colision) {
                 // 1. Invertimos la dirección del proyectil multiplicando sus velocidades por -1
-                proyectil.setVx(proyectil.getVx() * -1);
-                proyectil.setVy(proyectil.getVy() * -1);
-
-                // 2. Anti-Stuck: Desplazamos levemente el proyectil hacia afuera del jefe 
-                // para que en el próximo frame no vuelva a colisionar y se quede titilando.
-                if (proyectil.getX() < this.x) {
-                    proyectil.setX(proyectil.getX() - 10); // Empuje a la izquierda
-                } else {
-                    proyectil.setX(proyectil.getX() + 10); // Empuje a la derecha
-                }
+                perderVida();
             }
         }
     }
     
+	private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.RED);
+
+    	entorno.escribirTexto("Jefe", 590, 30);
+
+    	for(int i = 0; i < this.vidas; i++) {
+
+    		entorno.dibujarRectangulo(600 + (i * 30),60,20,20,0,java.awt.Color.LIGHT_GRAY);
+    	}
+    }
+	
+    private void perderVida() {
+        if(this.tiempoInvulnerable == 0) {
+            this.vidas--;
+            this.tiempoInvulnerable = 60;
+        }
+    }
+    
+    public void actualizarInvulnerabilidad() {
+        if(this.tiempoInvulnerable > 0) {
+            this.tiempoInvulnerable--;
+        }
+    }
+    
+	public boolean estaMuerto() {
+		if (vidas <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	//Getters y setters porque son privadas las variables y se tiene que usar el codigo en otros archivos
 	public double getX() {
@@ -219,7 +237,10 @@ public class Jefe {
 	public double getY() {
 		return y;
 	}
-	
+
+
+
+
 	
 }
 

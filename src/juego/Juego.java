@@ -22,7 +22,6 @@ public class Juego extends InterfaceJuego
 		// Inicializamos el gestor de niveles
 		this.gestorNiveles = new Niveles(this.entorno);
 		gestorNiveles.inicializarNivel1();
-
 		// Inicia el juego!
 		this.entorno.iniciar();
 	}

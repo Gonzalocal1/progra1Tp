@@ -1,8 +1,10 @@
 package juego;
 
 import java.awt.Color;
+import java.awt.Image;
 
 import entorno.Entorno;
+import entorno.Herramientas;
 
 //Clase
 public class Princesa {
@@ -27,6 +29,12 @@ public class Princesa {
     private boolean enElSuelo;  
     private int tiempoSaltando;
     private static final int MAX_TIEMPO_SALTO = 20;
+    
+    
+    // Arreglo de Images para guardar la animación
+    private Image[] spritesCaminata; 
+    private int frameActual;
+    private int timerAnimacion;
 
 //Constructor
 	public Princesa(int x, int y, int alto, int ancho, Entorno entorno) {
@@ -42,10 +50,41 @@ public class Princesa {
         this.limiteX = entorno.ancho()-200;
         this.vidas = 10;
         this.tiempoInvulnerable = 0;
-	}
+        this.frameActual = 0;
+        this.timerAnimacion = 0;
+
+        // Cargamos los sprites individuales (asumiendo que recortaste 4 frames)
+        this.spritesCaminata = new Image[3];
+        this.spritesCaminata[0] = Herramientas.cargarImagen("reimu_caminar_0.png");
+        this.spritesCaminata[1] = Herramientas.cargarImagen("reimu_caminar_1.png");
+        this.spritesCaminata[2] = Herramientas.cargarImagen("reimu_caminar_2.png");
+        //this.spritesCaminata[3] = Herramientas.cargarImagen("reimu_caminar_3.png");
+    }
+
+    public void actualizarAnimacion() {
+        this.timerAnimacion++;
+        
+        // Cada 8 fotogramas del juego, cambiamos al siguiente sprite de Reimu
+        if (this.timerAnimacion >= 15) { 
+            this.frameActual++;
+            this.timerAnimacion = 0; 
+            
+            if (this.frameActual >= this.spritesCaminata.length) {
+                this.frameActual = 0; // Reinicia la animación en bucle
+            }
+        }
+    }
 	
-//Metodos
-	//Metodo1
+    public void dibujarPrincesa(Entorno entorno) {
+        // Obtenemos la imagen que toca mostrar en este fotograma
+        Image imagenActual = this.spritesCaminata[this.frameActual];
+        
+        // Llamamos a tu método pasándole la imagen, la posición y el ángulo
+        entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
+        dibujarVidas();
+    }
+
+	
 	private void chequearPiso() {
         if (this.enElSuelo == true) {
             this.velocidadY = 0;
@@ -105,11 +144,8 @@ public class Princesa {
 		salto();
 		gravedad();
 	}
-	//Metodo7
-	public void dibujarPrincesa() {
-		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
-		dibujarVidas();
-	}
+	
+	
 
 	//Metodo8
 	public void perderVida() {
