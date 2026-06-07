@@ -82,12 +82,12 @@ public class JefeProyectil {
 		this.radio += radioRadio;
 		// Si se pasa de cierto límite, invertimos la velocidad
 	    if (this.radio > 250) { 
-	        this.radioRadio = -3; // Empieza a ir a la izquierda
+	        this.radioRadio = -3; // Empieza a acercarse al centro
 	    }
 	    
 	    // Si se pasa de cierto límite hacia el centro, la volvemos a invertir
 	    if (this.radio < 40) { 
-	    	this.radioRadio = 3; // Empieza a ir a la derecha
+	    	this.radioRadio = 3; // Empieza a alejarse del centro
 	    }
 	}
 	
