@@ -48,12 +48,16 @@ public class VidaExtra {
         this.enSuelo = true;
     }
     
-    public void actualizar(Entorno entorno) {
+    public void actualizar(double camaraX, Entorno entorno) {
         aplicarGravedad();
         verificarSuelo(entorno);
+        moverConCamara(camaraX);
     }
 
-    public boolean colisionaCon(Princesa princesa) {
+    private void moverConCamara(double camaraX) {
+		this.x -= camaraX;	
+	}
+	public boolean colisionaCon(Princesa princesa) {
     	if(princesa == null) {
             return false;
         }

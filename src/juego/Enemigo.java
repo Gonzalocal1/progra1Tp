@@ -16,6 +16,8 @@ public class Enemigo {
     private double velocidadX;
 
     private Entorno entorno;
+    
+    private boolean colisiono;
 
     
 //Constructor
@@ -44,9 +46,9 @@ public class Enemigo {
         this.x += this.velocidadX;
     }
 
+
   //Metodo2
     public void dibujar() {
-
         entorno.dibujarRectangulo(
                 this.x,
                 this.y,
@@ -92,6 +94,15 @@ public class Enemigo {
     public double getAlto() {
         return alto;
     }
+    
+    public boolean isColisiono() {
+        return colisiono;
+    }
+    
+    public void setColisionoTrue() {
+        this.colisiono = true;
+    }
+
 
     //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
     public boolean colisionaCon(Princesa princesa) {

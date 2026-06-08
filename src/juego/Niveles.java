@@ -103,7 +103,6 @@ public class Niveles {
         
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);
-        castillo.moverCastillo(camaraX);
 
         if (castillo.verificarVictoria(princesa)) {
             inicializarNivel2();

@@ -20,7 +20,7 @@ public class Princesa {
     private int tiempoInvulnerable; //ESTO LO AGREGO XQ SI NO LOS MUCIELAGOS MATABAN DE UNA A LA PRINCESA
     
     // Constantes del movimiento
-    private static final double FUERZA_SALTO = 6.0; // transforma cada velocidadY durante el salto tick
+    private static final double FUERZA_SALTO = 7.0; // transforma cada velocidadY durante el salto tick
     private static final double GRAVEDAD = 0.5;     // gravedad que se acumula cada tick
     private static final double CAIDA_MAXIMA = 8.0; // velocidad terminal de caida
 
@@ -87,6 +87,20 @@ public class Princesa {
         
     }
 
+	
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+    	
+    	entorno.escribirTexto("X = " + String.valueOf(x), 20, 120);
+
+    	for(int i = 0; i < vidas; i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
 	
 	private void chequearPiso() {
         if (this.enElSuelo == true) {
@@ -157,18 +171,7 @@ public class Princesa {
             this.tiempoInvulnerable = 10;
         }
     }
-	
-    private void dibujarVidas() {
 
-    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
-
-    	entorno.escribirTexto("VIDAS", 20, 30);
-
-    	for(int i = 0; i < vidas; i++) {
-
-    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
-    	}
-    }
     
 	//Getters y Setters
     public double getX() { return x; }

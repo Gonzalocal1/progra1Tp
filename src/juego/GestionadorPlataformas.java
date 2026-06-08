@@ -20,8 +20,8 @@ public class GestionadorPlataformas {
 		int alto = 20;
 		int ancho= 20;
 		this.suelo = new Plataforma[cantPlataformas];
-		
-		int cantPozos = random.nextInt(20,30); // Creo un numero aleatorio de pozos de 7 a 10
+		int inicioPozo = 30;
+		int finPozo = 51;
 		
 		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
 	        if(suelo[i] == null) {
@@ -29,9 +29,11 @@ public class GestionadorPlataformas {
 	        }
 	    }
 		
-		for(int i = 0; i < cantPozos;i++) {                 // defino Pozos al azar exceptuando las 20 primeras plataformas y la ultima
-			int j = random.nextInt(20,suelo.length);
+		while (finPozo < cantPlataformas - 20) {                 // recorro secciones de 20 en 20 y creo un pozo en cada una, evito las ultimas 20 ya que el castillo se encuentra ahi
+			int j = random.nextInt(inicioPozo,finPozo);
 			suelo[j].setEsPozo(true);
+			inicioPozo += 20;
+			finPozo+=20;
 		}
 		
 		for (int i = 1; i < cantPlataformas; i++) {         // asigna una separacion en funcion de si son pozos o no
@@ -49,7 +51,7 @@ public class GestionadorPlataformas {
 
 	        if(suelo[i] != null) {
 
-	            suelo[i].dibujo(camaraX);
+	            suelo[i].dibujo();
 	            suelo[i].moverPlataforma(camaraX);
 
 	        }
@@ -129,7 +131,7 @@ public class GestionadorPlataformas {
 	    Random random = new Random();
 	    int separacion = 20;
 	    int separacionIsla = 100;
-	    int[] alturasPosibles = {350, 400, 500, 550};
+	    int[] alturasPosibles = {350, 400, 500};
 	    int alto = 20;
 	    int ancho = 20;
 
@@ -141,14 +143,13 @@ public class GestionadorPlataformas {
 	        cantidadExacta++;
 	        xSimulado += separacion;
 	        
-	        // Simulamos también los baches/espacios entre islas
+	        
 	        if (cantidadExacta % 15 == 0) {
 	            xSimulado += separacionIsla;
 	        }
 	    }
 
 	    // === PASO 2: INICIALIZACIÓN SIN HUECOS ===
-	    // Ahora el arreglo mide exactamente lo que necesitamos. ¡Cero nulls!
 	    this.islas = new Plataforma[cantidadExacta];
 
 	    // === PASO 3: GENERACIÓN REAL ===
@@ -171,12 +172,12 @@ public class GestionadorPlataformas {
 	    Random random = new Random();
 	    int separacion = 20;
 	    int separacionIsla = 100;
-	    int[] alturasPosibles = {150, 200, 250}; // <-- Revisa estos números si tu pantalla mide 600 de alto
+	    int[] alturasPosibles = {150, 200, 250};
 	    int alto = 20;
 	    int ancho = 20;
 
 	    // === PASO 1: SIMULACIÓN DE TAMAÑO EXACTO ===
-	    int xSimulado = 0; // Arranca en 0 como tenías configurado originalmente
+	    int xSimulado = 200; // Arranca en 200 para desincronizar las islas
 	    int cantidadExacta = 0;
 	    
 	    while (xSimulado <= getUltimaPlat()) {
@@ -192,7 +193,7 @@ public class GestionadorPlataformas {
 	    this.islasSegundaCapa = new Plataforma[cantidadExacta];
 
 	    // === PASO 3: GENERACIÓN REAL ===
-	    int xActual = 0;
+	    int xActual = 200;
 	    int alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
 
 	    for (int i = 0; i < cantidadExacta; i++) {
@@ -212,21 +213,21 @@ public class GestionadorPlataformas {
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
 	        if(islas[i] != null) {
-	            islas[i].dibujo(camaraX);
+	            islas[i].dibujo();
 	            islas[i].moverPlataforma(camaraX);
 	        }
 	    }
 		for(int i = 0; i < islasSegundaCapa.length; i++) {
 	        if(islasSegundaCapa[i] != null) {
-	        	islasSegundaCapa[i].dibujo(camaraX);
+	        	islasSegundaCapa[i].dibujo();
 	        	islasSegundaCapa[i].moverPlataforma(camaraX);
 	        }
 	    }
 	}
 	//Metodo9
 	public void limpiarIslas( ) {
-		for (int i = 0;i < islasSegundaCapa.length;i++) {
-			islasSegundaCapa[i] = null;
+		for (int i = 0;i < islas.length;i++) {
+			islas[i] = null;
 		}
 		for (int i = 0;i < islasSegundaCapa.length;i++) {
 			islasSegundaCapa[i] = null;

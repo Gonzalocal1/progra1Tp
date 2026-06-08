@@ -25,8 +25,8 @@ public class Plataforma {
 	
 //Metodos
 	//Metodo1 
-	public void dibujo(double camaraX) {
-		entorno.dibujarRectangulo(x - camaraX, y, ancho, alto, 0, Color.blue);
+	public void dibujo() {
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.blue);
 	}
 	
 	//Metodo2
