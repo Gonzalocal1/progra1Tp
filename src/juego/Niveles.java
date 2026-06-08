@@ -154,21 +154,33 @@ public class Niveles {
         // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
         jefe.actualizarAtaques(princesa);
+        if(jefe.derrotado()) {
+        	this.nivel = 3;
+        }
     }
     
     
   //Metodo7
     public void gameOver() {
-    	if (princesa.estaMuerta()) {
-    		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
-    	    entorno.escribirTexto("GAME OVER", 300, 300);
-    	    entorno.cambiarFont("Arial", 20, Color.ORANGE, entorno.NORMAL);
-    	    entorno.escribirTexto("Presiona Enter para volver a intentar", 250, 400);
-    	    if (entorno.sePresiono(entorno.TECLA_ENTER)) {
-    	    	inicializarNivel1();
-    	    }
-    	    return;
+    	entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
+    	entorno.escribirTexto("GAME OVER", 300, 300);
+    	entorno.cambiarFont("Arial", 20, Color.ORANGE, entorno.NORMAL);
+    	entorno.escribirTexto("Presiona Enter para volver a intentar", 250, 400);
+    	if (entorno.sePresiono(entorno.TECLA_ENTER)) {
+    	    inicializarNivel1();
     	}
+    	return;
+    }
+    
+    public void pantallaVictoria() {
+    	entorno.cambiarFont("Arial", 30, Color.CYAN , entorno.NEGRITA);
+    	entorno.escribirTexto("Ganaste!!!", 300, 300);
+    	entorno.cambiarFont("Arial", 20, Color.CYAN, entorno.NORMAL);
+    	entorno.escribirTexto("Presiona Enter para volver a jugar", 250, 400);
+    	if (entorno.sePresiono(entorno.TECLA_ENTER)) {
+    	    inicializarNivel1();
+    	}
+    	return;
     }
   //Metodo8
     public void actualizarNivel() {
@@ -176,6 +188,8 @@ public class Niveles {
 			ejecutarNivel1();
 		} else if (nivel == 2  && !princesa.estaMuerta()) {
 			ejecutarNivel2();
+		} else if (nivel == 3) {
+			pantallaVictoria();
 		}
     	if (princesa.estaMuerta()) {
     		gameOver();
