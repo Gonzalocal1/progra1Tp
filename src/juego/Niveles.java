@@ -108,6 +108,10 @@ public class Niveles {
         dibujarVidas();
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
+        if(princesa.getY() > entorno.alto() + 100) {
+            princesa.perderVida();
+            princesa.reaparecer();
+        }
         princesa.actualizarInvulnerabilidad();
         princesa.actualizarAnimacion();
         items.actualizarItems(princesa, camaraX);
@@ -137,7 +141,7 @@ public class Niveles {
         plataformas.dibujarPlataformas(0); 
         plataformas.colisionesPlataformas(princesa); 
         
-        princesa.moverPrincesa(); 
+        princesa.moverPrincesa();
         princesa.dibujarPrincesa(entorno);
         princesa.actualizarAnimacion();
         princesa.actualizarInvulnerabilidad();

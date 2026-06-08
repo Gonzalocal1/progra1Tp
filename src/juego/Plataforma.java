@@ -31,53 +31,50 @@ public class Plataforma {
 	
 	//Metodo2
 	public boolean ColisionConPrincesa(Princesa princesa) {
-	    // 1. Calculamos los bordes de la plataforma (basado en el CENTRO)
 	    double platIzquierda = this.x - (this.ancho / 2);
-	    double platDerecha   = this.x + (this.ancho / 2);
-	    double platArriba    = this.y - (this.alto / 2);
-	    double platAbajo     = this.y + (this.alto / 2);
-
-	    // 2. Calculamos los bordes de la Princesa (basado en su CENTRO)
+	    double platDerecha = this.x + (this.ancho / 2);
+	    double platArriba = this.y - (this.alto / 2);
+	    double platAbajo = this.y + (this.alto / 2);
 	    double princesaIzquierda = princesa.getX() - (princesa.getAncho() / 2);
-	    double princesaDerecha   = princesa.getX() + (princesa.getAncho() / 2);
-	    double princesaArriba    = princesa.getY() - (princesa.getAlto() / 2);
-	    double princesaAbajo     = princesa.getY() + (princesa.getAlto() / 2);
-
-	    // 3. Verificamos si los rectángulos se superponen
-	    boolean hayInterseccion = princesaDerecha > platIzquierda &&
-	                              princesaIzquierda < platDerecha &&
-	                              princesaAbajo > platArriba &&
-	                              princesaArriba < platAbajo;
-
-	    if (hayInterseccion) {
-	        // 4. Medimos qué tan profundo se metieron para saber de qué lado fue el choque
-	        double overlapX = Math.min(princesaDerecha - platIzquierda, platDerecha - princesaIzquierda);
-	        double overlapY = Math.min(princesaAbajo - platArriba, platAbajo - princesaArriba);
-
-	        // Si la superposición es menor en Y, la colisión es vertical (techo o suelo)
-	        if (overlapY < overlapX) {
-	            if (princesa.getY() < this.y) { // Princesa está por encima del centro de la plataforma -> Cayó arriba
-	                princesa.setY(platArriba - (princesa.getAlto() / 2)); // Corregimos posición
+	    double princesaDerecha = princesa.getX() + (princesa.getAncho() / 2);
+	    double princesaArriba = princesa.getY() - (princesa.getAlto() / 2);
+	    double princesaAbajo = princesa.getY() + (princesa.getAlto() / 2);
+	    boolean hayInterseccion =
+	            princesaDerecha > platIzquierda &&
+	            princesaIzquierda < platDerecha &&
+	            princesaAbajo > platArriba &&
+	            princesaArriba < platAbajo;
+	    if(hayInterseccion) {
+	        double overlapX = Math.min(princesaDerecha - platIzquierda,platDerecha - princesaIzquierda);
+	        double overlapY = Math.min(princesaAbajo - platArriba,platAbajo - princesaArriba);
+	        if(overlapY < overlapX) {
+	            // Princesa arriba de la plataforma
+	            if(princesa.getY() < this.y) {
+	                princesa.setY(platArriba - (princesa.getAlto() / 2));
 	                princesa.setVelocidadY(0);
 	                princesa.setEnElSuelo(true);
-	                
-	            } else { // Princesa está por debajo del centro de la plataforma -> Le pegó al techo
+	                princesa.guardarPuntoSeguro(princesa.getX(),princesa.getY());
+	            }
+	            else {
+	                // Golpeó desde abajo
 	                princesa.setY(platAbajo + (princesa.getAlto() / 2));
 	                princesa.setVelocidadY(0);
 	            }
-	        } 
-	        // Si la superposición es menor en X, la colisión es lateral (paredes)
+	        }
 	        else {
-	            if (princesa.getX() < this.x) { // Viene de la izquierda
+	            // Colisión lateral
+	            if(princesa.getX() < this.x) {
 	                princesa.setX(platIzquierda - (princesa.getAncho() / 2));
-	            } else { // Viene de la derecha
+	            }
+	            else {
 	                princesa.setX(platDerecha + (princesa.getAncho() / 2));
 	            }
-	            princesa.setVelocidadX(0); // Detiene el avance horizontal contra la pared
+	            princesa.setVelocidadX(0);
 	        }
 	    }
 	    return hayInterseccion;
 	}
+	
 	
 	//Metodo3
 	public void moverPlataforma(double camaraY) {

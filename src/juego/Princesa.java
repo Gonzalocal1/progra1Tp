@@ -8,6 +8,8 @@ import entorno.Herramientas;
 
 //Clase
 public class Princesa {
+	private double ultimoPuntoSeguroX;
+	private double ultimoPuntoSeguroY;
 	private double x;
     private double y;
     private double alto;
@@ -40,6 +42,8 @@ public class Princesa {
 	public Princesa(int x, int y, int alto, int ancho, Entorno entorno) {
 		this.x = x;
 		this.y = y;
+		this.ultimoPuntoSeguroX = x;
+		this.ultimoPuntoSeguroY = y;
 		this.alto = alto;
 		this.ancho = ancho;
 		this.entorno = entorno;
@@ -125,6 +129,7 @@ public class Princesa {
             tiempoSaltando = MAX_TIEMPO_SALTO; // Forza a que empiece a caer
         }
 	}
+	
 	//Metodo5
 	private void gravedad() {
 		if (enElSuelo == false) {
@@ -135,7 +140,29 @@ public class Princesa {
         }
         this.y += this.velocidadY; // Aplica el movimiento final en Y
 	}
-	//Metodo6
+	
+	//Metodo6 
+	public void guardarPuntoSeguro(double x, double y) {
+	    this.ultimoPuntoSeguroX = x;
+	    this.ultimoPuntoSeguroY = y;
+	}
+	
+	//Metodo7 esto detecta cuando la princesa cae del mapa
+	public boolean cayoDelMapa() {
+	    return this.y > entorno.alto() + 100;
+	
+	}
+	
+	//Metodo8
+	public void reaparecer() {
+	    this.x = ultimoPuntoSeguroX;
+	    this.y = ultimoPuntoSeguroY;
+	    this.velocidadX = 0;
+	    this.velocidadY = 0;
+	    this.enElSuelo = true;
+	}
+	
+	//Metodo9
 	public void moverPrincesa() {
 		chequearPiso();
 		moverDerecha();
@@ -146,7 +173,7 @@ public class Princesa {
 	
 	
 
-	//Metodo8
+	//Metodo10
 	public void perderVida() {
         if(this.tiempoInvulnerable == 0) {
             this.vidas--;
