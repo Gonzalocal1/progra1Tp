@@ -95,6 +95,7 @@ public class Princesa {
     	entorno.escribirTexto("VIDAS", 20, 30);
     	
     	entorno.escribirTexto("X = " + String.valueOf(x), 20, 120);
+    	entorno.escribirTexto("X = " + String.valueOf(y), 20, 150);
 
     	for(int i = 0; i < vidas; i++) {
 

@@ -19,8 +19,14 @@ public class Niveles {
     private Jefe jefe;
     private Image fondolvl1;
     private GestionadorDeItems items;
+    
+    
     private double camaraX = 0;
-    private double maxCamara = 4;
+    private double velMaxCamara = 4;
+    private double camaraRecorrido = 4;
+    private double maxCamaraRecorrido;
+    
+    
     private int nivel = 1;
     
     //Retorna clases de codigo de otros archivos para poder generar el nivel
@@ -39,15 +45,18 @@ public class Niveles {
   //Metodo2
     public void inicializarNivel1() {
         this.nivel = 1;
+        int largoPiso = 200;
+        camaraRecorrido = 0;
     	princesa = new Princesa(entorno.ancho()/2, entorno.alto()/2, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(200, entorno);
+        plataformas.crearPiso(largoPiso, entorno);
         plataformas.crearIslas(entorno);
         plataformas.crearIslasSegundaCapa(entorno);
+        this.maxCamaraRecorrido = plataformas.getUltimaPlat() - entorno.ancho();
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
-        castillo = new Castillo(plataformas.getUltimaPlat()-40, 550, "castillo.jpg", this.entorno);
+        castillo = new Castillo(plataformas.getUltimaPlat()-200, 550, "castillo.jpg", this.entorno);
         items = new GestionadorDeItems(entorno);
     }
     
@@ -70,14 +79,15 @@ public class Niveles {
     
   //Metodo4
     private void actualizarCamara(Princesa princesa) {
-        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-            camaraX += 1;
+        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
+            camaraX ++;  
         } else {
             camaraX = 0;
         }
-        if (camaraX > maxCamara) {
-            camaraX = maxCamara;
+        if (camaraX > velMaxCamara) {
+            camaraX = velMaxCamara;
         }
+        camaraRecorrido+= camaraX;
     }
     
   //Metodo5
@@ -85,8 +95,8 @@ public class Niveles {
     	entorno.dibujarImagen(fondolvl1, entorno.ancho()/2, entorno.alto()/2, 0);
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
-        plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
+        plataformas.colisionesPlataformas(princesa);
         princesa.actualizarInvulnerabilidad();
         princesa.actualizarAnimacion();
         items.actualizarItems(princesa, camaraX);
