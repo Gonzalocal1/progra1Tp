@@ -8,8 +8,7 @@ import entorno.Herramientas;
 
 //Clase
 public class Princesa {
-	private double ultimoPuntoSeguroX;
-	private double ultimoPuntoSeguroY;
+	private Plataforma ultimaPlataformaSegura;
 	private double x;
     private double y;
     private double alto;
@@ -42,8 +41,6 @@ public class Princesa {
 	public Princesa(int x, int y, int alto, int ancho, Entorno entorno) {
 		this.x = x;
 		this.y = y;
-		this.ultimoPuntoSeguroX = x;
-		this.ultimoPuntoSeguroY = y;
 		this.alto = alto;
 		this.ancho = ancho;
 		this.entorno = entorno;
@@ -141,12 +138,6 @@ public class Princesa {
         this.y += this.velocidadY; // Aplica el movimiento final en Y
 	}
 	
-	//Metodo6 
-	public void guardarPuntoSeguro(double x, double y) {
-	    this.ultimoPuntoSeguroX = x;
-	    this.ultimoPuntoSeguroY = y;
-	}
-	
 	//Metodo7 esto detecta cuando la princesa cae del mapa
 	public boolean cayoDelMapa() {
 	    return this.y > entorno.alto() + 100;
@@ -155,11 +146,13 @@ public class Princesa {
 	
 	//Metodo8
 	public void reaparecer() {
-	    this.x = ultimoPuntoSeguroX;
-	    this.y = ultimoPuntoSeguroY;
-	    this.velocidadX = 0;
-	    this.velocidadY = 0;
-	    this.enElSuelo = true;
+	    if(this.ultimaPlataformaSegura != null) {
+	        this.x = this.ultimaPlataformaSegura.getX();
+	        this.y = this.ultimaPlataformaSegura.getY() - this.ultimaPlataformaSegura.getAlto()/2 - this.alto/2 - 5;
+	        this.velocidadX = 0;
+	        this.velocidadY = 0;
+	        this.enElSuelo = true;
+	    }
 	}
 	
 	//Metodo9
@@ -184,6 +177,8 @@ public class Princesa {
     
     
 	//Getters y Setters
+	public void setUltimaPlataformaSegura(Plataforma plataforma) {
+	    this.ultimaPlataformaSegura = plataforma; }
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
 

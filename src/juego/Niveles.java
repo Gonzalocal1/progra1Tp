@@ -106,6 +106,7 @@ public class Niveles {
         actualizarCamara(princesa);
         princesa.dibujarPrincesa(entorno);
         dibujarVidas();
+        princesa.setEnElSuelo(false);
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
         if(princesa.getY() > entorno.alto() + 100) {

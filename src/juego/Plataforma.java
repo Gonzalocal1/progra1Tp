@@ -44,36 +44,41 @@ public class Plataforma {
 	            princesaIzquierda < platDerecha &&
 	            princesaAbajo > platArriba &&
 	            princesaArriba < platAbajo;
-	    if(hayInterseccion) {
-	        double overlapX = Math.min(princesaDerecha - platIzquierda,platDerecha - princesaIzquierda);
-	        double overlapY = Math.min(princesaAbajo - platArriba,platAbajo - princesaArriba);
-	        if(overlapY < overlapX) {
-	            // Princesa arriba de la plataforma
-	            if(princesa.getY() < this.y) {
-	                princesa.setY(platArriba - (princesa.getAlto() / 2));
-	                princesa.setVelocidadY(0);
-	                princesa.setEnElSuelo(true);
-	                princesa.guardarPuntoSeguro(princesa.getX(),princesa.getY());
+	            if(hayInterseccion) {
+	                double overlapX = Math.min(princesaDerecha - platIzquierda,platDerecha - princesaIzquierda);
+	                double overlapY = Math.min(princesaAbajo - platArriba,platAbajo - princesaArriba);
+	                if(overlapY < overlapX) {
+	                    // Princesa arriba de la plataforma
+	                    if(princesa.getY() < this.y) {
+	                        if(!princesa.isEnElSuelo()) {
+	                            princesa.setY(platArriba - (princesa.getAlto() / 2));
+	                            princesa.setVelocidadY(0);
+	                            princesa.setEnElSuelo(true);
+	                            princesa.setUltimaPlataformaSegura(this);
+	                        }
+	                    }
+	                    else {
+	                        // Golpeó desde abajo
+	                        princesa.setY(platAbajo + (princesa.getAlto() / 2));
+	                        princesa.setVelocidadY(0);
+	                    }
+	                }
+	                else {
+	                    // Colisión lateral
+	                    if(princesa.getX() < this.x) {
+	                        princesa.setX(platIzquierda - (princesa.getAncho() / 2));
+	                    }
+	                    else {
+	                        princesa.setX(platDerecha + (princesa.getAncho() / 2));
+	                    }
+	                    princesa.setVelocidadX(0);
+	                }
 	            }
-	            else {
-	                // Golpeó desde abajo
-	                princesa.setY(platAbajo + (princesa.getAlto() / 2));
-	                princesa.setVelocidadY(0);
-	            }
-	        }
-	        else {
-	            // Colisión lateral
-	            if(princesa.getX() < this.x) {
-	                princesa.setX(platIzquierda - (princesa.getAncho() / 2));
-	            }
-	            else {
-	                princesa.setX(platDerecha + (princesa.getAncho() / 2));
-	            }
-	            princesa.setVelocidadX(0);
-	        }
-	    }
-	    return hayInterseccion;
-	}
+
+	            return hayInterseccion;
+	 }
+	            
+	    
 	
 	
 	//Metodo3
