@@ -18,9 +18,9 @@ public class GestionadorDeItems {
         }
     }
     public void actualizarItems(Princesa princesa,double camaraX) {
-        for(int i = 0; i < vidas.length; i++) {
+        for(int i = 0; i < vidas.length; i++) { 
             if(vidas[i] != null) {
-            	vidas[i].actualizar(entorno);
+            	vidas[i].actualizar(camaraX, entorno);
                 vidas[i].dibujar(entorno);
                 if(vidas[i].colisionaCon(princesa)) {
                     princesa.ganarVida();

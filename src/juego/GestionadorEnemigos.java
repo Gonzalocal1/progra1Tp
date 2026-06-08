@@ -53,10 +53,12 @@ public class GestionadorEnemigos {
 	        crearEnemigo();
 	    }
 	}
+	
 
-	public boolean actualizarEnemigos(Princesa princesa, Proyectil proyectil,GestionadorDeItems items) {
+	public boolean actualizarEnemigos( Princesa princesa, Proyectil proyectil,GestionadorDeItems items) {
 
-
+		boolean proyectilDebeMorir = false;
+		
 	    for(int i = 0; i < enemigos.length; i++) {
 
 	        if(enemigos[i] != null) {
@@ -66,20 +68,22 @@ public class GestionadorEnemigos {
 	            
 	            if(enemigos[i].colisionaCon(proyectil)) {
 	                items.crearVida(enemigos[i].getX(),enemigos[i].getY());
-	                enemigos[i] = null;
-	                return true;
+	                enemigos[i].setColisionoTrue();;
+	                proyectilDebeMorir = true;
 	            }
 
 	            if(enemigos[i].colisionaCon(princesa)) {
 	                princesa.perderVida();
+	                enemigos[i].setColisionoTrue();;
+	                
 	            }
 
-	            if(enemigos[i].fueraDePantalla()) {
+	            if(enemigos[i].fueraDePantalla() || enemigos[i].isColisiono()) {
 	                enemigos[i] = null;
 	            }
 	        }
 	    }
-	    return false;
+	    return proyectilDebeMorir;
 	}
 
 	//Metodo6
