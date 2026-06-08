@@ -41,38 +41,49 @@ public class GestionadorEnemigos {
 	            else {
 	                x = entorno.ancho() + 30;
 	            }
-	            double y = 100 + Math.random() * 550;
+	            double y = 100 + Math.random() * 400;
 	            enemigos[i] = new Enemigo(x, y, izquierda, entorno);
 	            break;
 	        }
 	    }
 	}
-	//Metodo4
+
 	public void mantenerEnemigos() {
 	    while(contarEnemigos() < 3) {
 	        crearEnemigo();
 	    }
 	}
+	
 
-	//Metodo5
-	public void actualizarEnemigos(Princesa princesa) {
+	public boolean actualizarEnemigos( Princesa princesa, Proyectil proyectil,GestionadorDeItems items) {
 
+		boolean proyectilDebeMorir = false;
+		
 	    for(int i = 0; i < enemigos.length; i++) {
 
 	        if(enemigos[i] != null) {
 
 	            enemigos[i].mover();
 	            enemigos[i].dibujar();
+	            
+	            if(enemigos[i].colisionaCon(proyectil)) {
+	                items.crearVida(enemigos[i].getX(),enemigos[i].getY());
+	                enemigos[i].setColisionoTrue();;
+	                proyectilDebeMorir = true;
+	            }
 
 	            if(enemigos[i].colisionaCon(princesa)) {
 	                princesa.perderVida();
+	                enemigos[i].setColisionoTrue();;
+	                
 	            }
 
-	            if(enemigos[i].fueraDePantalla()) {
+	            if(enemigos[i].fueraDePantalla() || enemigos[i].isColisiono()) {
 	                enemigos[i] = null;
 	            }
 	        }
 	    }
+	    return proyectilDebeMorir;
 	}
 
 	//Metodo6

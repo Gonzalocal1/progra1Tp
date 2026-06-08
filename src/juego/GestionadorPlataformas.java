@@ -9,6 +9,7 @@ public class GestionadorPlataformas {
 
 	private Plataforma[] suelo;
 	private Plataforma[] islas;
+	private Plataforma[] islasSegundaCapa;
 //Metodos
 	//Metodo1
 	public void crearPiso(int cantPlataformas, Entorno entorno) {
@@ -19,8 +20,8 @@ public class GestionadorPlataformas {
 		int alto = 20;
 		int ancho= 20;
 		this.suelo = new Plataforma[cantPlataformas];
-		
-		int cantPozos = random.nextInt(1,3); // Creo un numero aleatorio de pozos de 1 a 2 TODO cuando nivel 1 este completo subir cantidad de pozos
+		int inicioPozo = 30;
+		int finPozo = 51;
 		
 		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
 	        if(suelo[i] == null) {
@@ -28,9 +29,11 @@ public class GestionadorPlataformas {
 	        }
 	    }
 		
-		for(int i = 0; i < cantPozos;i++) {                 // defino Pozos al azar exceptuando las 10 primeras plataformas y la ultima
-			int j = random.nextInt(10,suelo.length);
+		while (finPozo < cantPlataformas - 20) {                 // recorro secciones de 20 en 20 y creo un pozo en cada una, evito las ultimas 20 ya que el castillo se encuentra ahi
+			int j = random.nextInt(inicioPozo,finPozo);
 			suelo[j].setEsPozo(true);
+			inicioPozo += 20;
+			finPozo+=20;
 		}
 		
 		for (int i = 1; i < cantPlataformas; i++) {         // asigna una separacion en funcion de si son pozos o no
@@ -48,7 +51,7 @@ public class GestionadorPlataformas {
 
 	        if(suelo[i] != null) {
 
-	            suelo[i].dibujo(camaraX);
+	            suelo[i].dibujo();
 	            suelo[i].moverPlataforma(camaraX);
 
 	        }
@@ -71,7 +74,14 @@ public class GestionadorPlataformas {
 	            if(islas[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
-	            
+	        }
+		}
+		
+		for(int i = 0; i < islasSegundaCapa.length; i++) {
+	        if(islasSegundaCapa[i] != null) {
+	            if(islasSegundaCapa[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
 	        }
 		}
 		//Si no hay colisiones la princesa comenzara a caer
@@ -117,39 +127,100 @@ public class GestionadorPlataformas {
 	}
 	
 	//Metodo7
-	public void crearIslas(int cantPlataformas, Entorno entorno) {
-		Random random = new Random();
-		int xActual = 0;
-		int separacion = 20;
-		int separacionIsla = 100;
-		int[] alturasPosibles = {350, 400, 500, 550};
-		int alturaActual = alturasPosibles[random.nextInt(4)];               // toma un indice aleatorio de las posibles alturas
-		int alto = 20;
-		int ancho= 20;
-		this.islas = new Plataforma[cantPlataformas];
-		
-		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
-			
-	        islas[i] = new Plataforma(alturaActual,alto,ancho,entorno);
+	public void crearIslas(Entorno entorno) {
+	    Random random = new Random();
+	    int separacion = 20;
+	    int separacionIsla = 100;
+	    int[] alturasPosibles = {350, 400, 500};
+	    int alto = 20;
+	    int ancho = 20;
+
+	    // === PASO 1: SIMULACIÓN PARA CALCULAR EL TAMAÑO EXACTO ===
+	    int xSimulado = 10;
+	    int cantidadExacta = 0;
+	    
+	    while (xSimulado <= getUltimaPlat()) {
+	        cantidadExacta++;
+	        xSimulado += separacion;
+	        
+	        
+	        if (cantidadExacta % 15 == 0) {
+	            xSimulado += separacionIsla;
+	        }
+	    }
+
+	    // === PASO 2: INICIALIZACIÓN SIN HUECOS ===
+	    this.islas = new Plataforma[cantidadExacta];
+
+	    // === PASO 3: GENERACIÓN REAL ===
+	    int xActual = 10;
+	    int alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+
+	    for (int i = 0; i < cantidadExacta; i++) {
+	        islas[i] = new Plataforma(alturaActual, alto, ancho, entorno);
 	        islas[i].setX(xActual);
 	        xActual += separacion;
-	        if(i % 15 == 0) {
-	        	alturaActual = alturasPosibles[random.nextInt(3)];
-	        	xActual += separacionIsla;
+	        
+	        if (i > 0 && i % 15 == 0) {
+	            alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+	            xActual += separacionIsla;
+	        }		
+	    }
+	}
+	
+	public void crearIslasSegundaCapa(Entorno entorno) {
+	    Random random = new Random();
+	    int separacion = 20;
+	    int separacionIsla = 100;
+	    int[] alturasPosibles = {150, 200, 250};
+	    int alto = 20;
+	    int ancho = 20;
+
+	    // === PASO 1: SIMULACIÓN DE TAMAÑO EXACTO ===
+	    int xSimulado = 200; // Arranca en 200 para desincronizar las islas
+	    int cantidadExacta = 0;
+	    
+	    while (xSimulado <= getUltimaPlat()) {
+	        cantidadExacta++;
+	        xSimulado += separacion;
+	        
+	        if (cantidadExacta % 15 == 0) {
+	            xSimulado += separacionIsla;
 	        }
-			
+	    }
+
+	    // === PASO 2: INICIALIZACIÓN SIN HUECOS ===
+	    this.islasSegundaCapa = new Plataforma[cantidadExacta];
+
+	    // === PASO 3: GENERACIÓN REAL ===
+	    int xActual = 200;
+	    int alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+
+	    for (int i = 0; i < cantidadExacta; i++) {
+	        islasSegundaCapa[i] = new Plataforma(alturaActual, alto, ancho, entorno);
+	        islasSegundaCapa[i].setX(xActual);
+	        xActual += separacion;
+	        
+	        // CORRECCIÓN: 'i > 0' para evitar el salto molesto en el primer bloque
+	        if (i > 0 && i % 15 == 0) {
+	            alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+	            xActual += separacionIsla;
+	        }
 	    }
 	}
 	
 	//Metodo8
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
-
 	        if(islas[i] != null) {
-
-	            islas[i].dibujo(camaraX);
+	            islas[i].dibujo();
 	            islas[i].moverPlataforma(camaraX);
-
+	        }
+	    }
+		for(int i = 0; i < islasSegundaCapa.length; i++) {
+	        if(islasSegundaCapa[i] != null) {
+	        	islasSegundaCapa[i].dibujo();
+	        	islasSegundaCapa[i].moverPlataforma(camaraX);
 	        }
 	    }
 	}
@@ -158,6 +229,12 @@ public class GestionadorPlataformas {
 		for (int i = 0;i < islas.length;i++) {
 			islas[i] = null;
 		}
+		for (int i = 0;i < islasSegundaCapa.length;i++) {
+			islasSegundaCapa[i] = null;
+		}
+	}
+	public void colisionesItems(GestionadorDeItems items) {
+
 	}
 	}
 
