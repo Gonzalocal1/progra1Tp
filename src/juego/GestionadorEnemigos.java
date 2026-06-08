@@ -62,8 +62,8 @@ public class GestionadorEnemigos {
 	    for(int i = 0; i < enemigos.length; i++) {
 
 	        if(enemigos[i] != null) {
-
 	            enemigos[i].mover();
+	            enemigos[i].actualizarAnimacion();
 	            enemigos[i].dibujar();
 	            
 	            if(enemigos[i].colisionaCon(proyectil)) {
