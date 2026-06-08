@@ -34,39 +34,21 @@ public class Niveles {
     
 //Metodos
   //Metodo1
-    private void dibujarVidas() {
 
-    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
-
-    	entorno.escribirTexto("VIDAS", 20, 30);
-
-    	for(int i = 0; i < princesa.getVidas(); i++) {
-
-    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
-    	}
-    }
 
   //Metodo2
     public void inicializarNivel1() {
-        princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
+        this.nivel = 1;
+    	princesa = new Princesa(entorno.ancho()/2, entorno.alto()/2, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(50, entorno);
-        plataformas.crearIslas(50, entorno);
+        plataformas.crearPiso(200, entorno);
+        plataformas.crearIslas(entorno);
+        plataformas.crearIslasSegundaCapa(entorno);
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
-        castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
+        castillo = new Castillo(plataformas.getUltimaPlat()-40, 550, "castillo.jpg", this.entorno);
         items = new GestionadorDeItems(entorno);
-    }
-    
-    public void inicializarNivel1(Princesa princesa) {
-        plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(150, entorno);
-        plataformas.crearIslas(150, entorno);
-        proyectil = new Proyectil(600, entorno.alto() - 15);
-        enemigos = new GestionadorEnemigos(entorno);
-        enemigos.inicializarEnemigos(10);
-        castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
     }
     
     private void inicializarNivel2() {
@@ -102,8 +84,7 @@ public class Niveles {
     private void ejecutarNivel1() {
     	entorno.dibujarImagen(fondolvl1, entorno.ancho()/2, entorno.alto()/2, 0);
         actualizarCamara(princesa);
-        princesa.dibujarPrincesa(entorno);
-        dibujarVidas();
+        princesa.dibujarPrincesa();
         plataformas.colisionesPlataformas(princesa);
         princesa.moverPrincesa();
         princesa.actualizarInvulnerabilidad();
@@ -136,7 +117,7 @@ public class Niveles {
         plataformas.colisionesPlataformas(princesa); 
         
         princesa.moverPrincesa(); 
-        princesa.dibujarPrincesa(entorno);
+        princesa.dibujarPrincesa();
         princesa.actualizarAnimacion();
         princesa.actualizarInvulnerabilidad();
         
@@ -172,8 +153,11 @@ public class Niveles {
     	if (princesa.estaMuerta()) {
     		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
     	    entorno.escribirTexto("GAME OVER", 300, 300);
-    	    entorno.cambiarFont("Arial", 25, Color.ORANGE, entorno.NORMAL);
-    	    entorno.escribirTexto("volver a intentar?", 300, 400);
+    	    entorno.cambiarFont("Arial", 20, Color.ORANGE, entorno.NORMAL);
+    	    entorno.escribirTexto("Presiona Enter para volver a intentar", 250, 400);
+    	    if (entorno.sePresiono(entorno.TECLA_ENTER)) {
+    	    	inicializarNivel1();
+    	    }
     	    return;
     	}
     }

@@ -77,12 +77,14 @@ public class Princesa {
         }
     }
 	
-    public void dibujarPrincesa(Entorno entorno) {
+    public void dibujarPrincesa() {
         // Obtenemos la imagen que toca mostrar en este fotograma
         Image imagenActual = this.spritesCaminata[this.frameActual];
         
         // Llamamos a tu método pasándole la imagen, la posición y el ángulo
         entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
+        dibujarVidas();
+        
     }
 
 	
@@ -156,7 +158,17 @@ public class Princesa {
         }
     }
 	
-    
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+
+    	for(int i = 0; i < vidas; i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
     
 	//Getters y Setters
     public double getX() { return x; }

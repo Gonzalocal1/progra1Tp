@@ -9,6 +9,7 @@ public class GestionadorPlataformas {
 
 	private Plataforma[] suelo;
 	private Plataforma[] islas;
+	private Plataforma[] islasSegundaCapa;
 //Metodos
 	//Metodo1
 	public void crearPiso(int cantPlataformas, Entorno entorno) {
@@ -20,7 +21,7 @@ public class GestionadorPlataformas {
 		int ancho= 20;
 		this.suelo = new Plataforma[cantPlataformas];
 		
-		int cantPozos = random.nextInt(1,3); // Creo un numero aleatorio de pozos de 1 a 2 TODO cuando nivel 1 este completo subir cantidad de pozos
+		int cantPozos = random.nextInt(20,30); // Creo un numero aleatorio de pozos de 7 a 10
 		
 		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
 	        if(suelo[i] == null) {
@@ -28,8 +29,8 @@ public class GestionadorPlataformas {
 	        }
 	    }
 		
-		for(int i = 0; i < cantPozos;i++) {                 // defino Pozos al azar exceptuando las 10 primeras plataformas y la ultima
-			int j = random.nextInt(10,suelo.length);
+		for(int i = 0; i < cantPozos;i++) {                 // defino Pozos al azar exceptuando las 20 primeras plataformas y la ultima
+			int j = random.nextInt(20,suelo.length);
 			suelo[j].setEsPozo(true);
 		}
 		
@@ -71,7 +72,14 @@ public class GestionadorPlataformas {
 	            if(islas[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
-	            
+	        }
+		}
+		
+		for(int i = 0; i < islasSegundaCapa.length; i++) {
+	        if(islasSegundaCapa[i] != null) {
+	            if(islasSegundaCapa[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
 	        }
 		}
 		//Si no hay colisiones la princesa comenzara a caer
@@ -117,46 +125,111 @@ public class GestionadorPlataformas {
 	}
 	
 	//Metodo7
-	public void crearIslas(int cantPlataformas, Entorno entorno) {
-		Random random = new Random();
-		int xActual = 0;
-		int separacion = 20;
-		int separacionIsla = 100;
-		int[] alturasPosibles = {350, 400, 500, 550};
-		int alturaActual = alturasPosibles[random.nextInt(4)];               // toma un indice aleatorio de las posibles alturas
-		int alto = 20;
-		int ancho= 20;
-		this.islas = new Plataforma[cantPlataformas];
-		
-		for(int i = 0; i < cantPlataformas; i++) {           // inicializo las plataformas
-			
-	        islas[i] = new Plataforma(alturaActual,alto,ancho,entorno);
+	public void crearIslas(Entorno entorno) {
+	    Random random = new Random();
+	    int separacion = 20;
+	    int separacionIsla = 100;
+	    int[] alturasPosibles = {350, 400, 500, 550};
+	    int alto = 20;
+	    int ancho = 20;
+
+	    // === PASO 1: SIMULACIÓN PARA CALCULAR EL TAMAÑO EXACTO ===
+	    int xSimulado = 10;
+	    int cantidadExacta = 0;
+	    
+	    while (xSimulado <= getUltimaPlat()) {
+	        cantidadExacta++;
+	        xSimulado += separacion;
+	        
+	        // Simulamos también los baches/espacios entre islas
+	        if (cantidadExacta % 15 == 0) {
+	            xSimulado += separacionIsla;
+	        }
+	    }
+
+	    // === PASO 2: INICIALIZACIÓN SIN HUECOS ===
+	    // Ahora el arreglo mide exactamente lo que necesitamos. ¡Cero nulls!
+	    this.islas = new Plataforma[cantidadExacta];
+
+	    // === PASO 3: GENERACIÓN REAL ===
+	    int xActual = 10;
+	    int alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+
+	    for (int i = 0; i < cantidadExacta; i++) {
+	        islas[i] = new Plataforma(alturaActual, alto, ancho, entorno);
 	        islas[i].setX(xActual);
 	        xActual += separacion;
-	        if(i % 15 == 0) {
-	        	alturaActual = alturasPosibles[random.nextInt(3)];
-	        	xActual += separacionIsla;
+	        
+	        if (i > 0 && i % 15 == 0) {
+	            alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+	            xActual += separacionIsla;
+	        }		
+	    }
+	}
+	
+	public void crearIslasSegundaCapa(Entorno entorno) {
+	    Random random = new Random();
+	    int separacion = 20;
+	    int separacionIsla = 100;
+	    int[] alturasPosibles = {150, 200, 250}; // <-- Revisa estos números si tu pantalla mide 600 de alto
+	    int alto = 20;
+	    int ancho = 20;
+
+	    // === PASO 1: SIMULACIÓN DE TAMAÑO EXACTO ===
+	    int xSimulado = 0; // Arranca en 0 como tenías configurado originalmente
+	    int cantidadExacta = 0;
+	    
+	    while (xSimulado <= getUltimaPlat()) {
+	        cantidadExacta++;
+	        xSimulado += separacion;
+	        
+	        if (cantidadExacta % 15 == 0) {
+	            xSimulado += separacionIsla;
 	        }
-			
+	    }
+
+	    // === PASO 2: INICIALIZACIÓN SIN HUECOS ===
+	    this.islasSegundaCapa = new Plataforma[cantidadExacta];
+
+	    // === PASO 3: GENERACIÓN REAL ===
+	    int xActual = 0;
+	    int alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+
+	    for (int i = 0; i < cantidadExacta; i++) {
+	        islasSegundaCapa[i] = new Plataforma(alturaActual, alto, ancho, entorno);
+	        islasSegundaCapa[i].setX(xActual);
+	        xActual += separacion;
+	        
+	        // CORRECCIÓN: 'i > 0' para evitar el salto molesto en el primer bloque
+	        if (i > 0 && i % 15 == 0) {
+	            alturaActual = alturasPosibles[random.nextInt(alturasPosibles.length)];
+	            xActual += separacionIsla;
+	        }
 	    }
 	}
 	
 	//Metodo8
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
-
 	        if(islas[i] != null) {
-
 	            islas[i].dibujo(camaraX);
 	            islas[i].moverPlataforma(camaraX);
-
+	        }
+	    }
+		for(int i = 0; i < islasSegundaCapa.length; i++) {
+	        if(islasSegundaCapa[i] != null) {
+	        	islasSegundaCapa[i].dibujo(camaraX);
+	        	islasSegundaCapa[i].moverPlataforma(camaraX);
 	        }
 	    }
 	}
 	//Metodo9
 	public void limpiarIslas( ) {
-		for (int i = 0;i < islas.length;i++) {
-			islas[i] = null;
+		for (int i = 0;i < islasSegundaCapa.length;i++) {
+			islasSegundaCapa[i] = null;
+		}
+		for (int i = 0;i < islasSegundaCapa.length;i++) {
+			islasSegundaCapa[i] = null;
 		}
 	}
 	public void colisionesItems(GestionadorDeItems items) {
