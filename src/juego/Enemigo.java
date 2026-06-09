@@ -21,7 +21,7 @@ public class Enemigo {
     private boolean fuerte;
     private double yBase;          // La altura central por la que viaja el enemigo
     private double anguloOnda = 0; // Reemplaza a tu variable 'anim'
-    private double amplitud = 40;  // Qué tan alta es la onda en píxeles (probá con 40 o 50)
+    private double amplitud = 20;  // Qué tan alta es la onda en píxeles (probá con 40 o 50)
     private double velocidadOnda = 0.05; // Qué tan rápido oscila (números chicos entre 0.01 y 0.1)
     
 //Constructor
@@ -65,6 +65,7 @@ public class Enemigo {
         this.x += this.velocidadX;
         if (fuerte) {
             this.anguloOnda += this.velocidadOnda;
+            
             this.y = this.yBase + (Math.sin(anguloOnda) * amplitud);
         }
     }

@@ -16,8 +16,7 @@ public class Niveles {
     private Proyectil proyectil;
     private GestionadorEnemigos enemigos;
     private Jefe jefe;
-    private Image fondolvl1;
-    private Image imagenVictoria; // Imagen de Candace festeando
+    private Image fondolvl1 = Herramientas.cargarImagen("fondo1.jpg");
     private GestionadorDeItems items;
     
     private double camaraX = 0;
@@ -30,8 +29,6 @@ public class Niveles {
     //Constructor
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
-        this.fondolvl1 = Herramientas.cargarImagen("fondo1.jpg");
-        this.imagenVictoria = Herramientas.cargarImagen("juego/victoria.jpg"); 
     }
     
     //Metodos
@@ -71,12 +68,10 @@ public class Niveles {
         this.nivel = 2; 
         this.princesa.setX(100);
         this.princesa.setY(480); 
-        this.enemigos.limpiarEnemigos(); 
-        
-        this.plataformas.limpiarPlataformas();
-        this.plataformas.limpiarIslas();
-        this.plataformas.crearPisoNivel2(50, entorno); 
-        
+        this.princesa.setLimitesX(30, entorno.ancho()-30);
+        this.enemigos = new GestionadorEnemigos(entorno); 
+        this.plataformas = new GestionadorPlataformas();
+        this.plataformas.crearPisoNivel2(50, entorno);  
         // NIVEL 2: Volvemos a tu posición fija original del suelo
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         
@@ -85,18 +80,7 @@ public class Niveles {
         this.jefe.iniciarAtaque1(princesa);
     }
     
-    //Metodo4
-    private void actualizarCamara(Princesa princesa) {
-        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
-            camaraX ++;  
-        } else {
-            camaraX = 0;
-        }
-        if (camaraX > velMaxCamara) {
-            camaraX = velMaxCamara;
-        }
-        camaraRecorrido+= camaraX;
-    }
+
     
     //Metodo5
     private void ejecutarNivel1() {
@@ -143,7 +127,7 @@ public class Niveles {
     private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
-        plataformas.colisionesPlataformas(princesa, items); 
+        plataformas.colisionesPlataformasSoloSuelo(princesa, items); 
         princesa.moverPrincesa();
         princesa.dibujarPrincesa();
         princesa.actualizarAnimacion();
@@ -177,46 +161,37 @@ public class Niveles {
         }
     }
     
-    //Metodo7
-    public void gameOver() {
-        entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
-        entorno.escribirTexto("GAME OVER", 300, 300);
-        entorno.cambiarFont("Arial", 20, Color.ORANGE, entorno.NORMAL);
-        entorno.escribirTexto("Presiona Enter para volver a intentar", 250, 400);
-        if (entorno.sePresiono(entorno.TECLA_ENTER)) {
-            inicializarNivel1();
+    //Metodo4
+    private void actualizarCamara(Princesa princesa) {
+        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
+            camaraX ++;  
+        } else {
+            camaraX = 0;
         }
-        return;
+        if (camaraX > velMaxCamara) {
+            camaraX = velMaxCamara;
+        }
+        camaraRecorrido+= camaraX;
     }
     
-    public void pantallaVictoria() {
-        // Dibuja la imagen de Candace
-        entorno.dibujarImagen(this.imagenVictoria, entorno.ancho() / 2, entorno.alto() / 2, 0);
-        
-        // Textos centrados
-        entorno.cambiarFont("Arial", 35, Color.CYAN, entorno.NEGRITA);
-        entorno.escribirTexto("¡¡¡GANASTE!!!", entorno.ancho() / 2 - 100, 100); 
-        entorno.escribirTexto("Mucho trabajo detras :):)", entorno.ancho() / 2 - 130, entorno.alto() - 50);
-        entorno.cambiarFont("Arial", 22, Color.WHITE, entorno.NORMAL);
-        entorno.escribirTexto("Presiona Enter para volver a jugar", entorno.ancho() / 2 - 170, entorno.alto() - 80); 
-        
-        if (entorno.sePresiono(entorno.TECLA_ENTER)) {
-            inicializarNivel1();
-        }
-        return;
-    }
-    
-    //Metodo8
-    public void actualizarNivel() {
-        if (nivel == 1 && !princesa.estaMuerta()) {
+    public void actualizarGameplay() {
+        if (nivel == 1) {
             ejecutarNivel1();
-        } else if (nivel == 2  && !princesa.estaMuerta()) {
+        } else if (nivel == 2) {
             ejecutarNivel2();
-        } else if (nivel == 3) {
-            pantallaVictoria();
         }
-        if (princesa.estaMuerta()) {
-            gameOver();
-        }
+    }
+
+    // Getters necesarios para que Main tome decisiones
+    public boolean princesaEstaMuerta() {
+        return this.princesa != null && this.princesa.estaMuerta();
+    }
+
+    public int getNivelActual() {
+        return this.nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
     }
 }

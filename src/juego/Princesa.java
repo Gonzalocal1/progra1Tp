@@ -50,24 +50,23 @@ public class Princesa {
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
         this.limiteDerecha = entorno.ancho()-200;
-        this.limiteIzquierda = 50;
+        this.limiteIzquierda = 30;
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
         this.frameActual = 0;
         this.timerAnimacion = 0;
 
-        // Cargamos los sprites individuales (asumiendo que recortaste 4 frames)
+        // Cargamos los sprites individuales
         this.spritesCaminata = new Image[3];
         this.spritesCaminata[0] = Herramientas.cargarImagen("reimu_caminar_0.png");
         this.spritesCaminata[1] = Herramientas.cargarImagen("reimu_caminar_1.png");
         this.spritesCaminata[2] = Herramientas.cargarImagen("reimu_caminar_2.png");
-        //this.spritesCaminata[3] = Herramientas.cargarImagen("reimu_caminar_3.png");
     }
 
     public void actualizarAnimacion() {
         this.timerAnimacion++;
         
-        // Cada 8 fotogramas del juego, cambiamos al siguiente sprite de Reimu
+        // Cada 8 fotogramas del juego, cambiamos al siguiente sprite
         if (this.timerAnimacion >= 15) { 
             this.frameActual++;
             this.timerAnimacion = 0; 
@@ -83,9 +82,9 @@ public class Princesa {
         Image imagenActual = this.spritesCaminata[this.frameActual];
         
         // Llamamos a tu método pasándole la imagen, la posición y el ángulo
-        entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
-        dibujarVidas();
+       entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
         
+        dibujarVidas();
     }
 
 	
@@ -134,7 +133,7 @@ public class Princesa {
             this.velocidadY = -FUERZA_SALTO; // Impulso inicial hacia arriba
         }
         // si se pasa del limite del mapa se corta el salto
-        if (this.y < 40) {
+        if (this.y < 60) {
         	tiempoSaltando = MAX_TIEMPO_SALTO;
         }
         // Salto variable: si mantiene presionado, el salto es más alto (estilo Mario)
@@ -195,9 +194,34 @@ public class Princesa {
             this.tiempoInvulnerable = 10;
         }
     }
+    
+    public int getVidas() {
+    	return this.vidas;
+    }
+    
+    public void ganarVida() {
+        if(this.vidas < 7) {
+            this.vidas++;
+        }
+    }
 
     
+
+    public void actualizarInvulnerabilidad() {
+        if(this.tiempoInvulnerable > 0) {
+            this.tiempoInvulnerable--;
+        }
+    }
+    
+    public boolean estaMuerta() {
+    	return this.vidas <= 0;
+    }
+    
 	//Getters y Setters
+    public void setLimitesX(double limiteIzquierda, double limiteDerecha) {
+    	this.limiteDerecha = limiteDerecha;
+    	this.limiteIzquierda = limiteIzquierda;
+    }
 	public void setUltimaPlataformaSegura(Plataforma plataforma) {
 	    this.ultimaPlataformaSegura = plataforma; }
     public double getX() { return x; }
@@ -223,27 +247,6 @@ public class Princesa {
     
     public double getLimitePiso() { return limitePiso; }
     public void setLimitePiso(double limitePiso) { this.limitePiso = limitePiso; }
-    
-    public int getVidas() {
-    	return this.vidas;
-    }
-    
-    public void ganarVida() {
-        if(this.vidas < 7) {
-            this.vidas++;
-        }
-    }
 
-    
-
-    public void actualizarInvulnerabilidad() {
-        if(this.tiempoInvulnerable > 0) {
-            this.tiempoInvulnerable--;
-        }
-    }
-    
-    public boolean estaMuerta() {
-    	return this.vidas <= 0;
-    }
 
 }
