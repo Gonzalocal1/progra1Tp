@@ -54,7 +54,11 @@ public class GestionadorEnemigos {
 	        crearEnemigo();
 	    }
 	}
-	
+	private void crearVida(Enemigo enemigo, GestionadorDeItems items) {
+		if (Math.random() < 0.3) {
+			items.crearVida(enemigo.getX(),enemigo.getY());
+		}
+	}
 
 	public boolean actualizarEnemigos( Princesa princesa, Proyectil proyectil,GestionadorDeItems items) {
 
@@ -68,7 +72,7 @@ public class GestionadorEnemigos {
 	            enemigos[i].dibujar();
 	            
 	            if(enemigos[i].colisionaCon(proyectil)) {
-	                items.crearVida(enemigos[i].getX(),enemigos[i].getY());
+	            	crearVida(enemigos[i], items);
 	                enemigos[i].setColisionoTrue();;
 	                proyectilDebeMorir = true;
 	            }
