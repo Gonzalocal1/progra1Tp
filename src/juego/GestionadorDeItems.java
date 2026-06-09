@@ -7,7 +7,7 @@ public class GestionadorDeItems {
     private Entorno entorno;
     public GestionadorDeItems(Entorno entorno) {
         this.entorno = entorno;
-        vidas = new VidaExtra[20];
+        vidas = new VidaExtra[10];
     }
     public void crearVida(double x, double y) {
         for(int i = 0; i < vidas.length; i++) {
@@ -26,7 +26,14 @@ public class GestionadorDeItems {
                     princesa.ganarVida();
                     vidas[i] = null;
                 }
+                if(vidas[i] != null && vidas[i].seSalioDelMapa(entorno)) {
+                	vidas[i] = null;
+                }
             }
         }
+    }
+    
+    public VidaExtra[] getVidas() {
+    	return vidas;
     }
 }

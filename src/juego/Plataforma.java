@@ -76,26 +76,36 @@ public class Plataforma {
 	            return hayInterseccion;
 	 }
 	            
-	    
-	
+	public void colisionaConVida(VidaExtra vida) {
+		// 1. Bordes del piso/plataforma
+		double platIzquierda = this.x - (this.ancho / 2);
+		double platDerecha   = this.x + (this.ancho / 2);
+		double platArriba    = this.y - (this.alto / 2);
+		double platAbajo     = this.y + (this.alto / 2);
+
+		// 2. Bordes del objeto que cae (la vida)
+		double vidaIzquierda = vida.getX() - (vida.getAncho() / 2);
+		double vidaDerecha   = vida.getX() + (vida.getAncho() / 2);
+		double vidaArriba    = vida.getY() - (vida.getAlto() / 2);
+		double vidaAbajo     = vida.getY() + (vida.getAlto() / 2);
+
+		// 3. Verificación completa (Eje X Y Eje Y al mismo tiempo)
+		boolean hayInterseccion = vidaDerecha > platIzquierda &&  // Choca por la izquierda
+		                          vidaIzquierda < platDerecha &&  // Choca por la derecha
+		                          vidaAbajo > platArriba &&       // Choca por arriba
+		                          vidaArriba < platAbajo;         // Choca por abajo (hayInterseccion) {
+	    if(hayInterseccion) {
+		    vida.setEnSuelo(true);
+	    	vida.setVelocidadY(0);
+	    	vida.setY(platArriba - (vida.getAlto() / 2));  
+	    }
+	}
 	
 	//Metodo3
 	public void moverPlataforma(double camaraY) {
 		x -= camaraY;
 	}
 	
-	public boolean colisionaConVida(VidaExtra vida) {
-	    double platIzq = this.x - this.ancho / 2;
-	    double platDer = this.x + this.ancho / 2;
-	    double platArriba = this.y - this.alto / 2;
-	    double vidaIzq = vida.getX() - 10;
-	    double vidaDer = vida.getX() + 10;
-	    double vidaAbajo = vida.getY() + 10;
-	    return vidaDer > platIzq
-	        && vidaIzq < platDer
-	        && vidaAbajo >= platArriba
-	        && vidaAbajo <= platArriba + 10;
-	}
 	
 //Getters y Setters para usar el codigo en otros archivos
 	public double getX() {

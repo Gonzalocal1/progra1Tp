@@ -55,7 +55,7 @@ public class GestionadorEnemigos {
 	    }
 	}
 	private void crearVida(Enemigo enemigo, GestionadorDeItems items) {
-		if (Math.random() < 0.3) {
+		if (Math.random() < 0.9) {
 			items.crearVida(enemigo.getX(),enemigo.getY());
 		}
 	}

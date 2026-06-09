@@ -229,7 +229,7 @@ public class Princesa {
     }
     
     public void ganarVida() {
-        if(this.vidas < 5) {
+        if(this.vidas < 7) {
             this.vidas++;
         }
     }

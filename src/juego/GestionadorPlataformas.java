@@ -59,14 +59,19 @@ public class GestionadorPlataformas {
 	}
 	
 	//Metodo3
-	public void colisionesPlataformas(Princesa princesa) {
+	public void colisionesPlataformas(Princesa princesa, GestionadorDeItems items) {
+		VidaExtra[] vidas = items.getVidas();
 		int contadorIntersecciones = 0;
 		for(int i = 0; i < suelo.length; i++) {
 	        if(suelo[i] != null) {
 	            if(suelo[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
-	            
+	            for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						suelo[i].colisionaConVida(vidas[j]);
+					}
+				}
 	        }
 	    }
 		for(int i = 0; i < islas.length; i++) {
@@ -74,6 +79,11 @@ public class GestionadorPlataformas {
 	            if(islas[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
+		        for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						islas[i].colisionaConVida(vidas[j]);
+					}
+				}
 	        }
 		}
 		
@@ -82,6 +92,11 @@ public class GestionadorPlataformas {
 	            if(islasSegundaCapa[i].ColisionConPrincesa(princesa)) {
 	            	contadorIntersecciones++;
 	            }
+		        for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						islasSegundaCapa[i].colisionaConVida(vidas[j]);
+					}
+				}
 	        }
 		}
 		//Si no hay colisiones la princesa comenzara a caer
@@ -233,8 +248,5 @@ public class GestionadorPlataformas {
 			islasSegundaCapa[i] = null;
 		}
 	}
-	public void colisionesItems(GestionadorDeItems items) {
-
-	}
-	}
+}
 

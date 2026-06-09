@@ -104,7 +104,7 @@ public class Niveles {
         actualizarCamara(princesa);
         princesa.dibujarPrincesa();
         princesa.moverPrincesa();
-        plataformas.colisionesPlataformas(princesa);
+        
         if(princesa.getY() > entorno.alto() + 100) {
             princesa.perderVida();
             princesa.reaparecer();
@@ -112,6 +112,7 @@ public class Niveles {
         princesa.actualizarInvulnerabilidad();
         princesa.actualizarAnimacion();
         items.actualizarItems(princesa, camaraX);
+        plataformas.colisionesPlataformas(princesa, items);
         plataformas.dibujarPlataformas(camaraX);
         plataformas.dibujarIslas(camaraX);
         
@@ -142,7 +143,7 @@ public class Niveles {
     private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
-        plataformas.colisionesPlataformas(princesa); 
+        plataformas.colisionesPlataformas(princesa, items); 
         princesa.moverPrincesa();
         princesa.dibujarPrincesa();
         princesa.actualizarAnimacion();
