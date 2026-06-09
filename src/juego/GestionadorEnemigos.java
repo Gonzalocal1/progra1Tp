@@ -34,6 +34,7 @@ public class GestionadorEnemigos {
 	    for(int i = 0; i < enemigos.length; i++) {
 	        if(enemigos[i] == null) {
 	            boolean izquierda = Math.random() < 0.5;
+	            boolean esFuerte = Math.random() < 0.3;
 	            double x;
 	            if(izquierda) {
 	                x = -30;
@@ -42,7 +43,7 @@ public class GestionadorEnemigos {
 	                x = entorno.ancho() + 30;
 	            }
 	            double y = 100 + Math.random() * 400;
-	            enemigos[i] = new Enemigo(x, y, izquierda, entorno);
+	            enemigos[i] = new Enemigo(x, y, izquierda, esFuerte, entorno);
 	            break;
 	        }
 	    }

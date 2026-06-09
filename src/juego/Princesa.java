@@ -132,7 +132,10 @@ public class Princesa {
             enElSuelo = false;
             this.velocidadY = -FUERZA_SALTO; // Impulso inicial hacia arriba
         }
-        
+        // si se pasa del limite del mapa se corta el salto
+        if (this.y < 40) {
+        	tiempoSaltando = MAX_TIEMPO_SALTO;
+        }
         // Salto variable: si mantiene presionado, el salto es más alto (estilo Mario)
         if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !enElSuelo && tiempoSaltando < MAX_TIEMPO_SALTO) {
             this.velocidadY = -FUERZA_SALTO; 
