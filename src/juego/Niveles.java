@@ -19,8 +19,14 @@ public class Niveles {
     private Jefe jefe;
     private Image fondolvl1;
     private GestionadorDeItems items;
+    
+    
     private double camaraX = 0;
-    private double maxCamara = 4;
+    private double velMaxCamara = 4;
+    private double camaraRecorrido = 4;
+    private double maxCamaraRecorrido;
+    
+    
     private int nivel = 1;
     
     //Retorna clases de codigo de otros archivos para poder generar el nivel
@@ -29,43 +35,29 @@ public class Niveles {
     public Niveles(Entorno entorno) {
         this.entorno = entorno;
         fondolvl1 = Herramientas.cargarImagen("fondo1.jpg");
+
     }
     
 //Metodos
   //Metodo1
-    private void dibujarVidas() {
 
-    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
-
-    	entorno.escribirTexto("VIDAS", 20, 30);
-
-    	for(int i = 0; i < princesa.getVidas(); i++) {
-
-    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
-    	}
-    }
 
   //Metodo2
     public void inicializarNivel1() {
-        princesa = new Princesa(entorno.ancho()/2, 200, 45, 25, entorno);
+        this.nivel = 1;
+        int largoPiso = 200;
+        camaraRecorrido = 0;
+    	princesa = new Princesa(entorno.ancho()/2, entorno.alto()/2, 45, 25, entorno);
         plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(50, entorno);
-        plataformas.crearIslas(50, entorno);
+        plataformas.crearPiso(largoPiso, entorno);
+        plataformas.crearIslas(entorno);
+        plataformas.crearIslasSegundaCapa(entorno);
+        this.maxCamaraRecorrido = plataformas.getUltimaPlat() - entorno.ancho();
         proyectil = new Proyectil(600, entorno.alto() - 15);
         enemigos = new GestionadorEnemigos(entorno);
         enemigos.inicializarEnemigos(10);
-        castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
+        castillo = new Castillo(plataformas.getUltimaPlat()-200, 550, "castillo.jpg", this.entorno);
         items = new GestionadorDeItems(entorno);
-    }
-    
-    public void inicializarNivel1(Princesa princesa) {
-        plataformas = new GestionadorPlataformas();
-        plataformas.crearPiso(150, entorno);
-        plataformas.crearIslas(150, entorno);
-        proyectil = new Proyectil(600, entorno.alto() - 15);
-        enemigos = new GestionadorEnemigos(entorno);
-        enemigos.inicializarEnemigos(10);
-        castillo = new Castillo(plataformas.getUltimaPlat(), 550, "castillo.jpg", this.entorno);
     }
     
     private void inicializarNivel2() {
@@ -82,33 +74,29 @@ public class Niveles {
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         this.castillo = null;
         this.jefe = new Jefe(entorno);
-        this.jefeProyectil = new JefeProyectil(0, 40, entorno);
-        this.jefeProyectil2 = new JefeProyectil(90, 40, entorno);
-        this.jefeProyectil3 = new JefeProyectil(180, 40, entorno);
-        this.jefeProyectil4 = new JefeProyectil(270, 40, entorno);
+        this.jefe.iniciarAtaque1(princesa);
     }
     
   //Metodo4
     private void actualizarCamara(Princesa princesa) {
-        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA)) {
-            camaraX += 1;
+        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
+            camaraX ++;  
         } else {
             camaraX = 0;
         }
-        if (camaraX > maxCamara) {
-            camaraX = maxCamara;
+        if (camaraX > velMaxCamara) {
+            camaraX = velMaxCamara;
         }
+        camaraRecorrido+= camaraX;
     }
     
   //Metodo5
     private void ejecutarNivel1() {
     	entorno.dibujarImagen(fondolvl1, entorno.ancho()/2, entorno.alto()/2, 0);
         actualizarCamara(princesa);
-        princesa.dibujarPrincesa(entorno);
-        dibujarVidas();
-        princesa.setEnElSuelo(false);
-        plataformas.colisionesPlataformas(princesa);
+        princesa.dibujarPrincesa();
         princesa.moverPrincesa();
+        plataformas.colisionesPlataformas(princesa);
         if(princesa.getY() > entorno.alto() + 100) {
             princesa.perderVida();
             princesa.reaparecer();
@@ -129,7 +117,6 @@ public class Niveles {
         
         enemigos.mantenerEnemigos();
         castillo.dibujar(camaraX);
-        castillo.moverCastillo(camaraX);
 
         if (castillo.verificarVictoria(princesa)) {
             inicializarNivel2();
@@ -141,9 +128,8 @@ public class Niveles {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
         plataformas.colisionesPlataformas(princesa); 
-        
         princesa.moverPrincesa();
-        princesa.dibujarPrincesa(entorno);
+        princesa.dibujarPrincesa();
         princesa.actualizarAnimacion();
         princesa.actualizarInvulnerabilidad();
         
@@ -159,9 +145,9 @@ public class Niveles {
             proyectil = new Proyectil(400, entorno.alto() - 40);
         }
         
-        // 3. ¡EL PARRY TRABAJANDO! (El jefe comprueba si el proyectil activo lo tocó)
-        if (jefe != null) {
-            jefe.detectarColisionProyectil(proyectil);
+        // 3 (El jefe comprueba si el proyectil activo lo tocó)
+        if (jefe.detectarColisionProyectil(proyectil)) {
+            proyectil = null;
         }
         
         // 4. Texto informativo
@@ -171,7 +157,6 @@ public class Niveles {
         // 5. Movimiento y render del jefe y sus ataques
         jefe.dibujarJefe();
         jefe.actualizarAtaques(princesa);
-        jefe.actualizarInvulnerabilidad();
     }
     
     
@@ -180,8 +165,11 @@ public class Niveles {
     	if (princesa.estaMuerta()) {
     		entorno.cambiarFont("Arial", 30, Color.ORANGE, entorno.NEGRITA);
     	    entorno.escribirTexto("GAME OVER", 300, 300);
-    	    entorno.cambiarFont("Arial", 25, Color.ORANGE, entorno.NORMAL);
-    	    entorno.escribirTexto("volver a intentar?", 300, 400);
+    	    entorno.cambiarFont("Arial", 20, Color.ORANGE, entorno.NORMAL);
+    	    entorno.escribirTexto("Presiona Enter para volver a intentar", 250, 400);
+    	    if (entorno.sePresiono(entorno.TECLA_ENTER)) {
+    	    	inicializarNivel1();
+    	    }
     	    return;
     	}
     }

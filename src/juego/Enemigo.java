@@ -17,6 +17,7 @@ public class Enemigo {
     private Image[] sprites;
     private int frameActual;
     private int timerAnimacion;
+    private boolean colisiono;
     
 //Constructor
     public Enemigo(double x, double y, boolean vieneDeIzquierda, Entorno entorno) {
@@ -31,6 +32,7 @@ public class Enemigo {
         this.timerAnimacion = 0;
         this.ancho = 30;
         this.alto = 30;
+        this.colisiono = false;
         this.entorno = entorno;
         if(vieneDeIzquierda) {
             this.velocidadX = 3;
@@ -46,6 +48,7 @@ public class Enemigo {
     public void mover() {
         this.x += this.velocidadX;
     }
+
 
   //Metodo2
     
@@ -99,6 +102,15 @@ public class Enemigo {
     public double getAlto() {
         return alto;
     }
+    
+    public boolean isColisiono() {
+        return colisiono;
+    }
+    
+    public void setColisionoTrue() {
+        this.colisiono = true;
+    }
+
 
     //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
     public boolean colisionaCon(Princesa princesa) {

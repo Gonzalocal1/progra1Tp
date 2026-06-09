@@ -25,8 +25,8 @@ public class Plataforma {
 	
 //Metodos
 	//Metodo1 
-	public void dibujo(double camaraX) {
-		entorno.dibujarRectangulo(x - camaraX, y, ancho, alto, 0, Color.blue);
+	public void dibujo() {
+		entorno.dibujarRectangulo(x, y, ancho, alto, 0, Color.blue);
 	}
 	
 	//Metodo2
@@ -50,12 +50,10 @@ public class Plataforma {
 	                if(overlapY < overlapX) {
 	                    // Princesa arriba de la plataforma
 	                    if(princesa.getY() < this.y) {
-	                        if(!princesa.isEnElSuelo()) {
 	                            princesa.setY(platArriba - (princesa.getAlto() / 2));
 	                            princesa.setVelocidadY(0);
 	                            princesa.setEnElSuelo(true);
 	                            princesa.setUltimaPlataformaSegura(this);
-	                        }
 	                    }
 	                    else {
 	                        // Golpeó desde abajo

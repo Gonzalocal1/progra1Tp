@@ -15,12 +15,13 @@ public class Princesa {
     private double ancho;
     private double velocidadX;
     private double velocidadY;
-    private double limiteX;
+    private double limiteDerecha;
+    private double limiteIzquierda;
     private int vidas;
     private int tiempoInvulnerable; //ESTO LO AGREGO XQ SI NO LOS MUCIELAGOS MATABAN DE UNA A LA PRINCESA
     
     // Constantes del movimiento
-    private static final double FUERZA_SALTO = 6.0; // transforma cada velocidadY durante el salto tick
+    private static final double FUERZA_SALTO = 7.0; // transforma cada velocidadY durante el salto tick
     private static final double GRAVEDAD = 0.5;     // gravedad que se acumula cada tick
     private static final double CAIDA_MAXIMA = 8.0; // velocidad terminal de caida
 
@@ -48,7 +49,8 @@ public class Princesa {
 		this.velocidadY = 0;
 		this.enElSuelo = false;
         this.tiempoSaltando = 0;
-        this.limiteX = entorno.ancho()-200;
+        this.limiteDerecha = entorno.ancho()-200;
+        this.limiteIzquierda = 50;
         this.vidas = 3;
         this.tiempoInvulnerable = 0;
         this.frameActual = 0;
@@ -76,14 +78,31 @@ public class Princesa {
         }
     }
 	
-    public void dibujarPrincesa(Entorno entorno) {
+    public void dibujarPrincesa() {
         // Obtenemos la imagen que toca mostrar en este fotograma
         Image imagenActual = this.spritesCaminata[this.frameActual];
         
         // Llamamos a tu método pasándole la imagen, la posición y el ángulo
         entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
+        dibujarVidas();
+        
     }
 
+	
+    private void dibujarVidas() {
+
+    	entorno.cambiarFont("Arial", 20, java.awt.Color.WHITE);
+
+    	entorno.escribirTexto("VIDAS", 20, 30);
+    	
+    	//entorno.escribirTexto("X = " + String.valueOf(x), 20, 120);
+    	//entorno.escribirTexto("X = " + String.valueOf(y), 20, 150);
+
+    	for(int i = 0; i < vidas; i++) {
+
+    		entorno.dibujarRectangulo(30 + (i * 30),60,20,20,0,java.awt.Color.RED);
+    	}
+    }
 	
 	private void chequearPiso() {
         if (this.enElSuelo == true) {
@@ -94,14 +113,14 @@ public class Princesa {
 	
 	//Metodo2
 	private void moverIzquierda() {
-		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && x > limiteIzquierda) {
 			this.velocidadX = 7;
 			this.x -= this.velocidadX; 
 		}
 	}
 	//Metodo3
 	private void moverDerecha() {
-		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteX) {
+		if (entorno.estaPresionada(entorno.TECLA_DERECHA) && x < limiteDerecha) {
 			this.velocidadX = 7;
 			this.x += this.velocidadX; 
 		}
@@ -170,11 +189,10 @@ public class Princesa {
 	public void perderVida() {
         if(this.tiempoInvulnerable == 0) {
             this.vidas--;
-            this.tiempoInvulnerable = 60;
+            this.tiempoInvulnerable = 10;
         }
     }
-	
-    
+
     
 	//Getters y Setters
 	public void setUltimaPlataformaSegura(Plataforma plataforma) {

@@ -29,12 +29,13 @@ public class Castillo {
     //Metodo1
     public void dibujar(double camaraX) {
         if (this.imagen != null) {
-            this.entorno.dibujarImagen(this.imagen, this.x - camaraX, this.y, 0, 0.1);
+        	moverCastillo(camaraX);
+            this.entorno.dibujarImagen(this.imagen, this.x, this.y, 0, 0.1);
         }
     }
     
   //Metodo2
-    public void moverCastillo(double camaraX) {
+    private void moverCastillo(double camaraX) {
     	this.x -= camaraX;
     }
     

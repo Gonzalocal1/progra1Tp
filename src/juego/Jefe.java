@@ -31,7 +31,7 @@ public class Jefe {
 		this.y = entorno.alto()/2;
 		this.alto = 40;
 		this.ancho = 40;
-		this.vidas = 10;
+		this.vidas = 14;
 		this.timerAtaque = 0;
 		this.ataque = 1;
 		this.timerAtaqueMaximo = 0;
@@ -180,7 +180,7 @@ public class Jefe {
 		dibujarVidas();
 	}
 
-	public void detectarColisionProyectil(Proyectil proyectil) {
+	public boolean detectarColisionProyectil(Proyectil proyectil) {
         // Solo intentamos el parry si el proyectil fue disparado y está activo
         if (proyectil != null && proyectil.isDisparado()) {
 
@@ -191,10 +191,11 @@ public class Jefe {
                                 this.y + this.alto/2 > proyectil.getY() - proyectil.getAlto()/2);
 
             if (colision) {
-                // 1. Invertimos la dirección del proyectil multiplicando sus velocidades por -1
-                perderVida();
+            	perderVida();
+            	return true;
             }
         }
+        return false;
     }
     
 	private void dibujarVidas() {
@@ -202,25 +203,24 @@ public class Jefe {
     	entorno.cambiarFont("Arial", 20, java.awt.Color.RED);
 
     	entorno.escribirTexto("Jefe", 590, 30);
-
+    	int columna1Vidas = 0;
+    	int columna2Vidas = 0;
     	for(int i = 0; i < this.vidas; i++) {
-
-    		entorno.dibujarRectangulo(600 + (i * 30),60,20,20,0,java.awt.Color.LIGHT_GRAY);
+    		if (i < 7 ) {
+    			entorno.dibujarRectangulo(600 + columna1Vidas,60,20,20,0,java.awt.Color.LIGHT_GRAY);
+    			columna1Vidas += 30;
+    		} else {
+    			entorno.dibujarRectangulo(600 + columna2Vidas,100,20,20,0,java.awt.Color.LIGHT_GRAY);
+    			columna2Vidas += 30;
+    		}
     	}
     }
 	
     private void perderVida() {
-        if(this.tiempoInvulnerable == 0) {
-            this.vidas--;
-            this.tiempoInvulnerable = 60;
-        }
+    	this.vidas--;
     }
     
-    public void actualizarInvulnerabilidad() {
-        if(this.tiempoInvulnerable > 0) {
-            this.tiempoInvulnerable--;
-        }
-    }
+
     
 	public boolean estaMuerto() {
 		if (vidas <= 0) {
