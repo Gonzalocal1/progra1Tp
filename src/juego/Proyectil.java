@@ -18,7 +18,7 @@ public class Proyectil {
     private boolean disparado;
     private boolean equipado; // Evita el bug de quedarse flotando en el aire
 
-//Constructor
+    //Constructor
     public Proyectil(double x, double y) {
         this.ancho = 30; 
         this.alto = 15;
@@ -31,8 +31,8 @@ public class Proyectil {
         this.y = y;
     }
 
-//Metodos
-  //Metodo1
+    //Metodos
+    //Metodo1
     public void dibujar(Entorno entorno) {
         double angulo = 0;
         if (disparado) {
@@ -40,7 +40,8 @@ public class Proyectil {
         }
         entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, angulo, Color.RED);
     }
-  //Metodo2
+
+    //Metodo2
     public void actualizar(Princesa princesa) {
         if (!disparado) {
             // SI NO SE DISPARÓ: Sigue a la princesa
@@ -52,7 +53,8 @@ public class Proyectil {
             this.y += this.vy;
         }
     }
-  //Metodo3
+
+    //Metodo3
     // Calcula el vector de velocidad apuntando directamente al mouse (360 grados)
     public void disparar(int mouseX, int mouseY) {
         if (!this.disparado) {
@@ -75,14 +77,18 @@ public class Proyectil {
             this.vy = (deltaY / distancia) * this.velocidad;
         }
     }
-  //Metodo4
-    public boolean disparo(Princesa princesa, Entorno entorno) {
+
+    //Metodo4 - Modificado para recibir el movimiento de la cámara
+    public boolean disparo(Princesa princesa, Entorno entorno, double camaraX) {
         // 1. Dibujarse en la pantalla
         this.dibujar(entorno);
 
         // 2. Manejar el agarre y el seguimiento a la princesa
         if (!this.disparado) {
             if (!this.equipado) {
+                // SI ESTÁ EN EL SUELO: Se mueve con el desplazamiento de la cámara
+                this.x -= camaraX;
+
                 // Caja de colisión para agarrarlo del suelo por primera vez
                 boolean tocando = (princesa.getX() - princesa.getAncho()/2 < this.x + this.ancho/2 &&
                                    princesa.getX() + princesa.getAncho()/2 > this.x - this.ancho/2 &&
@@ -111,63 +117,62 @@ public class Proyectil {
         }
         return true; 
     }
-  //Metodo5
+
+    //Metodo5
     public boolean seSalioDelMapa(Entorno entorno) {
         return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
     }
 
-    
-    
-//Getters y Setters
-
+    //Getters y Setters
     public boolean isDisparado() { 
         return disparado; 
     }
 
-	public double getX() {
-		return x;
-	}
+    public double getX() {
+        return x;
+    }
 
-	public void setX(double x) {
-		this.x = x;
-	}
+    public void setX(double x) {
+        this.x = x;
+    }
 
-	public double getY() {
-		return y;
-	}
+    public double getY() {
+        return y;
+    }
 
-	public void setY(double y) {
-		this.y = y;
-	}
+    public void setY(double y) {
+        this.y = y;
+    }
 
-	public double getAlto() {
-		return alto;
-	}
+    public double getAlto() {
+        return alto;
+    }
 
-	public void setAlto(double alto) {
-		this.alto = alto;
-	}
+    public void setAlto(double alto) {
+        this.alto = alto;
+    }
 
-	public double getAncho() {
-		return ancho;
-	}
+    public double getAncho() {
+        return ancho;
+    }
 
-	public void setAncho(double ancho) {
-		this.ancho = ancho;
-	}
-	public double getVx() {
-	    return this.vx;
-	}
+    public void setAncho(double ancho) {
+        this.ancho = ancho;
+    }
+    
+    public double getVx() {
+        return this.vx;
+    }
 
-	public void setVx(double vx) {
-	    this.vx = vx;
-	}
+    public void setVx(double vx) {
+        this.vx = vx;
+    }
 
-	public double getVy() {
-	    return this.vy;
-	}
+    public double getVy() {
+        return this.vy;
+    }
 
-	public void setVy(double vy) {
-	    this.vy = vy;
-	}
+    public void setVy(double vy) {
+        this.vy = vy;
+    }
 }
