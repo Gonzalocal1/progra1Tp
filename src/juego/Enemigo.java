@@ -47,6 +47,7 @@ public class Enemigo {
         this.timerAnimacion = 0;
         this.ancho = 30;
         this.alto = 30;
+        this.colisiono = false;
         this.entorno = entorno;
         if(vieneDeIzquierda) {
             this.velocidadX = 3;
