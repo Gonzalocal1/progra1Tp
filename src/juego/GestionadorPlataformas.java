@@ -10,8 +10,7 @@ public class GestionadorPlataformas {
 	private Plataforma[] suelo;
 	private Plataforma[] islas;
 	private Plataforma[] islasSegundaCapa;
-//Metodos
-	//Metodo1
+
 	public void crearPiso(int cantPlataformas, Entorno entorno) {
 		Random random = new Random();
 		int separacion = 20;
@@ -45,118 +44,7 @@ public class GestionadorPlataformas {
 			}
 		}
 	}
-	//Metodo2
-	public void dibujarPlataformas(double camaraX) {
-		for(int i = 0; i < suelo.length; i++) {
-
-	        if(suelo[i] != null) {
-
-	            suelo[i].dibujo();
-	            suelo[i].moverPlataforma(camaraX);
-
-	        }
-	    }
-	}
 	
-	//Metodo3
-	public void colisionesPlataformas(Princesa princesa, GestionadorDeItems items) {
-		VidaExtra[] vidas = items.getVidas();
-		int contadorIntersecciones = 0;
-		for(int i = 0; i < suelo.length; i++) {
-	        if(suelo[i] != null) {
-	            if(suelo[i].ColisionConPrincesa(princesa)) {
-	            	contadorIntersecciones++;
-	            }
-	            for(int j = 0;j < vidas.length;j++) {
-					if (vidas[j] != null) {
-						suelo[i].colisionaConVida(vidas[j]);
-					}
-				}
-	        }
-	    }
-		for(int i = 0; i < islas.length; i++) {
-	        if(islas[i] != null) {
-	            if(islas[i].ColisionConPrincesa(princesa)) {
-	            	contadorIntersecciones++;
-	            }
-		        for(int j = 0;j < vidas.length;j++) {
-					if (vidas[j] != null) {
-						islas[i].colisionaConVida(vidas[j]);
-					}
-				}
-	        }
-		}
-		
-		for(int i = 0; i < islasSegundaCapa.length; i++) {
-	        if(islasSegundaCapa[i] != null) {
-	            if(islasSegundaCapa[i].ColisionConPrincesa(princesa)) {
-	            	contadorIntersecciones++;
-	            }
-		        for(int j = 0;j < vidas.length;j++) {
-					if (vidas[j] != null) {
-						islasSegundaCapa[i].colisionaConVida(vidas[j]);
-					}
-				}
-	        }
-		}
-		//Si no hay colisiones la princesa comenzara a caer
-		if (contadorIntersecciones == 0) {
-        	princesa.setEnElSuelo(false);
-        }
-	}
-	
-	public void colisionesPlataformasSoloSuelo(Princesa princesa, GestionadorDeItems items) { //pensado para el nivel 2 sin islas
-		VidaExtra[] vidas = items.getVidas();
-		int contadorIntersecciones = 0;
-		for(int i = 0; i < suelo.length; i++) {
-	        if(suelo[i] != null) {
-	            if(suelo[i].ColisionConPrincesa(princesa)) {
-	            	contadorIntersecciones++;
-	            }
-	            for(int j = 0;j < vidas.length;j++) {
-					if (vidas[j] != null) {
-						suelo[i].colisionaConVida(vidas[j]);
-					}
-				}
-	        }
-	    }
-		//Si no hay colisiones la princesa comenzara a caer
-		if (contadorIntersecciones == 0) {
-        	princesa.setEnElSuelo(false);
-        }
-	}
-	//Metodo4
-	public double getUltimaPlat() {
-		return suelo[suelo.length-1].getX();
-	}
-	
-	//Metodo5
-	public void crearPisoNivel2(int cantPlataformas, Entorno entorno) {
-	    int separacion = 20; // Distancia entre el centro de una plataforma y la siguiente
-	    int altura = entorno.alto(); // Posición en Y (el suelo)
-	    int alto = 20;
-	    int ancho = 20;
-	    this.suelo = new Plataforma[cantPlataformas];
-	    
-	    // 1. Inicializamos la primera plataforma en el inicio de la pantalla 
-	    if (cantPlataformas > 0) {
-	        suelo[0] = new Plataforma(altura, alto, ancho, entorno);
-	        suelo[0].setX(10); // Posición inicial X para la primera plataforma (mitad de su ancho)
-	        suelo[0].setEsPozo(false); // Nos aseguramos de que no sea pozo
-	    }
-	    
-	    // 2. Inicializamos y posicionamos el resto de las plataformas de forma corrida
-	    for (int i = 1; i < cantPlataformas; i++) {
-	        suelo[i] = new Plataforma(altura, alto, ancho, entorno);
-	        suelo[i].setEsPozo(false); // Ninguna es pozo
-	        
-	        // Tomamos la X de la plataforma anterior y le sumamos la separación constante
-	        double platXAnterior = suelo[i - 1].getX();
-	        suelo[i].setX(platXAnterior + separacion);
-	    }
-	}
-	
-	//Metodo7
 	public void crearIslas(Entorno entorno) {
 	    Random random = new Random();
 	    int separacion = 20;
@@ -239,7 +127,102 @@ public class GestionadorPlataformas {
 	    }
 	}
 	
-	//Metodo8
+	public void crearPisoNivel2(int cantPlataformas, Entorno entorno) {
+	    int separacion = 20; // Distancia entre el centro de una plataforma y la siguiente
+	    int altura = entorno.alto(); // Posición en Y (el suelo)
+	    int alto = 20;
+	    int ancho = 20;
+	    this.suelo = new Plataforma[cantPlataformas];
+	    
+	    // 1. Inicializamos la primera plataforma en el inicio de la pantalla 
+	    if (cantPlataformas > 0) {
+	        suelo[0] = new Plataforma(altura, alto, ancho, entorno);
+	        suelo[0].setX(10); // Posición inicial X para la primera plataforma (mitad de su ancho)
+	        suelo[0].setEsPozo(false); // Nos aseguramos de que no sea pozo
+	    }
+	    
+	    // 2. Inicializamos y posicionamos el resto de las plataformas de forma corrida
+	    for (int i = 1; i < cantPlataformas; i++) {
+	        suelo[i] = new Plataforma(altura, alto, ancho, entorno);
+	        suelo[i].setEsPozo(false); // Ninguna es pozo
+	        
+	        // Tomamos la X de la plataforma anterior y le sumamos la separación constante
+	        double platXAnterior = suelo[i - 1].getX();
+	        suelo[i].setX(platXAnterior + separacion);
+	    }
+	}
+
+	public void colisionesPlataformas(Princesa princesa, GestionadorDeItems items) {
+		VidaExtra[] vidas = items.getVidas();
+		int contadorIntersecciones = 0;
+		for(int i = 0; i < suelo.length; i++) {
+	        if(suelo[i] != null) {
+	            if(suelo[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
+	            for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						suelo[i].colisionaConVida(vidas[j]);
+					}
+				}
+	        }
+	    }
+		for(int i = 0; i < islas.length; i++) {
+	        if(islas[i] != null) {
+	            if(islas[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
+		        for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						islas[i].colisionaConVida(vidas[j]);
+					}
+				}
+	        }
+		}
+		
+		for(int i = 0; i < islasSegundaCapa.length; i++) {
+	        if(islasSegundaCapa[i] != null) {
+	            if(islasSegundaCapa[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
+		        for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						islasSegundaCapa[i].colisionaConVida(vidas[j]);
+					}
+				}
+	        }
+		}
+		//Si no hay colisiones la princesa comenzara a caer
+		if (contadorIntersecciones == 0) {
+        	princesa.setEnElSuelo(false);
+        }
+	}
+	
+	public void colisionesPlataformasSoloSuelo(Princesa princesa, GestionadorDeItems items) { //pensado para el nivel 2 sin islas
+		VidaExtra[] vidas = items.getVidas();
+		int contadorIntersecciones = 0;
+		for(int i = 0; i < suelo.length; i++) {
+	        if(suelo[i] != null) {
+	            if(suelo[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
+	            for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						suelo[i].colisionaConVida(vidas[j]);
+					}
+				}
+	        }
+	    }
+		//Si no hay colisiones la princesa comenzara a caer
+		if (contadorIntersecciones == 0) {
+        	princesa.setEnElSuelo(false);
+        }
+	}
+
+	public double getUltimaPlat() {
+		return suelo[suelo.length-1].getX();
+	}
+	
 	public void dibujarIslas(double camaraX) {
 		for(int i = 0; i < islas.length; i++) {
 	        if(islas[i] != null) {
@@ -254,19 +237,17 @@ public class GestionadorPlataformas {
 	        }
 	    }
 	}
-	//Metodo9
-	/*public void limpiarIslas( ) {
-		for (int i = 0;i < islas.length;i++) {
-			islas[i] = null;
-		}
-		for (int i = 0;i < islasSegundaCapa.length;i++) {
-			islasSegundaCapa[i] = null;
-		}
+	
+	public void dibujarPlataformas(double camaraX) {
+		for(int i = 0; i < suelo.length; i++) {
+
+	        if(suelo[i] != null) {
+
+	            suelo[i].dibujo();
+	            suelo[i].moverPlataforma(camaraX);
+
+	        }
+	    }
 	}
-	public void limpiarPlataformas( ) {
-		for (int i = 0;i < suelo.length;i++) {
-			suelo[i] = null;
-		}
-	}*/
 }
 
