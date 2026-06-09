@@ -101,7 +101,7 @@ public class Enemigo {
     
     //ESTO COMPRUEBA SI COLISIONA EL PROYECTIL CON EL ENEMIGO
     public boolean colisionaCon(Proyectil proyectil) {
-        if(proyectil == null) {
+        if(proyectil == null || !proyectil.isDisparado()) {
             return false;
         }
         return this.x - this.ancho/2 < proyectil.getX() + proyectil.getAncho()/2 &&
@@ -110,6 +110,25 @@ public class Enemigo {
                this.y + this.alto/2 > proyectil.getY() - proyectil.getAlto()/2;
     }
 
+    //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
+    public boolean colisionaCon(Princesa princesa) {
+
+        if(princesa == null) {
+            return false;
+        }
+        return
+            this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
+            &&
+            this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
+            &&
+            this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
+            &&
+            this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
+    }
+
+
+    
+    
 //Getters y Setters para que se usen en otros archivos el codigo
     public double getX() {
         return x;
@@ -136,20 +155,4 @@ public class Enemigo {
     }
 
 
-    //ESTO DETECTA SI EL ENEMIGO ESTA SUPERPUESTO A LA PRINCESA DETECTANDO LA COLISION
-    public boolean colisionaCon(Princesa princesa) {
-
-        if(princesa == null) {
-            return false;
-        }
-        return
-            this.x - this.ancho/2 < princesa.getX() + princesa.getAncho()/2
-            &&
-            this.x + this.ancho/2 > princesa.getX() - princesa.getAncho()/2
-            &&
-            this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2
-            &&
-            this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
-    }
 }
-

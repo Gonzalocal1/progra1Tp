@@ -68,7 +68,7 @@ public class GestionadorEnemigos {
 	    }
 	}
 	private void crearVida(Enemigo enemigo, GestionadorDeItems items) {
-		if (Math.random() < 0.9) {
+		if (Math.random() < 0.4) {
 			items.crearVida(enemigo.getX(),enemigo.getY());
 		}
 	}
@@ -103,12 +103,5 @@ public class GestionadorEnemigos {
 	    }
 	    return proyectilDebeMorir;
 	}
-
-	/*Metodo6
-	public void limpiarEnemigos() {
-		for (int i = 0; i < enemigos.length; i++) {
-			enemigos[i] = null;
-		}
-	}*/
 
 }

@@ -93,7 +93,7 @@ public class Plataforma {
 		boolean hayInterseccion = vidaDerecha > platIzquierda &&  // Choca por la izquierda
 		                          vidaIzquierda < platDerecha &&  // Choca por la derecha
 		                          vidaAbajo > platArriba &&       // Choca por arriba
-		                          vidaArriba < platAbajo;         // Choca por abajo (hayInterseccion) {
+		                          vidaArriba < platAbajo;         // Choca por abajo 
 	    if(hayInterseccion) {
 		    vida.setEnSuelo(true);
 	    	vida.setVelocidadY(0);
