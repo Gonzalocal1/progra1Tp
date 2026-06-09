@@ -17,20 +17,37 @@ public class Enemigo {
     private Image[] sprites;
     private int frameActual;
     private int timerAnimacion;
+    private boolean colisiono;
+    private boolean fuerte;
+    private double yBase;          // La altura central por la que viaja el enemigo
+    private double anguloOnda = 0; // Reemplaza a tu variable 'anim'
+    private double amplitud = 40;  // Qué tan alta es la onda en píxeles (probá con 40 o 50)
+    private double velocidadOnda = 0.05; // Qué tan rápido oscila (números chicos entre 0.01 y 0.1)
     
 //Constructor
-    public Enemigo(double x, double y, boolean vieneDeIzquierda, Entorno entorno) {
+    public Enemigo(double x, double y, boolean vieneDeIzquierda, boolean esFuerte, Entorno entorno) {
         this.x = x;
         this.y = y;
-        this.sprites = new Image[2];
+        this.yBase = y;
+        this.fuerte = esFuerte;
+        this.sprites = new Image[4];
         this.sprites[0] =
             Herramientas.cargarImagen("enemigo0.png");
         this.sprites[1] =
             Herramientas.cargarImagen("enemigo1.png");
-        this.frameActual = 0;
+        this.sprites[2] =
+            Herramientas.cargarImagen("enemigo3.png");
+        this.sprites[3] =
+            Herramientas.cargarImagen("enemigo4.png");
+        if (fuerte) {
+        	this.frameActual = 2;
+        } else {
+        	this.frameActual = 0;
+        }        
         this.timerAnimacion = 0;
         this.ancho = 30;
         this.alto = 30;
+        this.colisiono = false;
         this.entorno = entorno;
         if(vieneDeIzquierda) {
             this.velocidadX = 3;
@@ -44,7 +61,12 @@ public class Enemigo {
     
   //Metodo1
     public void mover() {
+        // 1. Avanza horizontalmente de forma normal
         this.x += this.velocidadX;
+        if (fuerte) {
+            this.anguloOnda += this.velocidadOnda;
+            this.y = this.yBase + (Math.sin(anguloOnda) * amplitud);
+        }
     }
 
 
@@ -55,8 +77,11 @@ public class Enemigo {
         if(timerAnimacion >= 15) {
             frameActual++;
             timerAnimacion = 0;
-            if(frameActual >= sprites.length) {
+            if(!fuerte &&frameActual >= 2) {
                 frameActual = 0;
+            }
+            if(fuerte && frameActual >= sprites.length) {
+                frameActual = 2;
             }
         }
     }

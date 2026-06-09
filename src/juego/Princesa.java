@@ -8,6 +8,7 @@ import entorno.Herramientas;
 
 //Clase
 public class Princesa {
+	private Plataforma ultimaPlataformaSegura;
 	private double x;
     private double y;
     private double alto;
@@ -94,8 +95,8 @@ public class Princesa {
 
     	entorno.escribirTexto("VIDAS", 20, 30);
     	
-    	entorno.escribirTexto("X = " + String.valueOf(x), 20, 120);
-    	entorno.escribirTexto("X = " + String.valueOf(y), 20, 150);
+    	//entorno.escribirTexto("X = " + String.valueOf(x), 20, 120);
+    	//entorno.escribirTexto("X = " + String.valueOf(y), 20, 150);
 
     	for(int i = 0; i < vidas; i++) {
 
@@ -132,7 +133,10 @@ public class Princesa {
             enElSuelo = false;
             this.velocidadY = -FUERZA_SALTO; // Impulso inicial hacia arriba
         }
-        
+        // si se pasa del limite del mapa se corta el salto
+        if (this.y < 40) {
+        	tiempoSaltando = MAX_TIEMPO_SALTO;
+        }
         // Salto variable: si mantiene presionado, el salto es más alto (estilo Mario)
         if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !enElSuelo && tiempoSaltando < MAX_TIEMPO_SALTO) {
             this.velocidadY = -FUERZA_SALTO; 
@@ -144,6 +148,7 @@ public class Princesa {
             tiempoSaltando = MAX_TIEMPO_SALTO; // Forza a que empiece a caer
         }
 	}
+	
 	//Metodo5
 	private void gravedad() {
 		if (enElSuelo == false) {
@@ -154,7 +159,25 @@ public class Princesa {
         }
         this.y += this.velocidadY; // Aplica el movimiento final en Y
 	}
-	//Metodo6
+	
+	//Metodo7 esto detecta cuando la princesa cae del mapa
+	public boolean cayoDelMapa() {
+	    return this.y > entorno.alto() + 100;
+	
+	}
+	
+	//Metodo8
+	public void reaparecer() {
+	    if(this.ultimaPlataformaSegura != null) {
+	        this.x = this.ultimaPlataformaSegura.getX();
+	        this.y = this.ultimaPlataformaSegura.getY() - this.ultimaPlataformaSegura.getAlto()/2 - this.alto/2 - 5;
+	        this.velocidadX = 0;
+	        this.velocidadY = 0;
+	        this.enElSuelo = true;
+	    }
+	}
+	
+	//Metodo9
 	public void moverPrincesa() {
 		chequearPiso();
 		moverDerecha();
@@ -165,7 +188,7 @@ public class Princesa {
 	
 	
 
-	//Metodo8
+	//Metodo10
 	public void perderVida() {
         if(this.tiempoInvulnerable == 0) {
             this.vidas--;
@@ -175,6 +198,8 @@ public class Princesa {
 
     
 	//Getters y Setters
+	public void setUltimaPlataformaSegura(Plataforma plataforma) {
+	    this.ultimaPlataformaSegura = plataforma; }
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
 

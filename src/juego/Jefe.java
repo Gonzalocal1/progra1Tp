@@ -240,6 +240,15 @@ public class Jefe {
 
 
 
+	public boolean derrotado() {
+		if (this.vidas == 0) {
+			return true;
+		}
+		return false;
+	}
+
+
+
 
 	
 }
