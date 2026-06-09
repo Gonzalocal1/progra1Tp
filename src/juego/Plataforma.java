@@ -59,6 +59,7 @@ public class Plataforma {
 	                        // Golpeó desde abajo
 	                        princesa.setY(platAbajo + (princesa.getAlto() / 2));
 	                        princesa.setVelocidadY(0);
+	                        princesa.setTiempoSaltando(Princesa.getMaxTiempoSalto());
 	                    }
 	                }
 	                else {

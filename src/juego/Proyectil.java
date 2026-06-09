@@ -79,7 +79,7 @@ public class Proyectil {
     }
 
     //Metodo4 - Modificado para recibir el movimiento de la cámara
-    public boolean disparo(Princesa princesa, Entorno entorno, double camaraX) {
+    public boolean actualizarProyectil(Princesa princesa, Entorno entorno, double camaraX) {
         // 1. Dibujarse en la pantalla
         this.dibujar(entorno);
 

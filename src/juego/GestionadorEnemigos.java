@@ -16,12 +16,11 @@ public class GestionadorEnemigos {
 		this.random = new Random();
 	}
 	
-	//Metodo1
 	public void inicializarEnemigos(int numero) {
 		enemigos = new Enemigo[numero];
 	}
 
-	//Metodo2
+
 	private int contarEnemigos() {
 	    int cantidad = 0;
 	    for(int i = 0; i < enemigos.length; i++) {
@@ -32,7 +31,7 @@ public class GestionadorEnemigos {
 	    return cantidad;
 	}
 
-	//Metodo3
+
 	public void crearEnemigo() {
 	    for(int i = 0; i < enemigos.length; i++) {
 	        if(enemigos[i] == null) {
