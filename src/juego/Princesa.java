@@ -27,7 +27,7 @@ public class Princesa {
 
     private Entorno entorno;
     
-    private double limitePiso;
+    private boolean salto;
     private boolean enElSuelo;  
     private int tiempoSaltando;
     private static final int MAX_TIEMPO_SALTO = 20;
@@ -129,7 +129,8 @@ public class Princesa {
 	private void salto() {
 		// Inicio del salto: está en el suelo y presiona arriba
         if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && enElSuelo) {
-            enElSuelo = false;
+            salto = true;
+        	enElSuelo = false;
             this.velocidadY = -FUERZA_SALTO; // Impulso inicial hacia arriba
         }
         // si se pasa del limite del mapa se corta el salto
@@ -137,7 +138,7 @@ public class Princesa {
         	tiempoSaltando = MAX_TIEMPO_SALTO;
         }
         // Salto variable: si mantiene presionado, el salto es más alto (estilo Mario)
-        if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !enElSuelo && tiempoSaltando < MAX_TIEMPO_SALTO) {
+        if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !enElSuelo && tiempoSaltando < MAX_TIEMPO_SALTO && salto) {
             this.velocidadY = -FUERZA_SALTO; 
             tiempoSaltando++;
         }
@@ -145,9 +146,12 @@ public class Princesa {
         // Si suelta el botón antes de tiempo, corta el impulso ascendente
         if (entorno.seLevanto(entorno.TECLA_ARRIBA) && this.velocidadY < 0) {
             tiempoSaltando = MAX_TIEMPO_SALTO; // Forza a que empiece a caer
+            salto = false;
         }
 	}
 	
+	
+
 	//Metodo5
 	private void gravedad() {
 		if (enElSuelo == false) {
@@ -244,9 +248,7 @@ public class Princesa {
 
     public boolean isEnElSuelo() { return enElSuelo; }
     public void setEnElSuelo(boolean enElSuelo) { this.enElSuelo = enElSuelo; }
-    
-    public double getLimitePiso() { return limitePiso; }
-    public void setLimitePiso(double limitePiso) { this.limitePiso = limitePiso; }
-
+	public void setTiempoSaltando(int tiempoSaltando) {this.tiempoSaltando = tiempoSaltando;}
+	public static int getMaxTiempoSalto() {return MAX_TIEMPO_SALTO;}
 
 }

@@ -38,7 +38,8 @@ public class Niveles {
         if (this.proyectil == null) {
             double randomX = 100 + (Math.random() * (entorno.ancho() - 200));
             double sueloY = entorno.alto() - 40; 
-            this.proyectil = new Proyectil(randomX, sueloY);
+            //this.proyectil = new Proyectil(randomX, sueloY);
+            this.proyectil = new Proyectil(princesa.getX(), princesa.getY());
         }
     }
 
@@ -73,7 +74,7 @@ public class Niveles {
         this.plataformas = new GestionadorPlataformas();
         this.plataformas.crearPisoNivel2(50, entorno);  
         // NIVEL 2: Volvemos a tu posición fija original del suelo
-        this.proyectil = new Proyectil(300, entorno.alto() - 40);
+        this.proyectil = new Proyectil(400, entorno.alto() - 40);
         
         this.castillo = null;
         this.jefe = new Jefe(entorno);
@@ -102,12 +103,12 @@ public class Niveles {
         
         // LÓGICA NIVEL 1: Proyectil Aleatorio y Scroll de Cámara
         if (proyectil != null) {
-            if (!proyectil.disparo(princesa, entorno, camaraX)) {
+            if (!proyectil.actualizarProyectil(princesa, entorno, camaraX)) { //actualizarProyectil devuelve false cuando sale del mapa
                 proyectil = null; 
             }
         }
         
-        if (enemigos.actualizarEnemigos(princesa, proyectil, items)) {
+        if (enemigos.actualizarEnemigos(princesa, proyectil, items)) { //actualizar enemigos devuelve un booleano indicando si hubo colision con proyectil
             proyectil = null;
         }
         
@@ -135,21 +136,20 @@ public class Niveles {
         
         // LÓGICA NIVEL 2: Como estaba originalmente de forma fija
         if (proyectil != null) {
-            if (!proyectil.disparo(princesa, entorno, 0)) {
+            if (!proyectil.actualizarProyectil(princesa, entorno, 0)) {
                 // Si se salió del mapa, reaparece FIJO en el centro abajo
                 proyectil = new Proyectil(400, entorno.alto() - 40);
             }
         } else {
-            // Seguro original por si quedaba null
             proyectil = new Proyectil(400, entorno.alto() - 40);
         }
         
-        // Si el jefe lo rompe, queda null y en el próximo loop entra al 'else' de arriba
+        // Si el jefe lo rompe, queda null
         if (jefe.detectarColisionProyectil(proyectil)) {
             proyectil = null;
         }
         
-        // 4. Texto informativo
+        // 4. Texto
         entorno.cambiarFont("Arial", 26, Color.RED, entorno.NEGRITA);
         entorno.escribirTexto("¡NIVEL 2: JEFE FINAL!", 260, 80);
         
