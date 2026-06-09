@@ -33,24 +33,10 @@ public class VidaExtra {
         }
     }
     
-    public void verificarSuelo(Entorno entorno) {
-        double piso = entorno.alto() - 15;
-	        if(y + alto/2 >= piso) {
-	        	y = piso - alto/2;
-	            velocidadY = 0;
-	            enSuelo = true;
-	        }
-    }
-   
-    public void detenerEn(double yPlataforma) {
-    	this.y = yPlataforma - this.alto/2;
-    	this.velocidadY = 0;
-        this.enSuelo = true;
-    }
+
     
     public void actualizar(double camaraX, Entorno entorno) {
         aplicarGravedad();
-        verificarSuelo(entorno);
         moverConCamara(camaraX);
     }
 
@@ -67,10 +53,30 @@ public class VidaExtra {
             this.y - this.alto/2 < princesa.getY() + princesa.getAlto()/2 &&
             this.y + this.alto/2 > princesa.getY() - princesa.getAlto()/2;
     }
+	
+    public boolean seSalioDelMapa(Entorno entorno) {
+        return (this.x > entorno.ancho() + 50 || this.x < -50 || this.y > entorno.alto() + 50 || this.y < -50);
+    }
+	
     public double getX() {
         return x;
     }
     public double getY() {
         return y;
     }
+    public double getAlto() {
+        return alto;
+    }
+    public double getAncho() {
+        return ancho;
+    }
+	public void setY(double y) {
+		this.y = y;
+	}
+	public void setVelocidadY(double vy) {
+		this.velocidadY = vy;
+	}
+	public void setEnSuelo(boolean b) {
+		this.enSuelo = b;
+	}
 }
