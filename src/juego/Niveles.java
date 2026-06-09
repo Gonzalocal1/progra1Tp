@@ -69,12 +69,9 @@ public class Niveles {
         this.princesa.setX(100);
         this.princesa.setY(480); 
         this.princesa.setLimitesX(30, entorno.ancho()-30);
-        this.enemigos.limpiarEnemigos(); 
-        
-        this.plataformas.limpiarPlataformas();
-        this.plataformas.limpiarIslas();
-        this.plataformas.crearPisoNivel2(50, entorno); 
-        
+        this.enemigos = new GestionadorEnemigos(entorno); 
+        this.plataformas = new GestionadorPlataformas();
+        this.plataformas.crearPisoNivel2(50, entorno);  
         // NIVEL 2: Volvemos a tu posición fija original del suelo
         this.proyectil = new Proyectil(300, entorno.alto() - 40);
         
@@ -83,18 +80,7 @@ public class Niveles {
         this.jefe.iniciarAtaque1(princesa);
     }
     
-    //Metodo4
-    private void actualizarCamara(Princesa princesa) {
-        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
-            camaraX ++;  
-        } else {
-            camaraX = 0;
-        }
-        if (camaraX > velMaxCamara) {
-            camaraX = velMaxCamara;
-        }
-        camaraRecorrido+= camaraX;
-    }
+
     
     //Metodo5
     private void ejecutarNivel1() {
@@ -141,7 +127,7 @@ public class Niveles {
     private void ejecutarNivel2() {
         // 1. Dibujar escenario y procesar físicas de la princesa
         plataformas.dibujarPlataformas(0); 
-        plataformas.colisionesPlataformas(princesa, items); 
+        plataformas.colisionesPlataformasSoloSuelo(princesa, items); 
         princesa.moverPrincesa();
         princesa.dibujarPrincesa();
         princesa.actualizarAnimacion();
@@ -173,6 +159,19 @@ public class Niveles {
         if(jefe.derrotado()) {
             this.nivel = 3;
         }
+    }
+    
+    //Metodo4
+    private void actualizarCamara(Princesa princesa) {
+        if (princesa.getX() + 50 > 600 && entorno.estaPresionada(entorno.TECLA_DERECHA) && camaraRecorrido < maxCamaraRecorrido) {
+            camaraX ++;  
+        } else {
+            camaraX = 0;
+        }
+        if (camaraX > velMaxCamara) {
+            camaraX = velMaxCamara;
+        }
+        camaraRecorrido+= camaraX;
     }
     
     public void actualizarGameplay() {

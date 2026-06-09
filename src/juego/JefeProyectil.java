@@ -35,9 +35,6 @@ public class JefeProyectil {
 	
 
 	
-//Métodos
-	//Metodo1
-
 	
 	public void moverDireccionPrincesa() {
 		x += vx * velocidad;
@@ -55,7 +52,6 @@ public class JefeProyectil {
 	}
 	
 
-	//Metodo2
 	public void moverProyectil(double centroX, double centroY) {
 		this.grados += 5;
 	}

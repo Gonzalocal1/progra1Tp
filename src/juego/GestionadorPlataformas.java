@@ -104,18 +104,33 @@ public class GestionadorPlataformas {
         	princesa.setEnElSuelo(false);
         }
 	}
+	
+	public void colisionesPlataformasSoloSuelo(Princesa princesa, GestionadorDeItems items) { //pensado para el nivel 2 sin islas
+		VidaExtra[] vidas = items.getVidas();
+		int contadorIntersecciones = 0;
+		for(int i = 0; i < suelo.length; i++) {
+	        if(suelo[i] != null) {
+	            if(suelo[i].ColisionConPrincesa(princesa)) {
+	            	contadorIntersecciones++;
+	            }
+	            for(int j = 0;j < vidas.length;j++) {
+					if (vidas[j] != null) {
+						suelo[i].colisionaConVida(vidas[j]);
+					}
+				}
+	        }
+	    }
+		//Si no hay colisiones la princesa comenzara a caer
+		if (contadorIntersecciones == 0) {
+        	princesa.setEnElSuelo(false);
+        }
+	}
 	//Metodo4
 	public double getUltimaPlat() {
 		return suelo[suelo.length-1].getX();
 	}
 	
 	//Metodo5
-	public void limpiarPlataformas( ) {
-		for (int i = 0;i < suelo.length;i++) {
-			suelo[i] = null;
-		}
-	}
-	//Metodo6
 	public void crearPisoNivel2(int cantPlataformas, Entorno entorno) {
 	    int separacion = 20; // Distancia entre el centro de una plataforma y la siguiente
 	    int altura = entorno.alto(); // Posición en Y (el suelo)
@@ -240,7 +255,7 @@ public class GestionadorPlataformas {
 	    }
 	}
 	//Metodo9
-	public void limpiarIslas( ) {
+	/*public void limpiarIslas( ) {
 		for (int i = 0;i < islas.length;i++) {
 			islas[i] = null;
 		}
@@ -248,5 +263,10 @@ public class GestionadorPlataformas {
 			islasSegundaCapa[i] = null;
 		}
 	}
+	public void limpiarPlataformas( ) {
+		for (int i = 0;i < suelo.length;i++) {
+			suelo[i] = null;
+		}
+	}*/
 }
 

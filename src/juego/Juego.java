@@ -18,6 +18,7 @@ public class Juego extends InterfaceJuego
 	// Variables y métodos propios de cada grupo
 	private Niveles gestorNiveles;
 	
+	
 	private String estadoJuego = "JUGANDO";
 	
 
@@ -38,8 +39,7 @@ public class Juego extends InterfaceJuego
 
 	
 	
-	 // El tick() ahora SOLO decide qué nivel se debe renderizar y procesar.
-	 // Se eliminó todo el código duplicado que estaba acá adentro.
+
 	public void tick()
 	{
 		if (estadoJuego.equals("JUGANDO")) {
@@ -74,7 +74,6 @@ public class Juego extends InterfaceJuego
     }
 
     private void mostrarPantallaVictoria() {
-        // Aquí dibujas la imagen de Candace festeando que ahora tendrías en Main
         entorno.dibujarImagen(this.imagenVictoria, entorno.ancho() / 2, entorno.alto() / 2, 0);
         entorno.cambiarFont("Arial", 35, Color.CYAN, entorno.NEGRITA);
         entorno.escribirTexto("¡¡¡GANASTE!!!", entorno.ancho() / 2 - 100, 100); 

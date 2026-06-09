@@ -1,16 +1,19 @@
 package juego;
 
+import java.util.Random;
+
 import entorno.Entorno;
 
 //Clase
 public class GestionadorEnemigos {
 	private Enemigo[] enemigos;
 	private Entorno entorno;
-	
+	private Random random;
 	//Constructor
 	public GestionadorEnemigos(Entorno entorno) {
 		this.enemigos = null;
 		this.entorno = entorno;
+		this.random = new Random();
 	}
 	
 	//Metodo1
@@ -42,13 +45,23 @@ public class GestionadorEnemigos {
 	            else {
 	                x = entorno.ancho() + 30;
 	            }
-	            double y = 100 + Math.random() * 400;
+	            double y = elegirY(esFuerte);
 	            enemigos[i] = new Enemigo(x, y, izquierda, esFuerte, entorno);
 	            break;
 	        }
 	    }
 	}
 
+	private int elegirY(boolean fuerte) {
+		if (fuerte) {
+			int[] posiblesY = {550,450,300,100};
+			return posiblesY[random.nextInt(posiblesY.length)];
+		} else {
+			int[] posiblesY = {550,450,375,300,225,175,100};
+			return posiblesY[random.nextInt(posiblesY.length)];	
+		}
+	}
+	
 	public void mantenerEnemigos() {
 	    while(contarEnemigos() < 3) {
 	        crearEnemigo();
@@ -91,11 +104,11 @@ public class GestionadorEnemigos {
 	    return proyectilDebeMorir;
 	}
 
-	//Metodo6
+	/*Metodo6
 	public void limpiarEnemigos() {
 		for (int i = 0; i < enemigos.length; i++) {
 			enemigos[i] = null;
 		}
-	}
+	}*/
 
 }

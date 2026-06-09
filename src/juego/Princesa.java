@@ -82,9 +82,9 @@ public class Princesa {
         Image imagenActual = this.spritesCaminata[this.frameActual];
         
         // Llamamos a tu método pasándole la imagen, la posición y el ángulo
-        entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
-        dibujarVidas();
+       entorno.dibujarImagen(imagenActual, this.x, this.y, 0, 0.2);
         
+        dibujarVidas();
     }
 
 	
